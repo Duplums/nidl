@@ -109,7 +109,7 @@
                                 
                             
                             <li>API</li>
-                            <li><a href="nidl.html">nidl</a></li><li><a href="nidl.estimators.html">nidl.estimators</a></li><li><a href="nidl.estimators.linear.html">nidl.estimators.linear</a></li><li><a href="nidl.estimators.ssl.html">nidl.estimators.ssl</a></li><li><a href="nidl.utils.html">nidl.utils</a></li><li><a href="surfify.html">surfify</a></li><li><a href="surfify.augmentation.html">surfify.augmentation</a></li><li><a href="surfify.datasets.html">surfify.datasets</a></li><li><a href="surfify.losses.html">surfify.losses</a></li><li><a href="surfify.models.html">surfify.models</a></li><li><a href="surfify.nn.html">surfify.nn</a></li><li><a href="surfify.plotting.html">surfify.plotting</a></li><li><a href="surfify.utils.html">surfify.utils</a></li>
+                            <li><a href="nidl.html">nidl</a></li><li><a href="nidl.callbacks.html">nidl.callbacks</a></li><li><a href="nidl.datasets.html">nidl.datasets</a></li><li><a href="nidl.estimators.html">nidl.estimators</a></li><li><a href="nidl.estimators.linear.html">nidl.estimators.linear</a></li><li><a href="nidl.estimators.ssl.html">nidl.estimators.ssl</a></li><li><a href="nidl.estimators.ssl.utils.html">nidl.estimators.ssl.utils</a></li><li><a href="nidl.losses.html">nidl.losses</a></li><li><a href="nidl.metrics.html">nidl.metrics</a></li><li><a href="nidl.utils.html">nidl.utils</a></li><li><a href="nidl.volume.html">nidl.volume</a></li><li><a href="nidl.volume.backbones.html">nidl.volume.backbones</a></li><li><a href="nidl.volume.transforms.html">nidl.volume.transforms</a></li><li><a href="nidl.volume.transforms.augmentation.html">nidl.volume.transforms.augmentation</a></li><li><a href="nidl.volume.transforms.augmentation.intensity.html">nidl.volume.transforms.augmentation.intensity</a></li><li><a href="nidl.volume.transforms.augmentation.spatial.html">nidl.volume.transforms.augmentation.spatial</a></li><li><a href="nidl.volume.transforms.preprocessing.html">nidl.volume.transforms.preprocessing</a></li><li><a href="nidl.volume.transforms.preprocessing.intensity.html">nidl.volume.transforms.preprocessing.intensity</a></li><li><a href="nidl.volume.transforms.preprocessing.spatial.html">nidl.volume.transforms.preprocessing.spatial</a></li><li><a href="surfify.html">surfify</a></li><li><a href="surfify.augmentation.html">surfify.augmentation</a></li><li><a href="surfify.datasets.html">surfify.datasets</a></li><li><a href="surfify.losses.html">surfify.losses</a></li><li><a href="surfify.models.html">surfify.models</a></li><li><a href="surfify.nn.html">surfify.nn</a></li><li><a href="surfify.plotting.html">surfify.plotting</a></li><li><a href="surfify.utils.html">surfify.utils</a></li>
 						</ul>
 					</li> -->
 				</ul>
@@ -157,7 +157,7 @@
                     
                     <div class="document">
                         <section id="api-documentation-of-nidl">
-<h1>API documentation of NIDL<a class="headerlink" href="#api-documentation-of-nidl" title="Link to this heading">¶</a></h1><div class='divider-1 wow fadeInUp' style='margin-top: -20px;'><span></span></div>
+<h1>API documentation of <code class="docutils literal notranslate"><span class="pre">nidl</span></code><a class="headerlink" href="#api-documentation-of-nidl" title="Link to this heading">¶</a></h1><div class='divider-1 wow fadeInUp' style='margin-top: -20px;'><span></span></div>
 <p>This is the classes and functions reference in nidl. Please refer to the gallery for further details, as the class and function raw specifications may not be enough to give full guidelines on their uses.</p>
 <!-- Block section -->
 
@@ -172,14 +172,30 @@
 nidl
 </a></h3>
 <blockquote>
-</blockquote>
+    <p>Deep learning for NeuroImaging in Python.</p>    </blockquote>
 </div>
 <div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
+<h3><a href='nidl.callbacks.html'>
+nidl.callbacks
+</a></h3>
+<blockquote>
+    <p>Common callbacks.</p>    </blockquote>
+</div>
+<div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
+<h3><a href='nidl.datasets.html'>
+nidl.datasets
+</a></h3>
+<blockquote>
+    <p>Common datasets.</p>    </blockquote>
+</div>
+
+</div>
+<div class='row'>    <div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
 <h3><a href='nidl.estimators.html'>
 nidl.estimators
 </a></h3>
 <blockquote>
-    <p>Module that defines common estimators.</p>    </blockquote>
+    <p>Common estimators.</p>    </blockquote>
 </div>
 <div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
 <h3><a href='nidl.estimators.linear.html'>
@@ -188,16 +204,39 @@ nidl.estimators.linear
 <blockquote>
     <p>Linear estimators.</p>    </blockquote>
 </div>
-
-</div>
-<div class='row'>    <div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
+<div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
 <h3><a href='nidl.estimators.ssl.html'>
 nidl.estimators.ssl
 </a></h3>
 <blockquote>
     <p>Self-supervised estimators.</p>    </blockquote>
 </div>
+
+</div>
+<div class='row'>    <div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
+<h3><a href='nidl.estimators.ssl.utils.html'>
+nidl.estimators.ssl.utils
+</a></h3>
+<blockquote>
+</blockquote>
+</div>
 <div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
+<h3><a href='nidl.losses.html'>
+nidl.losses
+</a></h3>
+<blockquote>
+    <p>Common losses.</p>    </blockquote>
+</div>
+<div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
+<h3><a href='nidl.metrics.html'>
+nidl.metrics
+</a></h3>
+<blockquote>
+</blockquote>
+</div>
+
+</div>
+<div class='row'>    <div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
 <h3><a href='nidl.utils.html'>
 nidl.utils
 </a></h3>
@@ -205,15 +244,93 @@ nidl.utils
     <p>Various utilities to help with development.</p>    </blockquote>
 </div>
 <div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
+<h3><a href='nidl.volume.html'>
+nidl.volume
+</a></h3>
+<blockquote>
+    <p>Definition of common architectures.</p>    </blockquote>
+</div>
+<div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
+<h3><a href='nidl.volume.backbones.html'>
+nidl.volume.backbones
+</a></h3>
+<blockquote>
+    <p>Definition of common volumic architectures.</p>    </blockquote>
+</div>
+
+</div>
+<div class='row'>    <div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
+<h3><a href='nidl.volume.transforms.html'>
+nidl.volume.transforms
+</a></h3>
+<blockquote>
+</blockquote>
+</div>
+<div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
+<h3><a href='nidl.volume.transforms.augmentation.html'>
+nidl.volume.transforms.augmentation
+</a></h3>
+<blockquote>
+</blockquote>
+</div>
+<div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
+<h3><a href='nidl.volume.transforms.augmentation.intensity.html'>
+nidl.volume.transforms.augmentation.intensity
+</a></h3>
+<blockquote>
+</blockquote>
+</div>
+
+</div>
+<div class='row'>    <div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
+<h3><a href='nidl.volume.transforms.augmentation.spatial.html'>
+nidl.volume.transforms.augmentation.spatial
+</a></h3>
+<blockquote>
+</blockquote>
+</div>
+<div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
+<h3><a href='nidl.volume.transforms.preprocessing.html'>
+nidl.volume.transforms.preprocessing
+</a></h3>
+<blockquote>
+</blockquote>
+</div>
+<div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
+<h3><a href='nidl.volume.transforms.preprocessing.intensity.html'>
+nidl.volume.transforms.preprocessing.intensity
+</a></h3>
+<blockquote>
+</blockquote>
+</div>
+
+</div>
+<div class='row'>    <div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
+<h3><a href='nidl.volume.transforms.preprocessing.spatial.html'>
+nidl.volume.transforms.preprocessing.spatial
+</a></h3>
+<blockquote>
+</blockquote>
+</div>
+
+</div>
+</div>
+</div><h2 style='border-bottom: 1px solid #d3dbd5'>Linked plugins</h2><!-- Block section -->
+
+<div class='container-fluid'>
+
+<div class='section-3-box wow fadeInLeft'>
+
+<div class='row'>
+
+<div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
 <h3><a href='surfify.html'>
 surfify
 </a></h3>
 <blockquote>
     <p>Helper module for surface integration in PyTorch.</p>    </blockquote>
 </div>
-
-</div>
-<div class='row'>    <div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
+<div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
 <h3><a href='surfify.augmentation.html'>
 surfify.augmentation
 </a></h3>
@@ -228,16 +345,16 @@ surfify.datasets
     <p>Utilities to load datasets, including methods to load and fetch popular
 reference datasets. It also features some artificial data generators.</p>    </blockquote>
 </div>
-<div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
+
+</div>
+<div class='row'>    <div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
 <h3><a href='surfify.losses.html'>
 surfify.losses
 </a></h3>
 <blockquote>
     <p>Common losses.</p>    </blockquote>
 </div>
-
-</div>
-<div class='row'>    <div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
+<div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
 <h3><a href='surfify.models.html'>
 surfify.models
 </a></h3>
@@ -251,16 +368,16 @@ surfify.nn
 <blockquote>
     <p>Suface dedicated modules.</p>    </blockquote>
 </div>
-<div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
+
+</div>
+<div class='row'>    <div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
 <h3><a href='surfify.plotting.html'>
 surfify.plotting
 </a></h3>
 <blockquote>
     <p>Utilities to display datasets.</p>    </blockquote>
 </div>
-
-</div>
-<div class='row'>    <div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
+<div class='col-md-4'><div class='section-3-box-icon' style='float: left; margin-top: 30px; margin-right: 20px;'> <i class='fas fa-pencil-alt'></i></div>
 <h3><a href='surfify.utils.html'>
 surfify.utils
 </a></h3>
@@ -293,6 +410,70 @@ surfify.utils
 <p><a class="reference external" href="nidl.experiment.get_env.html">nidl.experiment.get_env</a></p>
 <p><a class="reference external" href="nidl.experiment.load_interface.html">nidl.experiment.load_interface</a></p>
 <p><a class="reference external" href="nidl.experiment.update_params.html">nidl.experiment.update_params</a></p>
+<p><a class="reference external" href="nidl.transforms.Identity.html">nidl.transforms.Identity</a></p>
+<p><a class="reference external" href="nidl.transforms.MultiViewsTransform.html">nidl.transforms.MultiViewsTransform</a></p>
+<p><a class="reference external" href="nidl.transforms.Transform.html">nidl.transforms.Transform</a></p>
+</div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><a class="reference external" href="nidl.callbacks.html">nidl.callbacks</a></dt><dd>
+<script type="text/javascript">
+    function showhide(element){
+        if (!document.getElementById)
+            return
+
+        if (element.style.display == "block")
+            element.style.display = "none"
+        else
+            element.style.display = "block"
+    };
+</script>
+<a href="javascript:showhide(document.getElementById('hiddencodeblock2'))">
+[+ show/hide members]</a><br />
+<div id="hiddencodeblock2" style="display: none"><div class="admonition">
+<p><a class="reference external" href="nidl.callbacks.check_typing.BatchTypingCallback.html">nidl.callbacks.BatchTypingCallback</a></p>
+<p><a class="reference external" href="nidl.callbacks.model_probing.KNeighborsClassifierCVCallback.html">nidl.callbacks.KNeighborsClassifierCVCallback</a></p>
+<p><a class="reference external" href="nidl.callbacks.model_probing.KNeighborsRegressorCVCallback.html">nidl.callbacks.KNeighborsRegressorCVCallback</a></p>
+<p><a class="reference external" href="nidl.callbacks.model_probing.LogisticRegressionCVCallback.html">nidl.callbacks.LogisticRegressionCVCallback</a></p>
+<p><a class="reference external" href="nidl.callbacks.model_probing.ModelProbing.html">nidl.callbacks.ModelProbing</a></p>
+<p><a class="reference external" href="nidl.callbacks.model_probing.RidgeCVCallback.html">nidl.callbacks.RidgeCVCallback</a></p>
+<p><a class="reference external" href="nidl.callbacks.model_probing.KNeighborsClassifierCVCallback.html">nidl.callbacks.model_probing.KNeighborsClassifierCVCallback</a></p>
+<p><a class="reference external" href="nidl.callbacks.model_probing.KNeighborsRegressorCVCallback.html">nidl.callbacks.model_probing.KNeighborsRegressorCVCallback</a></p>
+<p><a class="reference external" href="nidl.callbacks.model_probing.LogisticRegressionCVCallback.html">nidl.callbacks.model_probing.LogisticRegressionCVCallback</a></p>
+<p><a class="reference external" href="nidl.callbacks.model_probing.ModelProbing.html">nidl.callbacks.model_probing.ModelProbing</a></p>
+<p><a class="reference external" href="nidl.callbacks.model_probing.RidgeCVCallback.html">nidl.callbacks.model_probing.RidgeCVCallback</a></p>
+<p><a class="reference external" href="nidl.callbacks.check_typing.BatchTypingCallback.html">nidl.callbacks.check_typing.BatchTypingCallback</a></p>
+</div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><a class="reference external" href="nidl.datasets.html">nidl.datasets</a></dt><dd>
+<script type="text/javascript">
+    function showhide(element){
+        if (!document.getElementById)
+            return
+
+        if (element.style.display == "block")
+            element.style.display = "none"
+        else
+            element.style.display = "block"
+    };
+</script>
+<a href="javascript:showhide(document.getElementById('hiddencodeblock3'))">
+[+ show/hide members]</a><br />
+<div id="hiddencodeblock3" style="display: none"><div class="admonition">
+<p><a class="reference external" href="nidl.datasets.base.BaseImageDataset.html">nidl.datasets.BaseImageDataset</a></p>
+<p><a class="reference external" href="nidl.datasets.base.BaseNumpyDataset.html">nidl.datasets.BaseNumpyDataset</a></p>
+<p><a class="reference external" href="nidl.datasets.openbhb.OpenBHB.html">nidl.datasets.OpenBHB</a></p>
+<p><a class="reference external" href="nidl.datasets.openbhb.OpenBHB.html">nidl.datasets.openbhb.OpenBHB</a></p>
+<p><a class="reference external" href="nidl.datasets.base.BaseDataset.html">nidl.datasets.base.BaseDataset</a></p>
+<p><a class="reference external" href="nidl.datasets.base.BaseImageDataset.html">nidl.datasets.base.BaseImageDataset</a></p>
+<p><a class="reference external" href="nidl.datasets.base.BaseNumpyDataset.html">nidl.datasets.base.BaseNumpyDataset</a></p>
 </div>
 </div>
 </dd>
@@ -311,9 +492,9 @@ surfify.utils
             element.style.display = "block"
     };
 </script>
-<a href="javascript:showhide(document.getElementById('hiddencodeblock2'))">
+<a href="javascript:showhide(document.getElementById('hiddencodeblock4'))">
 [+ show/hide members]</a><br />
-<div id="hiddencodeblock2" style="display: none"><div class="admonition">
+<div id="hiddencodeblock4" style="display: none"><div class="admonition">
 <p><a class="reference external" href="nidl.estimators.base.BaseEstimator.html">nidl.estimators.BaseEstimator</a></p>
 <p><a class="reference external" href="nidl.estimators.base.ClassifierMixin.html">nidl.estimators.ClassifierMixin</a></p>
 <p><a class="reference external" href="nidl.estimators.base.ClusterMixin.html">nidl.estimators.ClusterMixin</a></p>
@@ -342,9 +523,9 @@ surfify.utils
             element.style.display = "block"
     };
 </script>
-<a href="javascript:showhide(document.getElementById('hiddencodeblock3'))">
+<a href="javascript:showhide(document.getElementById('hiddencodeblock5'))">
 [+ show/hide members]</a><br />
-<div id="hiddencodeblock3" style="display: none"><div class="admonition">
+<div id="hiddencodeblock5" style="display: none"><div class="admonition">
 <p><a class="reference external" href="nidl.estimators.linear.logistic_regression.LogisticRegression.html">nidl.estimators.linear.LogisticRegression</a></p>
 <p><a class="reference external" href="nidl.estimators.linear.logistic_regression.LogisticRegression.html">nidl.estimators.linear.logistic_regression.LogisticRegression</a></p>
 </div>
@@ -365,11 +546,96 @@ surfify.utils
             element.style.display = "block"
     };
 </script>
-<a href="javascript:showhide(document.getElementById('hiddencodeblock4'))">
+<a href="javascript:showhide(document.getElementById('hiddencodeblock6'))">
 [+ show/hide members]</a><br />
-<div id="hiddencodeblock4" style="display: none"><div class="admonition">
+<div id="hiddencodeblock6" style="display: none"><div class="admonition">
 <p><a class="reference external" href="nidl.estimators.ssl.simclr.SimCLR.html">nidl.estimators.ssl.SimCLR</a></p>
+<p><a class="reference external" href="nidl.estimators.ssl.yaware.YAwareContrastiveLearning.html">nidl.estimators.ssl.YAwareContrastiveLearning</a></p>
+<p><a class="reference external" href="nidl.estimators.ssl.yaware.YAwareContrastiveLearning.html">nidl.estimators.ssl.yaware.YAwareContrastiveLearning</a></p>
 <p><a class="reference external" href="nidl.estimators.ssl.simclr.SimCLR.html">nidl.estimators.ssl.simclr.SimCLR</a></p>
+</div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><a class="reference external" href="nidl.estimators.ssl.utils.html">nidl.estimators.ssl.utils</a></dt><dd>
+<script type="text/javascript">
+    function showhide(element){
+        if (!document.getElementById)
+            return
+
+        if (element.style.display == "block")
+            element.style.display = "none"
+        else
+            element.style.display = "block"
+    };
+</script>
+<a href="javascript:showhide(document.getElementById('hiddencodeblock7'))">
+[+ show/hide members]</a><br />
+<div id="hiddencodeblock7" style="display: none"><div class="admonition">
+<p><a class="reference external" href="nidl.estimators.ssl.utils.projection_heads.ProjectionHead.html">nidl.estimators.ssl.utils.ProjectionHead</a></p>
+<p><a class="reference external" href="nidl.estimators.ssl.utils.projection_heads.SimCLRProjectionHead.html">nidl.estimators.ssl.utils.SimCLRProjectionHead</a></p>
+<p><a class="reference external" href="nidl.estimators.ssl.utils.projection_heads.YAwareProjectionHead.html">nidl.estimators.ssl.utils.YAwareProjectionHead</a></p>
+<p><a class="reference external" href="nidl.estimators.ssl.utils.projection_heads.ProjectionHead.html">nidl.estimators.ssl.utils.projection_heads.ProjectionHead</a></p>
+<p><a class="reference external" href="nidl.estimators.ssl.utils.projection_heads.SimCLRProjectionHead.html">nidl.estimators.ssl.utils.projection_heads.SimCLRProjectionHead</a></p>
+<p><a class="reference external" href="nidl.estimators.ssl.utils.projection_heads.YAwareProjectionHead.html">nidl.estimators.ssl.utils.projection_heads.YAwareProjectionHead</a></p>
+</div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><a class="reference external" href="nidl.losses.html">nidl.losses</a></dt><dd>
+<script type="text/javascript">
+    function showhide(element){
+        if (!document.getElementById)
+            return
+
+        if (element.style.display == "block")
+            element.style.display = "none"
+        else
+            element.style.display = "block"
+    };
+</script>
+<a href="javascript:showhide(document.getElementById('hiddencodeblock8'))">
+[+ show/hide members]</a><br />
+<div id="hiddencodeblock8" style="display: none"><div class="admonition">
+<p><a class="reference external" href="nidl.losses.infonce.InfoNCE.html">nidl.losses.InfoNCE</a></p>
+<p><a class="reference external" href="nidl.losses.yaware_infonce.KernelMetric.html">nidl.losses.KernelMetric</a></p>
+<p><a class="reference external" href="nidl.losses.yaware_infonce.YAwareInfoNCE.html">nidl.losses.YAwareInfoNCE</a></p>
+<p><a class="reference external" href="nidl.losses.infonce.InfoNCE.html">nidl.losses.infonce.InfoNCE</a></p>
+<p><a class="reference external" href="nidl.losses.yaware_infonce.KernelMetric.html">nidl.losses.yaware_infonce.KernelMetric</a></p>
+<p><a class="reference external" href="nidl.losses.yaware_infonce.PairwiseCosineSimilarity.html">nidl.losses.yaware_infonce.PairwiseCosineSimilarity</a></p>
+<p><a class="reference external" href="nidl.losses.yaware_infonce.YAwareInfoNCE.html">nidl.losses.yaware_infonce.YAwareInfoNCE</a></p>
+</div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><a class="reference external" href="nidl.metrics.html">nidl.metrics</a></dt><dd>
+<script type="text/javascript">
+    function showhide(element){
+        if (!document.getElementById)
+            return
+
+        if (element.style.display == "block")
+            element.style.display = "none"
+        else
+            element.style.display = "block"
+    };
+</script>
+<a href="javascript:showhide(document.getElementById('hiddencodeblock9'))">
+[+ show/hide members]</a><br />
+<div id="hiddencodeblock9" style="display: none"><div class="admonition">
+<p><a class="reference external" href="nidl.metrics.regression.pearson_r.html">nidl.metrics.pearson_r</a></p>
+<p><a class="reference external" href="nidl.metrics.regression.regression_report.html">nidl.metrics.regression_report</a></p>
+<p><a class="reference external" href="nidl.metrics._regression._check_reg_targets.html">nidl.metrics._regression._check_reg_targets</a></p>
+<p><a class="reference external" href="nidl.metrics._regression._check_reg_targets_with_floating_dtype.html">nidl.metrics._regression._check_reg_targets_with_floating_dtype</a></p>
+<p><a class="reference external" href="nidl.metrics._regression._find_matching_floating_dtype.html">nidl.metrics._regression._find_matching_floating_dtype</a></p>
+<p><a class="reference external" href="nidl.metrics.regression.pearson_r.html">nidl.metrics.regression.pearson_r</a></p>
+<p><a class="reference external" href="nidl.metrics.regression.regression_report.html">nidl.metrics.regression.regression_report</a></p>
 </div>
 </div>
 </dd>
@@ -388,13 +654,12 @@ surfify.utils
             element.style.display = "block"
     };
 </script>
-<a href="javascript:showhide(document.getElementById('hiddencodeblock5'))">
+<a href="javascript:showhide(document.getElementById('hiddencodeblock10'))">
 [+ show/hide members]</a><br />
-<div id="hiddencodeblock5" style="display: none"><div class="admonition">
+<div id="hiddencodeblock10" style="display: none"><div class="admonition">
 <p><a class="reference external" href="nidl.utils.bunch.Bunch.html">nidl.utils.Bunch</a></p>
 <p><a class="reference external" href="nidl.utils.weights.Weights.html">nidl.utils.Weights</a></p>
 <p><a class="reference external" href="nidl.utils.color.print_multicolor.html">nidl.utils.print_multicolor</a></p>
-<p><a class="reference external" href="nidl.utils.bunch.Bunch.html">nidl.utils.bunch.Bunch</a></p>
 <p><a class="reference external" href="nidl.utils.color.Colored.html">nidl.utils.color.Colored</a></p>
 <p><a class="reference external" href="nidl.utils.color.attr.html">nidl.utils.color.attr</a></p>
 <p><a class="reference external" href="nidl.utils.color.fg.html">nidl.utils.color.fg</a></p>
@@ -411,12 +676,216 @@ surfify.utils
 <p><a class="reference external" href="nidl.utils.validation.available_if.html">nidl.utils.validation.available_if</a></p>
 <p><a class="reference external" href="nidl.utils.validation.check_is_fitted.html">nidl.utils.validation.check_is_fitted</a></p>
 <p><a class="reference external" href="nidl.utils.weights.Weights.html">nidl.utils.weights.Weights</a></p>
+<p><a class="reference external" href="nidl.utils.bunch.Bunch.html">nidl.utils.bunch.Bunch</a></p>
 </div>
 </div>
 </dd>
 </dl>
 </li>
-<li><p><a class="reference external" href="surfify.html">surfify</a></p></li>
+<li><p><a class="reference external" href="nidl.volume.html">nidl.volume</a></p></li>
+<li><dl>
+<dt><a class="reference external" href="nidl.volume.backbones.html">nidl.volume.backbones</a></dt><dd>
+<script type="text/javascript">
+    function showhide(element){
+        if (!document.getElementById)
+            return
+
+        if (element.style.display == "block")
+            element.style.display = "none"
+        else
+            element.style.display = "block"
+    };
+</script>
+<a href="javascript:showhide(document.getElementById('hiddencodeblock11'))">
+[+ show/hide members]</a><br />
+<div id="hiddencodeblock11" style="display: none"><div class="admonition">
+<p><a class="reference external" href="nidl.volume.backbones.alexnet3d.AlexNet.html">nidl.volume.backbones.AlexNet</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.densenet3d.DenseNet.html">nidl.volume.backbones.DenseNet</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.resnet3d.ResNet.html">nidl.volume.backbones.ResNet</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.resnet3d.ResNetTruncated.html">nidl.volume.backbones.ResNetTruncated</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.densenet3d.densenet121.html">nidl.volume.backbones.densenet121</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.resnet3d.resnet18.html">nidl.volume.backbones.resnet18</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.resnet3d.resnet18_trunc.html">nidl.volume.backbones.resnet18_trunc</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.resnet3d.resnet50.html">nidl.volume.backbones.resnet50</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.resnet3d.resnet50_trunc.html">nidl.volume.backbones.resnet50_trunc</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.densenet3d.DenseNet.html">nidl.volume.backbones.densenet3d.DenseNet</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.densenet3d._DenseBlock.html">nidl.volume.backbones.densenet3d._DenseBlock</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.densenet3d._DenseLayer.html">nidl.volume.backbones.densenet3d._DenseLayer</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.densenet3d._Transition.html">nidl.volume.backbones.densenet3d._Transition</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.densenet3d._bn_function_factory.html">nidl.volume.backbones.densenet3d._bn_function_factory</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.densenet3d._densenet.html">nidl.volume.backbones.densenet3d._densenet</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.densenet3d.densenet121.html">nidl.volume.backbones.densenet3d.densenet121</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.alexnet3d.AlexNet.html">nidl.volume.backbones.alexnet3d.AlexNet</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.resnet3d.BasicBlock.html">nidl.volume.backbones.resnet3d.BasicBlock</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.resnet3d.Bottleneck.html">nidl.volume.backbones.resnet3d.Bottleneck</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.resnet3d.ResNet.html">nidl.volume.backbones.resnet3d.ResNet</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.resnet3d.ResNetTruncated.html">nidl.volume.backbones.resnet3d.ResNetTruncated</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.resnet3d._resnet.html">nidl.volume.backbones.resnet3d._resnet</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.resnet3d._resnet_trunc.html">nidl.volume.backbones.resnet3d._resnet_trunc</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.resnet3d.conv1x1.html">nidl.volume.backbones.resnet3d.conv1x1</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.resnet3d.conv3x3.html">nidl.volume.backbones.resnet3d.conv3x3</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.resnet3d.resnet18.html">nidl.volume.backbones.resnet3d.resnet18</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.resnet3d.resnet18_trunc.html">nidl.volume.backbones.resnet3d.resnet18_trunc</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.resnet3d.resnet50.html">nidl.volume.backbones.resnet3d.resnet50</a></p>
+<p><a class="reference external" href="nidl.volume.backbones.resnet3d.resnet50_trunc.html">nidl.volume.backbones.resnet3d.resnet50_trunc</a></p>
+</div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><a class="reference external" href="nidl.volume.transforms.html">nidl.volume.transforms</a></dt><dd>
+<script type="text/javascript">
+    function showhide(element){
+        if (!document.getElementById)
+            return
+
+        if (element.style.display == "block")
+            element.style.display = "none"
+        else
+            element.style.display = "block"
+    };
+</script>
+<a href="javascript:showhide(document.getElementById('hiddencodeblock12'))">
+[+ show/hide members]</a><br />
+<div id="hiddencodeblock12" style="display: none"><div class="admonition">
+<p><a class="reference external" href="nidl.volume.transforms.volume_transform.VolumeTransform.html">nidl.volume.transforms.volume_transform.VolumeTransform</a></p>
+</div>
+</div>
+</dd>
+</dl>
+</li>
+<li><p><a class="reference external" href="nidl.volume.transforms.augmentation.html">nidl.volume.transforms.augmentation</a></p></li>
+<li><dl>
+<dt><a class="reference external" href="nidl.volume.transforms.augmentation.intensity.html">nidl.volume.transforms.augmentation.intensity</a></dt><dd>
+<script type="text/javascript">
+    function showhide(element){
+        if (!document.getElementById)
+            return
+
+        if (element.style.display == "block")
+            element.style.display = "none"
+        else
+            element.style.display = "block"
+    };
+</script>
+<a href="javascript:showhide(document.getElementById('hiddencodeblock13'))">
+[+ show/hide members]</a><br />
+<div id="hiddencodeblock13" style="display: none"><div class="admonition">
+<p><a class="reference external" href="nidl.volume.transforms.augmentation.intensity.random_blur.RandomGaussianBlur.html">nidl.volume.transforms.augmentation.intensity.RandomGaussianBlur</a></p>
+<p><a class="reference external" href="nidl.volume.transforms.augmentation.intensity.random_noise.RandomGaussianNoise.html">nidl.volume.transforms.augmentation.intensity.RandomGaussianNoise</a></p>
+<p><a class="reference external" href="nidl.volume.transforms.augmentation.intensity.random_blur.RandomGaussianBlur.html">nidl.volume.transforms.augmentation.intensity.random_blur.RandomGaussianBlur</a></p>
+<p><a class="reference external" href="nidl.volume.transforms.augmentation.intensity.random_noise.RandomGaussianNoise.html">nidl.volume.transforms.augmentation.intensity.random_noise.RandomGaussianNoise</a></p>
+</div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><a class="reference external" href="nidl.volume.transforms.augmentation.spatial.html">nidl.volume.transforms.augmentation.spatial</a></dt><dd>
+<script type="text/javascript">
+    function showhide(element){
+        if (!document.getElementById)
+            return
+
+        if (element.style.display == "block")
+            element.style.display = "none"
+        else
+            element.style.display = "block"
+    };
+</script>
+<a href="javascript:showhide(document.getElementById('hiddencodeblock14'))">
+[+ show/hide members]</a><br />
+<div id="hiddencodeblock14" style="display: none"><div class="admonition">
+<p><a class="reference external" href="nidl.volume.transforms.augmentation.spatial.random_erasing.RandomErasing.html">nidl.volume.transforms.augmentation.spatial.RandomErasing</a></p>
+<p><a class="reference external" href="nidl.volume.transforms.augmentation.spatial.random_flip.RandomFlip.html">nidl.volume.transforms.augmentation.spatial.RandomFlip</a></p>
+<p><a class="reference external" href="nidl.volume.transforms.augmentation.spatial.random_resized_crop.RandomResizedCrop.html">nidl.volume.transforms.augmentation.spatial.RandomResizedCrop</a></p>
+<p><a class="reference external" href="nidl.volume.transforms.augmentation.spatial.random_rotation.RandomRotation.html">nidl.volume.transforms.augmentation.spatial.RandomRotation</a></p>
+<p><a class="reference external" href="nidl.volume.transforms.augmentation.spatial.random_erasing.RandomErasing.html">nidl.volume.transforms.augmentation.spatial.random_erasing.RandomErasing</a></p>
+<p><a class="reference external" href="nidl.volume.transforms.augmentation.spatial.random_rotation.RandomRotation.html">nidl.volume.transforms.augmentation.spatial.random_rotation.RandomRotation</a></p>
+<p><a class="reference external" href="nidl.volume.transforms.augmentation.spatial.random_flip.RandomFlip.html">nidl.volume.transforms.augmentation.spatial.random_flip.RandomFlip</a></p>
+<p><a class="reference external" href="nidl.volume.transforms.augmentation.spatial.random_resized_crop.RandomResizedCrop.html">nidl.volume.transforms.augmentation.spatial.random_resized_crop.RandomResizedCrop</a></p>
+</div>
+</div>
+</dd>
+</dl>
+</li>
+<li><p><a class="reference external" href="nidl.volume.transforms.preprocessing.html">nidl.volume.transforms.preprocessing</a></p></li>
+<li><dl>
+<dt><a class="reference external" href="nidl.volume.transforms.preprocessing.intensity.html">nidl.volume.transforms.preprocessing.intensity</a></dt><dd>
+<script type="text/javascript">
+    function showhide(element){
+        if (!document.getElementById)
+            return
+
+        if (element.style.display == "block")
+            element.style.display = "none"
+        else
+            element.style.display = "block"
+    };
+</script>
+<a href="javascript:showhide(document.getElementById('hiddencodeblock15'))">
+[+ show/hide members]</a><br />
+<div id="hiddencodeblock15" style="display: none"><div class="admonition">
+<p><a class="reference external" href="nidl.volume.transforms.preprocessing.intensity.rescale.RobustRescaling.html">nidl.volume.transforms.preprocessing.intensity.RobustRescaling</a></p>
+<p><a class="reference external" href="nidl.volume.transforms.preprocessing.intensity.z_normalization.ZNormalization.html">nidl.volume.transforms.preprocessing.intensity.ZNormalization</a></p>
+<p><a class="reference external" href="nidl.volume.transforms.preprocessing.intensity.rescale.RobustRescaling.html">nidl.volume.transforms.preprocessing.intensity.rescale.RobustRescaling</a></p>
+<p><a class="reference external" href="nidl.volume.transforms.preprocessing.intensity.z_normalization.ZNormalization.html">nidl.volume.transforms.preprocessing.intensity.z_normalization.ZNormalization</a></p>
+</div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><a class="reference external" href="nidl.volume.transforms.preprocessing.spatial.html">nidl.volume.transforms.preprocessing.spatial</a></dt><dd>
+<script type="text/javascript">
+    function showhide(element){
+        if (!document.getElementById)
+            return
+
+        if (element.style.display == "block")
+            element.style.display = "none"
+        else
+            element.style.display = "block"
+    };
+</script>
+<a href="javascript:showhide(document.getElementById('hiddencodeblock16'))">
+[+ show/hide members]</a><br />
+<div id="hiddencodeblock16" style="display: none"><div class="admonition">
+<p><a class="reference external" href="nidl.volume.transforms.preprocessing.spatial.crop_or_pad.CropOrPad.html">nidl.volume.transforms.preprocessing.spatial.CropOrPad</a></p>
+<p><a class="reference external" href="nidl.volume.transforms.preprocessing.spatial.resample.Resample.html">nidl.volume.transforms.preprocessing.spatial.Resample</a></p>
+<p><a class="reference external" href="nidl.volume.transforms.preprocessing.spatial.resize.Resize.html">nidl.volume.transforms.preprocessing.spatial.Resize</a></p>
+<p><a class="reference external" href="nidl.volume.transforms.preprocessing.spatial.resample.Resample.html">nidl.volume.transforms.preprocessing.spatial.resample.Resample</a></p>
+<p><a class="reference external" href="nidl.volume.transforms.preprocessing.spatial.crop_or_pad.CropOrPad.html">nidl.volume.transforms.preprocessing.spatial.crop_or_pad.CropOrPad</a></p>
+<p><a class="reference external" href="nidl.volume.transforms.preprocessing.spatial.resize.Resize.html">nidl.volume.transforms.preprocessing.spatial.resize.Resize</a></p>
+</div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><a class="reference external" href="surfify.html">surfify</a></dt><dd>
+<script type="text/javascript">
+    function showhide(element){
+        if (!document.getElementById)
+            return
+
+        if (element.style.display == "block")
+            element.style.display = "none"
+        else
+            element.style.display = "block"
+    };
+</script>
+<a href="javascript:showhide(document.getElementById('hiddencodeblock17'))">
+[+ show/hide members]</a><br />
+<div id="hiddencodeblock17" style="display: none"><div class="admonition">
+<p><a class="reference external" href="surfify.preprocessing.StandardScaler.html">surfify.preprocessing.StandardScaler</a></p>
+<p><a class="reference external" href="surfify.transforms.RandomCompose.html">surfify.transforms.RandomCompose</a></p>
+</div>
+</div>
+</dd>
+</dl>
+</li>
 <li><dl>
 <dt><a class="reference external" href="surfify.augmentation.html">surfify.augmentation</a></dt><dd>
 <script type="text/javascript">
@@ -430,9 +899,9 @@ surfify.utils
             element.style.display = "block"
     };
 </script>
-<a href="javascript:showhide(document.getElementById('hiddencodeblock6'))">
+<a href="javascript:showhide(document.getElementById('hiddencodeblock18'))">
 [+ show/hide members]</a><br />
-<div id="hiddencodeblock6" style="display: none"><div class="admonition">
+<div id="hiddencodeblock18" style="display: none"><div class="admonition">
 <p><a class="reference external" href="surfify.augmentation.utils.BaseTransformer.html">surfify.augmentation.BaseTransformer</a></p>
 <p><a class="reference external" href="surfify.augmentation.mixup.GroupMixUp.html">surfify.augmentation.GroupMixUp</a></p>
 <p><a class="reference external" href="surfify.augmentation.mixup.HemiMixUp.html">surfify.augmentation.HemiMixUp</a></p>
@@ -453,6 +922,7 @@ surfify.utils
 <p><a class="reference external" href="surfify.augmentation.mixup.MixUpAugmentation.html">surfify.augmentation.mixup.MixUpAugmentation</a></p>
 <p><a class="reference external" href="surfify.augmentation.utils.BaseTransformer.html">surfify.augmentation.utils.BaseTransformer</a></p>
 <p><a class="reference external" href="surfify.augmentation.utils.RandomAugmentation.html">surfify.augmentation.utils.RandomAugmentation</a></p>
+<p><a class="reference external" href="surfify.augmentation.utils.Transform.html">surfify.augmentation.utils.Transform</a></p>
 <p><a class="reference external" href="surfify.augmentation.utils.Transformer.html">surfify.augmentation.utils.Transformer</a></p>
 <p><a class="reference external" href="surfify.augmentation.utils.apply_chained_transforms.html">surfify.augmentation.utils.apply_chained_transforms</a></p>
 <p><a class="reference external" href="surfify.augmentation.utils.interval.html">surfify.augmentation.utils.interval</a></p>
@@ -476,9 +946,9 @@ surfify.utils
             element.style.display = "block"
     };
 </script>
-<a href="javascript:showhide(document.getElementById('hiddencodeblock7'))">
+<a href="javascript:showhide(document.getElementById('hiddencodeblock19'))">
 [+ show/hide members]</a><br />
-<div id="hiddencodeblock7" style="display: none"><div class="admonition">
+<div id="hiddencodeblock19" style="display: none"><div class="admonition">
 <p><a class="reference external" href="surfify.datasets._samples_generator.ClassificationDataset.html">surfify.datasets.ClassificationDataset</a></p>
 <p><a class="reference external" href="surfify.datasets._generic.GenericSurfDataset.html">surfify.datasets.GenericSurfDataset</a></p>
 <p><a class="reference external" href="surfify.datasets._samples_generator.make_classification.html">surfify.datasets.make_classification</a></p>
@@ -503,9 +973,9 @@ surfify.utils
             element.style.display = "block"
     };
 </script>
-<a href="javascript:showhide(document.getElementById('hiddencodeblock8'))">
+<a href="javascript:showhide(document.getElementById('hiddencodeblock20'))">
 [+ show/hide members]</a><br />
-<div id="hiddencodeblock8" style="display: none"><div class="admonition">
+<div id="hiddencodeblock20" style="display: none"><div class="admonition">
 <p><a class="reference external" href="surfify.losses.vae.SphericalVAELoss.html">surfify.losses.SphericalVAELoss</a></p>
 <p><a class="reference external" href="surfify.losses.vae.SphericalVAELoss.html">surfify.losses.vae.SphericalVAELoss</a></p>
 <p><a class="reference external" href="surfify.losses.vae.log_likelihood.html">surfify.losses.vae.log_likelihood</a></p>
@@ -527,11 +997,13 @@ surfify.utils
             element.style.display = "block"
     };
 </script>
-<a href="javascript:showhide(document.getElementById('hiddencodeblock9'))">
+<a href="javascript:showhide(document.getElementById('hiddencodeblock21'))">
 [+ show/hide members]</a><br />
-<div id="hiddencodeblock9" style="display: none"><div class="admonition">
+<div id="hiddencodeblock21" style="display: none"><div class="admonition">
 <p><a class="reference external" href="surfify.models.vae.HemiFusionDecoder.html">surfify.models.HemiFusionDecoder</a></p>
 <p><a class="reference external" href="surfify.models.vae.HemiFusionEncoder.html">surfify.models.HemiFusionEncoder</a></p>
+<p><a class="reference external" href="surfify.models.sit.SiT.html">surfify.models.SiT</a></p>
+<p><a class="reference external" href="surfify.models.simclr.SimCLR.html">surfify.models.SimCLR</a></p>
 <p><a class="reference external" href="surfify.models.base.SphericalBase.html">surfify.models.SphericalBase</a></p>
 <p><a class="reference external" href="surfify.models.unet.SphericalGUNet.html">surfify.models.SphericalGUNet</a></p>
 <p><a class="reference external" href="surfify.models.vgg.SphericalGVGG.html">surfify.models.SphericalGVGG</a></p>
@@ -556,7 +1028,12 @@ surfify.utils
 <p><a class="reference external" href="surfify.models.vgg.SphericalVGG16BN.html">surfify.models.SphericalVGG16BN</a></p>
 <p><a class="reference external" href="surfify.models.vgg.SphericalVGG19.html">surfify.models.SphericalVGG19</a></p>
 <p><a class="reference external" href="surfify.models.vgg.SphericalVGG19BN.html">surfify.models.SphericalVGG19BN</a></p>
+<p><a class="reference external" href="surfify.models.base.Ico.html">surfify.models.base.Ico</a></p>
 <p><a class="reference external" href="surfify.models.base.SphericalBase.html">surfify.models.base.SphericalBase</a></p>
+<p><a class="reference external" href="surfify.models.sit.Attention.html">surfify.models.sit.Attention</a></p>
+<p><a class="reference external" href="surfify.models.sit.FeedForward.html">surfify.models.sit.FeedForward</a></p>
+<p><a class="reference external" href="surfify.models.sit.SiT.html">surfify.models.sit.SiT</a></p>
+<p><a class="reference external" href="surfify.models.sit.Transformer.html">surfify.models.sit.Transformer</a></p>
 <p><a class="reference external" href="surfify.models.vae.HemiFusionDecoder.html">surfify.models.vae.HemiFusionDecoder</a></p>
 <p><a class="reference external" href="surfify.models.vae.HemiFusionEncoder.html">surfify.models.vae.HemiFusionEncoder</a></p>
 <p><a class="reference external" href="surfify.models.vae.SphericalHemiFusionDecoder.html">surfify.models.vae.SphericalHemiFusionDecoder</a></p>
@@ -582,6 +1059,7 @@ surfify.utils
 <p><a class="reference external" href="surfify.models.vgg.SphericalVGG19.html">surfify.models.vgg.SphericalVGG19</a></p>
 <p><a class="reference external" href="surfify.models.vgg.SphericalVGG19BN.html">surfify.models.vgg.SphericalVGG19BN</a></p>
 <p><a class="reference external" href="surfify.models.vgg.class_factory.html">surfify.models.vgg.class_factory</a></p>
+<p><a class="reference external" href="surfify.models.simclr.SimCLR.html">surfify.models.simclr.SimCLR</a></p>
 <p><a class="reference external" href="surfify.models.unet.DownBlock.html">surfify.models.unet.DownBlock</a></p>
 <p><a class="reference external" href="surfify.models.unet.DownGBlock.html">surfify.models.unet.DownGBlock</a></p>
 <p><a class="reference external" href="surfify.models.unet.GraphicalUNet.html">surfify.models.unet.GraphicalUNet</a></p>
@@ -607,9 +1085,9 @@ surfify.utils
             element.style.display = "block"
     };
 </script>
-<a href="javascript:showhide(document.getElementById('hiddencodeblock10'))">
+<a href="javascript:showhide(document.getElementById('hiddencodeblock22'))">
 [+ show/hide members]</a><br />
-<div id="hiddencodeblock10" style="display: none"><div class="admonition">
+<div id="hiddencodeblock22" style="display: none"><div class="admonition">
 <p><a class="reference external" href="surfify.nn.modules.IcoDiNeConv.html">surfify.nn.IcoDiNeConv</a></p>
 <p><a class="reference external" href="surfify.nn.modules.IcoFixIndexUpSample.html">surfify.nn.IcoFixIndexUpSample</a></p>
 <p><a class="reference external" href="surfify.nn.modules.IcoGenericUpConv.html">surfify.nn.IcoGenericUpConv</a></p>
@@ -620,7 +1098,6 @@ surfify.utils
 <p><a class="reference external" href="surfify.nn.modules.IcoSpMaConvTranspose.html">surfify.nn.IcoSpMaConvTranspose</a></p>
 <p><a class="reference external" href="surfify.nn.modules.IcoUpConv.html">surfify.nn.IcoUpConv</a></p>
 <p><a class="reference external" href="surfify.nn.modules.IcoUpSample.html">surfify.nn.IcoUpSample</a></p>
-<p><a class="reference external" href="surfify.nn.functional.circular_pad.html">surfify.nn.functional.circular_pad</a></p>
 <p><a class="reference external" href="surfify.nn.modules.IcoDiNeConv.html">surfify.nn.modules.IcoDiNeConv</a></p>
 <p><a class="reference external" href="surfify.nn.modules.IcoFixIndexUpSample.html">surfify.nn.modules.IcoFixIndexUpSample</a></p>
 <p><a class="reference external" href="surfify.nn.modules.IcoGenericUpConv.html">surfify.nn.modules.IcoGenericUpConv</a></p>
@@ -631,6 +1108,7 @@ surfify.utils
 <p><a class="reference external" href="surfify.nn.modules.IcoSpMaConvTranspose.html">surfify.nn.modules.IcoSpMaConvTranspose</a></p>
 <p><a class="reference external" href="surfify.nn.modules.IcoUpConv.html">surfify.nn.modules.IcoUpConv</a></p>
 <p><a class="reference external" href="surfify.nn.modules.IcoUpSample.html">surfify.nn.modules.IcoUpSample</a></p>
+<p><a class="reference external" href="surfify.nn.functional.circular_pad.html">surfify.nn.functional.circular_pad</a></p>
 </div>
 </div>
 </dd>
@@ -649,9 +1127,9 @@ surfify.utils
             element.style.display = "block"
     };
 </script>
-<a href="javascript:showhide(document.getElementById('hiddencodeblock11'))">
+<a href="javascript:showhide(document.getElementById('hiddencodeblock23'))">
 [+ show/hide members]</a><br />
-<div id="hiddencodeblock11" style="display: none"><div class="admonition">
+<div id="hiddencodeblock23" style="display: none"><div class="admonition">
 <p><a class="reference external" href="surfify.plotting.surface.plot_trisurf.html">surfify.plotting.plot_trisurf</a></p>
 <p><a class="reference external" href="surfify.plotting.surface.plot_trisurf.html">surfify.plotting.surface.plot_trisurf</a></p>
 </div>
@@ -672,9 +1150,9 @@ surfify.utils
             element.style.display = "block"
     };
 </script>
-<a href="javascript:showhide(document.getElementById('hiddencodeblock12'))">
+<a href="javascript:showhide(document.getElementById('hiddencodeblock24'))">
 [+ show/hide members]</a><br />
-<div id="hiddencodeblock12" style="display: none"><div class="admonition">
+<div id="hiddencodeblock24" style="display: none"><div class="admonition">
 <p><a class="reference external" href="surfify.utils.coord.cart2sph.html">surfify.utils.cart2sph</a></p>
 <p><a class="reference external" href="surfify.utils.debug_msg.html">surfify.utils.debug_msg</a></p>
 <p><a class="reference external" href="surfify.utils.sampling.downsample.html">surfify.utils.downsample</a></p>
@@ -702,13 +1180,6 @@ surfify.utils
 <p><a class="reference external" href="surfify.utils.coord.sph2cart.html">surfify.utils.sph2cart</a></p>
 <p><a class="reference external" href="surfify.utils.coord.text2grid.html">surfify.utils.text2grid</a></p>
 <p><a class="reference external" href="surfify.utils.coord.text2ico.html">surfify.utils.text2ico</a></p>
-<p><a class="reference external" href="surfify.utils.coord.cart2sph.html">surfify.utils.coord.cart2sph</a></p>
-<p><a class="reference external" href="surfify.utils.coord.find_corresponding_order.html">surfify.utils.coord.find_corresponding_order</a></p>
-<p><a class="reference external" href="surfify.utils.coord.grid2text.html">surfify.utils.coord.grid2text</a></p>
-<p><a class="reference external" href="surfify.utils.coord.ico2ico.html">surfify.utils.coord.ico2ico</a></p>
-<p><a class="reference external" href="surfify.utils.coord.sph2cart.html">surfify.utils.coord.sph2cart</a></p>
-<p><a class="reference external" href="surfify.utils.coord.text2grid.html">surfify.utils.coord.text2grid</a></p>
-<p><a class="reference external" href="surfify.utils.coord.text2ico.html">surfify.utils.coord.text2ico</a></p>
 <p><a class="reference external" href="surfify.utils.io.HidePrints.html">surfify.utils.io.HidePrints</a></p>
 <p><a class="reference external" href="surfify.utils.io.compute_and_store.html">surfify.utils.io.compute_and_store</a></p>
 <p><a class="reference external" href="surfify.utils.io.decompose_cifti.html">surfify.utils.io.decompose_cifti</a></p>
@@ -719,6 +1190,13 @@ surfify.utils
 <p><a class="reference external" href="surfify.utils.io.volume_from_cifti.html">surfify.utils.io.volume_from_cifti</a></p>
 <p><a class="reference external" href="surfify.utils.io.write_freesurfer.html">surfify.utils.io.write_freesurfer</a></p>
 <p><a class="reference external" href="surfify.utils.io.write_gifti.html">surfify.utils.io.write_gifti</a></p>
+<p><a class="reference external" href="surfify.utils.coord.cart2sph.html">surfify.utils.coord.cart2sph</a></p>
+<p><a class="reference external" href="surfify.utils.coord.find_corresponding_order.html">surfify.utils.coord.find_corresponding_order</a></p>
+<p><a class="reference external" href="surfify.utils.coord.grid2text.html">surfify.utils.coord.grid2text</a></p>
+<p><a class="reference external" href="surfify.utils.coord.ico2ico.html">surfify.utils.coord.ico2ico</a></p>
+<p><a class="reference external" href="surfify.utils.coord.sph2cart.html">surfify.utils.coord.sph2cart</a></p>
+<p><a class="reference external" href="surfify.utils.coord.text2grid.html">surfify.utils.coord.text2grid</a></p>
+<p><a class="reference external" href="surfify.utils.coord.text2ico.html">surfify.utils.coord.text2ico</a></p>
 <p><a class="reference external" href="surfify.utils.sampling._patch_tri_iter.html">surfify.utils.sampling._patch_tri_iter</a></p>
 <p><a class="reference external" href="surfify.utils.sampling.build_freesurfer_ico.html">surfify.utils.sampling.build_freesurfer_ico</a></p>
 <p><a class="reference external" href="surfify.utils.sampling.build_fslr_ref.html">surfify.utils.sampling.build_fslr_ref</a></p>

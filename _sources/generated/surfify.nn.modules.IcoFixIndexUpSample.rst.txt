@@ -8,6 +8,7 @@
 
 .. autoclass:: surfify.nn.modules.IcoFixIndexUpSample
      :members:
+     :show-inheritance:
 
 .. minigallery:: surfify.nn.modules.IcoFixIndexUpSample surfify.nn.IcoFixIndexUpSample
     :add-heading: Examples

@@ -8,8 +8,9 @@
 
 .. autoclass:: surfify.nn.modules.IcoSpMaConv
      :members:
+     :show-inheritance:
 
-.. minigallery:: surfify.nn.IcoSpMaConv surfify.nn.modules.IcoSpMaConv
+.. minigallery:: surfify.nn.modules.IcoSpMaConv surfify.nn.IcoSpMaConv
     :add-heading: Examples
     :heading-level: -
 

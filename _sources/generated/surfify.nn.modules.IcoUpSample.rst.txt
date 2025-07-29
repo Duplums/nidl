@@ -8,8 +8,9 @@
 
 .. autoclass:: surfify.nn.modules.IcoUpSample
      :members:
+     :show-inheritance:
 
-.. minigallery:: surfify.nn.IcoUpSample surfify.nn.modules.IcoUpSample
+.. minigallery:: surfify.nn.modules.IcoUpSample surfify.nn.IcoUpSample
     :add-heading: Examples
     :heading-level: -
 

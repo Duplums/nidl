@@ -8,6 +8,7 @@
 
 .. autoclass:: surfify.nn.modules.IcoRePaConv
      :members:
+     :show-inheritance:
 
 .. minigallery:: surfify.nn.modules.IcoRePaConv surfify.nn.IcoRePaConv
     :add-heading: Examples

@@ -8,6 +8,7 @@
 
 .. autoclass:: surfify.datasets._samples_generator.ClassificationDataset
      :members:
+     :show-inheritance:
 
 .. minigallery:: surfify.datasets.ClassificationDataset surfify.datasets._samples_generator.ClassificationDataset
     :add-heading: Examples

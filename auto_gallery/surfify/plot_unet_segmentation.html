@@ -154,7 +154,7 @@
                                 
                             
                             <li>API</li>
-                            <li><a href="../../generated/nidl.html">nidl</a></li><li><a href="../../generated/nidl.estimators.html">nidl.estimators</a></li><li><a href="../../generated/nidl.estimators.linear.html">nidl.estimators.linear</a></li><li><a href="../../generated/nidl.estimators.ssl.html">nidl.estimators.ssl</a></li><li><a href="../../generated/nidl.utils.html">nidl.utils</a></li><li><a href="../../generated/surfify.html">surfify</a></li><li><a href="../../generated/surfify.augmentation.html">surfify.augmentation</a></li><li><a href="../../generated/surfify.datasets.html">surfify.datasets</a></li><li><a href="../../generated/surfify.losses.html">surfify.losses</a></li><li><a href="../../generated/surfify.models.html">surfify.models</a></li><li><a href="../../generated/surfify.nn.html">surfify.nn</a></li><li><a href="../../generated/surfify.plotting.html">surfify.plotting</a></li><li><a href="../../generated/surfify.utils.html">surfify.utils</a></li>
+                            <li><a href="../../generated/nidl.html">nidl</a></li><li><a href="../../generated/nidl.callbacks.html">nidl.callbacks</a></li><li><a href="../../generated/nidl.datasets.html">nidl.datasets</a></li><li><a href="../../generated/nidl.estimators.html">nidl.estimators</a></li><li><a href="../../generated/nidl.estimators.linear.html">nidl.estimators.linear</a></li><li><a href="../../generated/nidl.estimators.ssl.html">nidl.estimators.ssl</a></li><li><a href="../../generated/nidl.estimators.ssl.utils.html">nidl.estimators.ssl.utils</a></li><li><a href="../../generated/nidl.losses.html">nidl.losses</a></li><li><a href="../../generated/nidl.metrics.html">nidl.metrics</a></li><li><a href="../../generated/nidl.utils.html">nidl.utils</a></li><li><a href="../../generated/nidl.volume.html">nidl.volume</a></li><li><a href="../../generated/nidl.volume.backbones.html">nidl.volume.backbones</a></li><li><a href="../../generated/nidl.volume.transforms.html">nidl.volume.transforms</a></li><li><a href="../../generated/nidl.volume.transforms.augmentation.html">nidl.volume.transforms.augmentation</a></li><li><a href="../../generated/nidl.volume.transforms.augmentation.intensity.html">nidl.volume.transforms.augmentation.intensity</a></li><li><a href="../../generated/nidl.volume.transforms.augmentation.spatial.html">nidl.volume.transforms.augmentation.spatial</a></li><li><a href="../../generated/nidl.volume.transforms.preprocessing.html">nidl.volume.transforms.preprocessing</a></li><li><a href="../../generated/nidl.volume.transforms.preprocessing.intensity.html">nidl.volume.transforms.preprocessing.intensity</a></li><li><a href="../../generated/nidl.volume.transforms.preprocessing.spatial.html">nidl.volume.transforms.preprocessing.spatial</a></li><li><a href="../../generated/surfify.html">surfify</a></li><li><a href="../../generated/surfify.augmentation.html">surfify.augmentation</a></li><li><a href="../../generated/surfify.datasets.html">surfify.datasets</a></li><li><a href="../../generated/surfify.losses.html">surfify.losses</a></li><li><a href="../../generated/surfify.models.html">surfify.models</a></li><li><a href="../../generated/surfify.nn.html">surfify.nn</a></li><li><a href="../../generated/surfify.plotting.html">surfify.plotting</a></li><li><a href="../../generated/surfify.utils.html">surfify.utils</a></li>
 						</ul>
 					</li> -->
 				</ul>
@@ -223,7 +223,7 @@ classification dataset.</p>
 </pre></div>
 </div>
 <section id="inspect-dataset">
-<h2 style='text-decoration: underline overline #aF8A4B;'>Inspect dataset<a class="headerlink" href="#inspect-dataset" title="Link to this heading">¶</a></h2>
+<h2 style='border-bottom: 1px solid #d3dbd5'>Inspect dataset<a class="headerlink" href="#inspect-dataset" title="Link to this heading">¶</a></h2>
 <p>First we load the classification dataset (with 3 classes) and inspect the
 genrated labels.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">standard_ico</span> <span class="o">=</span> <span class="kc">True</span>
@@ -246,7 +246,7 @@ Data: (40, 3, 642) (642,)
 </div>
 </section>
 <section id="train-the-model">
-<h2 style='text-decoration: underline overline #aF8A4B;'>Train the model<a class="headerlink" href="#train-the-model" title="Link to this heading">¶</a></h2>
+<h2 style='border-bottom: 1px solid #d3dbd5'>Train the model<a class="headerlink" href="#train-the-model" title="Link to this heading">¶</a></h2>
 <p>We now train the SphericalUNet model using a CrossEntropy loss and a SGD
 optimizer. As it is obvious to segment the input classification dataset
 an accuracy of 100% is expected.</p>
@@ -291,53 +291,53 @@ an accuracy of 100% is expected.</p>
     <span class="mi">100</span> <span class="o">*</span> <span class="n">correct</span><span class="p">,</span> <span class="n">test_loss</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>loss 0: 1.275902  [    0/   40]
-loss 0: 0.961155  [    5/   40]
-loss 0: 0.810225  [   10/   40]
-loss 0: 0.704370  [   15/   40]
-loss 0: 0.597210  [   20/   40]
-loss 0: 0.478504  [   25/   40]
-loss 0: 0.369844  [   30/   40]
-loss 0: 0.283866  [   35/   40]
-loss 5: 0.001360  [    0/   40]
-loss 5: 0.002029  [    5/   40]
-loss 5: 0.002681  [   10/   40]
-loss 5: 0.002908  [   15/   40]
-loss 5: 0.002535  [   20/   40]
-loss 5: 0.001793  [   25/   40]
-loss 5: 0.001022  [   30/   40]
-loss 5: 0.000506  [   35/   40]
-loss 10: 0.000336  [    0/   40]
-loss 10: 0.000326  [    5/   40]
-loss 10: 0.000297  [   10/   40]
-loss 10: 0.000261  [   15/   40]
-loss 10: 0.000220  [   20/   40]
-loss 10: 0.000178  [   25/   40]
-loss 10: 0.000137  [   30/   40]
-loss 10: 0.000102  [   35/   40]
-loss 15: 0.000001  [    0/   40]
-loss 15: 0.000001  [    5/   40]
-loss 15: 0.000001  [   10/   40]
-loss 15: 0.000001  [   15/   40]
-loss 15: 0.000001  [   20/   40]
-loss 15: 0.000001  [   25/   40]
-loss 15: 0.000001  [   30/   40]
-loss 15: 0.000001  [   35/   40]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>loss 0: 1.168401  [    0/   40]
+loss 0: 0.866162  [    5/   40]
+loss 0: 0.734341  [   10/   40]
+loss 0: 0.601436  [   15/   40]
+loss 0: 0.495827  [   20/   40]
+loss 0: 0.409334  [   25/   40]
+loss 0: 0.332024  [   30/   40]
+loss 0: 0.265784  [   35/   40]
+loss 5: 0.001923  [    0/   40]
+loss 5: 0.001393  [    5/   40]
+loss 5: 0.001330  [   10/   40]
+loss 5: 0.001607  [   15/   40]
+loss 5: 0.001857  [   20/   40]
+loss 5: 0.001758  [   25/   40]
+loss 5: 0.001427  [   30/   40]
+loss 5: 0.001130  [   35/   40]
+loss 10: 0.000060  [    0/   40]
+loss 10: 0.000074  [    5/   40]
+loss 10: 0.000086  [   10/   40]
+loss 10: 0.000095  [   15/   40]
+loss 10: 0.000099  [   20/   40]
+loss 10: 0.000099  [   25/   40]
+loss 10: 0.000091  [   30/   40]
+loss 10: 0.000077  [   35/   40]
+loss 15: 0.000055  [    0/   40]
+loss 15: 0.000057  [    5/   40]
+loss 15: 0.000053  [   10/   40]
+loss 15: 0.000046  [   15/   40]
+loss 15: 0.000037  [   20/   40]
+loss 15: 0.000028  [   25/   40]
+loss 15: 0.000020  [   30/   40]
+loss 15: 0.000014  [   35/   40]
 Test Error:
- Accuracy: 100.0%, Avg loss: 0.000004
+ Accuracy: 100.0%, Avg loss: 0.000005
 </pre></div>
 </div>
 </section>
 <section id="inspect-the-predicted-labels">
-<h2 style='text-decoration: underline overline #aF8A4B;'>Inspect the predicted labels<a class="headerlink" href="#inspect-the-predicted-labels" title="Link to this heading">¶</a></h2>
+<h2 style='border-bottom: 1px solid #d3dbd5'>Inspect the predicted labels<a class="headerlink" href="#inspect-the-predicted-labels" title="Link to this heading">¶</a></h2>
 <p>Finally the predicted labels of the first sample are displayed. As expected
 they corresspond exactly to the ground truth.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">plotting</span><span class="o">.</span><span class="n">plot_trisurf</span><span class="p">(</span><span class="n">ico_vertices</span><span class="p">,</span> <span class="n">ico_triangles</span><span class="p">,</span> <span class="n">y_preds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">is_label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_plot_unet_segmentation_002.png" srcset="../../_images/sphx_glr_plot_unet_segmentation_002.png" alt="plot unet segmentation" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 5.239 seconds)</p>
-<p><strong>Estimated memory usage:</strong>  295 MB</p>
+<img src="../../_images/sphx_glr_plot_unet_segmentation_002.png" srcset="../../_images/sphx_glr_plot_unet_segmentation_002.png" alt="plot unet segmentation" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 5.345 seconds)</p>
+<p><strong>Estimated memory usage:</strong>  296 MB</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-gallery-surfify-plot-unet-segmentation-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/623702e379b8d5aeee54fa263e440413/plot_unet_segmentation.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_unet_segmentation.ipynb</span></code></a></p>

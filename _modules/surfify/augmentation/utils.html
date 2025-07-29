@@ -87,7 +87,7 @@
                             <li>LINKS</li><li><a href='https://github.com/neurospin-deepinsight/surfify'>surfify</a></li>
                             
                             <li>API</li>
-                            <li><a href="../../../generated/nidl.html">nidl</a></li><li><a href="../../../generated/nidl.estimators.html">nidl.estimators</a></li><li><a href="../../../generated/nidl.estimators.linear.html">nidl.estimators.linear</a></li><li><a href="../../../generated/nidl.estimators.ssl.html">nidl.estimators.ssl</a></li><li><a href="../../../generated/nidl.utils.html">nidl.utils</a></li><li><a href="../../../generated/surfify.html">surfify</a></li><li><a href="../../../generated/surfify.augmentation.html">surfify.augmentation</a></li><li><a href="../../../generated/surfify.datasets.html">surfify.datasets</a></li><li><a href="../../../generated/surfify.losses.html">surfify.losses</a></li><li><a href="../../../generated/surfify.models.html">surfify.models</a></li><li><a href="../../../generated/surfify.nn.html">surfify.nn</a></li><li><a href="../../../generated/surfify.plotting.html">surfify.plotting</a></li><li><a href="../../../generated/surfify.utils.html">surfify.utils</a></li>
+                            <li><a href="../../../generated/nidl.html">nidl</a></li><li><a href="../../../generated/nidl.callbacks.html">nidl.callbacks</a></li><li><a href="../../../generated/nidl.datasets.html">nidl.datasets</a></li><li><a href="../../../generated/nidl.estimators.html">nidl.estimators</a></li><li><a href="../../../generated/nidl.estimators.linear.html">nidl.estimators.linear</a></li><li><a href="../../../generated/nidl.estimators.ssl.html">nidl.estimators.ssl</a></li><li><a href="../../../generated/nidl.estimators.ssl.utils.html">nidl.estimators.ssl.utils</a></li><li><a href="../../../generated/nidl.losses.html">nidl.losses</a></li><li><a href="../../../generated/nidl.metrics.html">nidl.metrics</a></li><li><a href="../../../generated/nidl.utils.html">nidl.utils</a></li><li><a href="../../../generated/nidl.volume.html">nidl.volume</a></li><li><a href="../../../generated/nidl.volume.backbones.html">nidl.volume.backbones</a></li><li><a href="../../../generated/nidl.volume.transforms.html">nidl.volume.transforms</a></li><li><a href="../../../generated/nidl.volume.transforms.augmentation.html">nidl.volume.transforms.augmentation</a></li><li><a href="../../../generated/nidl.volume.transforms.augmentation.intensity.html">nidl.volume.transforms.augmentation.intensity</a></li><li><a href="../../../generated/nidl.volume.transforms.augmentation.spatial.html">nidl.volume.transforms.augmentation.spatial</a></li><li><a href="../../../generated/nidl.volume.transforms.preprocessing.html">nidl.volume.transforms.preprocessing</a></li><li><a href="../../../generated/nidl.volume.transforms.preprocessing.intensity.html">nidl.volume.transforms.preprocessing.intensity</a></li><li><a href="../../../generated/nidl.volume.transforms.preprocessing.spatial.html">nidl.volume.transforms.preprocessing.spatial</a></li><li><a href="../../../generated/surfify.html">surfify</a></li><li><a href="../../../generated/surfify.augmentation.html">surfify.augmentation</a></li><li><a href="../../../generated/surfify.datasets.html">surfify.datasets</a></li><li><a href="../../../generated/surfify.losses.html">surfify.losses</a></li><li><a href="../../../generated/surfify.models.html">surfify.models</a></li><li><a href="../../../generated/surfify.nn.html">surfify.nn</a></li><li><a href="../../../generated/surfify.plotting.html">surfify.plotting</a></li><li><a href="../../../generated/surfify.utils.html">surfify.utils</a></li>
 						</ul>
 					</li> -->
 				</ul>
@@ -153,6 +153,10 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numbers</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
+
+<span class="c1"># Global parameters</span>
+<span class="n">Transform</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span>
+    <span class="s2">&quot;Transform&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;transform&quot;</span><span class="p">,</span> <span class="s2">&quot;probability&quot;</span><span class="p">,</span> <span class="s2">&quot;randomize_per_channel&quot;</span><span class="p">])</span>
 
 
 <div class="viewcode-block" id="RandomAugmentation">
@@ -255,9 +259,6 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">BaseTransformer</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Class that can be used to register a sequence of transformations.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">Transform</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Transform&quot;</span><span class="p">,</span> <span class="p">[</span>
-        <span class="s2">&quot;transform&quot;</span><span class="p">,</span> <span class="s2">&quot;probability&quot;</span><span class="p">,</span> <span class="s2">&quot;randomize_per_channel&quot;</span><span class="p">])</span>
-
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Init class.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -278,8 +279,8 @@
 <span class="sd">            a parameter to control if the randomization of tranformation</span>
 <span class="sd">            parameters must be applied channel-wise.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">trf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Transform</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span> <span class="n">probability</span><span class="o">=</span><span class="n">probability</span><span class="p">,</span>
-                             <span class="n">randomize_per_channel</span><span class="o">=</span><span class="n">randomize_per_channel</span><span class="p">)</span>
+        <span class="n">trf</span> <span class="o">=</span> <span class="n">Transform</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span> <span class="n">probability</span><span class="o">=</span><span class="n">probability</span><span class="p">,</span>
+                        <span class="n">randomize_per_channel</span><span class="o">=</span><span class="n">randomize_per_channel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">trf</span><span class="p">)</span></div>
 
 
