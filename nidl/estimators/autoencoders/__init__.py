@@ -6,8 +6,6 @@
 # for details.
 ##########################################################################
 
-""" AutoEncoder estimators.
-"""
+"""AutoEncoder estimators."""
 
-from .mcvae import MCVAE
 from .vae import VAE
