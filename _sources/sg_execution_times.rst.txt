@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**45:28.504** total execution time for 6 files **from all galleries**:
+**36:49.180** total execution time for 6 files **from all galleries**:
 
 .. container::
 
@@ -33,20 +33,20 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_plot_metrics_callback.py` (``../examples/plot_metrics_callback.py``)
-     - 28:10.586
-     - 2393.3
+     - 26:42.798
+     - 2388.5
    * - :ref:`sphx_glr_auto_examples_plot_model_probing.py` (``../examples/plot_model_probing.py``)
-     - 12:01.722
-     - 412.2
+     - 04:48.242
+     - 399.3
    * - :ref:`sphx_glr_auto_examples_plot_openbhb.py` (``../examples/plot_openbhb.py``)
-     - 02:39.834
-     - 2623.0
+     - 02:35.111
+     - 2643.5
    * - :ref:`sphx_glr_auto_examples_plot_barlowtwins_openbhb.py` (``../examples/plot_barlowtwins_openbhb.py``)
-     - 01:23.421
-     - 126.1
+     - 01:28.217
+     - 125.8
    * - :ref:`sphx_glr_auto_examples_plot_yaware_openbhb.py` (``../examples/plot_yaware_openbhb.py``)
-     - 01:12.941
-     - 115.1
+     - 01:14.812
+     - 129.0
    * - :ref:`sphx_glr_auto_examples_simclr_stl10.py` (``../examples/simclr_stl10.py``)
      - 00:00.000
      - 0.0
