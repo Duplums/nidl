@@ -140,7 +140,7 @@ class BarlowTwinsProjectionHead(ProjectionHead):
     """Projection head used for Barlow Twins [1]_.
 
     It implements the upscaling of layer sizes
-    (hidden and output layers of size 8192),
+    (hidden and output layers of size 2048),
     with 3-layer MLPs as in [1]_ or [2]_
 
     References
@@ -156,9 +156,9 @@ class BarlowTwinsProjectionHead(ProjectionHead):
 
     def __init__(
         self,
-        input_dim: int = 2048,
-        hidden_dim: int = 8192,
-        output_dim: int = 8192,
+        input_dim: int = 512,
+        hidden_dim: int = 2048,
+        output_dim: int = 2048,
     ):
         super().__init__(
             [

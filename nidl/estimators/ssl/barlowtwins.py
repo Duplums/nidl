@@ -34,8 +34,8 @@ class BarlowTwins(TransformerMixin, BaseEstimator):
        (e.g., 3D-ResNet).
     3) Projection Head - Maps features to a latent space for Barlow Twins
        loss optimization. The projector dimension in Barlow Twins is typically
-       very high (e.g., 8192 or 16384) compared to the features dimension
-       (e.g., 2048 in ResNet-50). This is a key difference with other SSL
+       very high (e.g., 2048 or 4096) compared to the features dimension
+       (e.g., 512 in ResNet-18). This is a key difference with other SSL
        methods.
     4) Redundancy reduction loss in addition to a data augmentation invariance
        loss.
@@ -69,19 +69,24 @@ class BarlowTwins(TransformerMixin, BaseEstimator):
         Otherwise, a :class:`~torch.nn.Module` is expected. In general,
         the uninstantiated class should be passed, although instantiated
         modules will also work. By default, a 3-layer MLP with ReLU activation,
-        Batch Normalization, 2048-d input dimension, 8192-d hidden units, and
-        8192-d output dimensions is used.
+        Batch Normalization, 512-d input dimension, 2048-d hidden units, and
+        2048-d output dimensions is used.
 
     projection_head_kwargs : dict or None, default=None
         Arguments for building the projection head. By default, input dimension
-        is 2048-d and output dimension is 8192-d. These can be changed by
-        passing a dictionary with keys 'input_dim' and 'output_dim'.
+        is 512-d, hidden dimension is 2048-d and output dimension is 2048-d. 
+        These can be changed by passing a dictionary with keys 'input_dim', 
+        'hidden_dim', and 'output_dim'.
         'input_dim' must be equal to the encoder's output dimension.
         Ignored if `projection_head` is instantiated.
 
     lambd : float, default=5e-3
         lambda value in the BarlowTwins loss. Trading off the importance of
         the redundancy reduction term over the invariance term.
+    
+    scale_loss: float, default=0.024
+        Scaling factor for the BarlowTwins loss to keep it in a similar range
+        as other SSL losses.
 
     optimizer : {'sgd', 'adam', 'adamW'} or torch.optim.Optimizer or type, \
         default="adam"
@@ -153,6 +158,7 @@ class BarlowTwins(TransformerMixin, BaseEstimator):
         ] = BarlowTwinsProjectionHead,
         projection_head_kwargs: Optional[dict[str, Any]] = None,
         lambd: float = 0.005,
+        scale_loss: float = 0.024,
         optimizer: Union[str, Optimizer, type[Optimizer]] = "adam",
         optimizer_kwargs: Optional[dict[str, Any]] = None,
         learning_rate: float = 1e-4,
@@ -188,7 +194,8 @@ class BarlowTwins(TransformerMixin, BaseEstimator):
             projection_head, self.projection_head_kwargs
         )
         self.lambd = lambd
-        self.loss = self._build_loss(self.lambd)
+        self.scale_loss = scale_loss
+        self.loss = self._build_loss(self.lambd, self.scale_loss)
         self.optimizer = optimizer
         self.learning_rate = learning_rate
         self.lr_scheduler = lr_scheduler
@@ -233,8 +240,8 @@ class BarlowTwins(TransformerMixin, BaseEstimator):
         self.log("loss/train", loss, prog_bar=True, sync_dist=True)
         outputs = {
             "loss": loss,
-            "Z1": Z1.cpu().detach(),
-            "Z2": Z2.cpu().detach(),
+            "Z1": Z1.detach(),
+            "Z2": Z2.detach(),
         }
         # Returns everything needed for further logging/metrics computation
         return outputs
@@ -271,8 +278,8 @@ class BarlowTwins(TransformerMixin, BaseEstimator):
         val_loss = self.loss(Z1, Z2)
         outputs = {
             "loss": val_loss,
-            "Z1": Z1.cpu().detach(),
-            "Z2": Z2.cpu().detach(),
+            "Z1": Z1.detach(),
+            "Z2": Z2.detach(),
         }
         self.log("loss/val", val_loss, prog_bar=True, sync_dist=True)
         # Returns everything needed for further logging/metrics computation
@@ -486,6 +493,7 @@ class BarlowTwins(TransformerMixin, BaseEstimator):
     def _build_loss(
         self,
         lambd: float,
+        scale_loss: float
     ) -> nn.Module:
         """Builds the Barlow Twins loss object with the specified lambda
         parameter.
@@ -495,9 +503,12 @@ class BarlowTwins(TransformerMixin, BaseEstimator):
         lambd: float
             The lambda parameter for the BarlowTwins loss.
 
+        scale_loss: float
+            Scaling factor for the BarlowTwins loss to keep it in a similar range
+            as other SSL losses.
         Returns
         -------
         loss: nn.Module
             The BarlowTwins loss function.
         """
-        return BarlowTwinsLoss(lambd=lambd)
+        return BarlowTwinsLoss(lambd=lambd, scale_loss=scale_loss)

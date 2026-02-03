@@ -48,6 +48,10 @@ class BarlowTwinsLoss(nn.Module):
     lambd: float, default=5e-3
         Trading off the importance of the redundancy reduction term over
         the invariance term.
+    
+    scale_loss: float, default=0.024
+        Scaling factor for the BarlowTwins loss to keep it in a similar range
+        as other SSL losses.
 
     References
     ----------
@@ -57,9 +61,10 @@ class BarlowTwinsLoss(nn.Module):
 
     """
 
-    def __init__(self, lambd: float = 5e-3):
+    def __init__(self, lambd: float = 5e-3, scale_loss: float = 0.024):
         super().__init__()
         self.lambd = lambd
+        self.scale_loss = scale_loss
 
     def forward(self, z1: torch.Tensor, z2: torch.Tensor):
         """
@@ -95,17 +100,13 @@ class BarlowTwinsLoss(nn.Module):
             c = torch.mm(z1_norm.T, z2_norm) / (N - 1)  # DxD
 
         # loss
-        diag_mask = torch.eye(D, device=z1.device)
+        diag_mask = torch.eye(D, device=c.device)
         c_diff = (c - diag_mask).pow(2)  # DxD
 
         # multiply off-diagonal elems of c_diff by lambd
-        diag_mask_bool = torch.eye(D, dtype=bool, device=z1.device)
-        c_diff[~diag_mask_bool] *= self.lambd
-        loss_invariance = c_diff[diag_mask_bool].sum()
-        loss_redundancy = c_diff[~diag_mask_bool].sum()
-        loss = loss_invariance + loss_redundancy
-
+        c_diff[~diag_mask.bool()] *= self.lambd
+        loss = self.scale_loss * c_diff.sum()
         return loss
 
     def __str__(self):
-        return f"{type(self).__name__}(lambd={self.lambd})"
+        return f"{type(self).__name__}(lambd={self.lambd}, scale_loss={self.scale_loss})"
