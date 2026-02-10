@@ -11,6 +11,7 @@ from .intensity import (
     RandomGaussianNoise,
 )
 from .spatial import (
+    RandomCrop,
     RandomErasing,
     RandomFlip,
     RandomResizedCrop,

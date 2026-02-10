@@ -7,7 +7,7 @@
 ##########################################################################
 
 
-""" This modules details the public API you should use and implement for a
+"""This modules details the public API you should use and implement for a
 nidl compatible transform, as well as the transforms available in nidl.
 """
 
@@ -43,15 +43,16 @@ class Transform(ABC):
     Transformations in nidl are compliant with `torchvision.transforms`
     module and it can be used in conjonction.
 
-    Spatial augmentation currently implemented (change geometry):
+    Spatial augmentation (change geometry):
         - RandomErasing (3d)
         - RandomResizedCrop (3d)
-        - RandomFlip (3d-array)
+        - RandomCrop (3d)
+        - RandomFlip (3d)
         - RandomRotation (3d)
 
-    Intensity augmentations currently implemented (change voxel values):
+    Intensity augmentations (change voxel values):
         - RandomGaussianBlur (3d)
-        - RandomGaussianNoise (nd)
+        - RandomGaussianNoise (3d)
         - Gamma (TODO)
         - RandomBrightness (TODO)
         - Biasfield (TODO)
@@ -83,8 +84,8 @@ class Transform(ABC):
         Parameters
         ----------
         data: TypeTransformInput
-            Input data (usually :class:`numpy.ndarray` or :class:`torch.Tensor`
-            to be transformed.
+            Input data to be transformed.
+            Usually :class:`numpy.ndarray` or :class:`torch.Tensor`
         *args: Any
             Additional positional arguments given to :meth:`apply_transform`.
         **kwargs: dict

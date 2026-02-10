@@ -103,6 +103,7 @@ functions.
     RandomGaussianNoise
     RandomErasing
     RandomFlip
+    RandomCrop
     RandomResizedCrop
     RandomRotation
 
