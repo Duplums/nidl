@@ -7,10 +7,10 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://neurospin-deepinsight.github.io/modules/generated/nidl.datasets.OpenBHB.html" />
 <meta property="og:site_name" content="Nidl" />
-<meta property="og:description" content="Examples using nidl.datasets.OpenBHB: Model probing callback of embedding estimators Presentation of the OpenBHB dataset Self-Supervised Learning with Barlow Twins Weakly Supervised Contrastive Lea..." />
+<meta property="og:description" content="Examples using nidl.datasets.OpenBHB: Model probing of embedding estimators Presentation of the OpenBHB dataset Self-Supervised Learning with Barlow Twins Weakly Supervised Contrastive Learning wit..." />
 <meta property="og:image" content="https://neurospin-deepinsight.github.io/_images/sphx_glr_plot_model_probing_thumb.png" />
 <meta property="og:image:alt" content="" />
-<meta name="description" content="Examples using nidl.datasets.OpenBHB: Model probing callback of embedding estimators Presentation of the OpenBHB dataset Self-Supervised Learning with Barlow Twins Weakly Supervised Contrastive Lea..." />
+<meta name="description" content="Examples using nidl.datasets.OpenBHB: Model probing of embedding estimators Presentation of the OpenBHB dataset Self-Supervised Learning with Barlow Twins Weakly Supervised Contrastive Learning wit..." />
 <link rel="search" title="Search" href="../../search.html"><link rel="next" title="nidl.callbacks: Available callbacks" href="../callbacks.html"><link rel="prev" title="nidl.datasets.ImageDataFrameDataset" href="nidl.datasets.ImageDataFrameDataset.html">
         <link rel="prefetch" href="../../_static/nidl-transparent.png" as="image">
 
@@ -230,10 +230,12 @@
   <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../auto_examples/index.html">Examples</a><input aria-label="Toggle navigation of Examples" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_model_probing.html">Model probing callback of embedding estimators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_dcl_vs_simclr.html">Decoupled Contrastive Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_model_probing.html">Model probing of embedding estimators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_openbhb.html">Presentation of the OpenBHB dataset</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/simclr_stl10.html">Self-Supervised Contrastive Learning with SimCLR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_simclr_mnist.html">Self-Supervised Contrastive Learning with SimCLR on MNIST</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_barlowtwins_openbhb.html">Self-Supervised Learning with Barlow Twins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_ijepa_medmnist.html">Self-Supervised Learning with I-JEPA on MedMNIST3D</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_metrics_callback.html">Visualization of metrics during training of PyTorch-Lightning models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../auto_examples/plot_yaware_openbhb.html">Weakly Supervised Contrastive Learning with y-Aware</a></li>
 </ul>
@@ -265,10 +267,14 @@
 <li class="toctree-l3"><a class="reference internal" href="nidl.estimators.RegressorMixin.html">nidl.estimators.RegressorMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.estimators.TransformerMixin.html">nidl.estimators.TransformerMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.estimators.ssl.SimCLR.html">nidl.estimators.ssl.SimCLR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nidl.estimators.ssl.DCL.html">nidl.estimators.ssl.DCL</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.estimators.ssl.YAwareContrastiveLearning.html">nidl.estimators.ssl.YAwareContrastiveLearning</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.estimators.ssl.BarlowTwins.html">nidl.estimators.ssl.BarlowTwins</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.estimators.ssl.DINO.html">nidl.estimators.ssl.DINO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nidl.estimators.ssl.IJEPA.html">nidl.estimators.ssl.IJEPA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.losses.InfoNCE.html">nidl.losses.InfoNCE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nidl.losses.DCLLoss.html">nidl.losses.DCLLoss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nidl.losses.DCLWLoss.html">nidl.losses.DCLWLoss</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.losses.YAwareInfoNCE.html">nidl.losses.YAwareInfoNCE</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.losses.BarlowTwinsLoss.html">nidl.losses.BarlowTwinsLoss</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.losses.DINOLoss.html">nidl.losses.DINOLoss</a></li>
@@ -277,20 +283,26 @@
 <li class="toctree-l3"><a class="reference internal" href="nidl.estimators.ssl.utils.YAwareProjectionHead.html">nidl.estimators.ssl.utils.YAwareProjectionHead</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.estimators.ssl.utils.BarlowTwinsProjectionHead.html">nidl.estimators.ssl.utils.BarlowTwinsProjectionHead</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.estimators.ssl.utils.DINOProjectionHead.html">nidl.estimators.ssl.utils.DINOProjectionHead</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nidl.estimators.probes.ModelProbing.html">nidl.estimators.probes.ModelProbing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.estimators.autoencoders.VAE.html">nidl.estimators.autoencoders.VAE</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.losses.BetaVAELoss.html">nidl.losses.BetaVAELoss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nidl.estimators.dummy.DummyEmbeddingEstimator.html">nidl.estimators.dummy.DummyEmbeddingEstimator</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../architectures.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">nidl.volume.backbones</span></code>: Available backbones</a><input aria-label="Toggle navigation of nidl.volume.backbones: Available backbones" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="nidl.utils.Weights.html">nidl.utils.Weights</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nidl.utils.weights.Weights.html">nidl.utils.weights.Weights</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.volume.backbones.AlexNet.html">nidl.volume.backbones.AlexNet</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.volume.backbones.DenseNet.html">nidl.volume.backbones.DenseNet</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.volume.backbones.ResNet.html">nidl.volume.backbones.ResNet</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.volume.backbones.ResNetTruncated.html">nidl.volume.backbones.ResNetTruncated</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nidl.volume.backbones.VisionTransformer3D.html">nidl.volume.backbones.VisionTransformer3D</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.volume.backbones.densenet121.html">nidl.volume.backbones.densenet121</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.volume.backbones.resnet18_trunc.html">nidl.volume.backbones.resnet18_trunc</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.volume.backbones.resnet50.html">nidl.volume.backbones.resnet50</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.volume.backbones.resnet50_trunc.html">nidl.volume.backbones.resnet50_trunc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nidl.volume.backbones.vit_small_patch16_128.html">nidl.volume.backbones.vit_small_patch16_128</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nidl.volume.backbones.vit_base_patch16_128.html">nidl.volume.backbones.vit_base_patch16_128</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nidl.volume.backbones.vit_large_patch16_128.html">nidl.volume.backbones.vit_large_patch16_128</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../augmentation.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">nidl.transforms</span></code>: Available transformations</a><input aria-label="Toggle navigation of nidl.transforms: Available transformations" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -319,8 +331,8 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../callbacks.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">nidl.callbacks</span></code>: Available callbacks</a><input aria-label="Toggle navigation of nidl.callbacks: Available callbacks" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="nidl.callbacks.ModelProbing.html">nidl.callbacks.ModelProbing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="nidl.callbacks.ModelProbingCV.html">nidl.callbacks.ModelProbingCV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nidl.callbacks.ModelProbingCallback.html">nidl.callbacks.ModelProbingCallback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nidl.callbacks.ModelProbingCVCallback.html">nidl.callbacks.ModelProbingCVCallback</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.callbacks.MetricsCallback.html">nidl.callbacks.MetricsCallback</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.callbacks.BatchTypingCallback.html">nidl.callbacks.BatchTypingCallback</a></li>
 </ul>
@@ -330,6 +342,9 @@
 <li class="toctree-l3"><a class="reference internal" href="nidl.metrics.alignment_score.html">nidl.metrics.alignment_score</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.metrics.uniformity_score.html">nidl.metrics.uniformity_score</a></li>
 <li class="toctree-l3"><a class="reference internal" href="nidl.metrics.contrastive_accuracy_score.html">nidl.metrics.contrastive_accuracy_score</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nidl.metrics.procrustes_similarity.html">nidl.metrics.procrustes_similarity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nidl.metrics.procrustes_r2.html">nidl.metrics.procrustes_r2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nidl.metrics.kruskal_similarity.html">nidl.metrics.kruskal_similarity</a></li>
 </ul>
 </li>
 </ul>
@@ -397,8 +412,8 @@ signature, and not how to use it. Please refer to the
 <h1>nidl.datasets.OpenBHB<a class="headerlink" href="#nidl-datasets-openbhb" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="nidl.datasets.OpenBHB">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">nidl.datasets.</span></span><span class="sig-name descname"><span class="pre">OpenBHB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vbm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'age'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'train'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">streaming</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transforms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_transforms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/d389c57/nidl/datasets/openbhb.py#L12"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/main/data.html#torch.utils.data.Dataset" title="(in PyTorch main (2.12.0a0+git48c8d4e ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a></p>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">nidl.datasets.</span></span><span class="sig-name descname"><span class="pre">OpenBHB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vbm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'age'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'train'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">streaming</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transforms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_transforms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/8a68cfb/nidl/datasets/openbhb.py#L12"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.pytorch.org/docs/main/data.html#torch.utils.data.Dataset" title="(in PyTorch main (2.12.0a0+git0775839 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a></p>
 <p>OpenBHB dataset <a class="reference internal" href="#r32a5d1ff9dee-1" id="id1">[1]</a>.</p>
 <p>The Open Big Healthy Brains (OpenBHB) dataset is a large multi-site brain
 MRI dataset consisting of 3227 training samples and 757 validation samples.
@@ -539,12 +554,12 @@ NeuroImage, 254, 119121. <a class="reference external" href="https://doi.org/10.
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nidl.datasets.OpenBHB.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vbm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'age'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'train'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">streaming</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transforms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_transforms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/d389c57/nidl/datasets/openbhb.py#L156"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.__init__" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vbm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'age'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'train'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">streaming</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transforms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_transforms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/8a68cfb/nidl/datasets/openbhb.py#L156"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.__init__" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nidl.datasets.OpenBHB.download_dataset_split">
-<span class="sig-name descname"><span class="pre">download_dataset_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modality</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incremental</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/d389c57/nidl/datasets/openbhb.py#L205"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.download_dataset_split" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">download_dataset_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modality</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incremental</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/8a68cfb/nidl/datasets/openbhb.py#L205"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.download_dataset_split" title="Link to this definition">¶</a></dt>
 <dd><p>Fetch a split of the dataset from Hugging Face if not present.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -571,13 +586,13 @@ download).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nidl.datasets.OpenBHB.download_file">
-<span class="sig-name descname"><span class="pre">download_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/d389c57/nidl/datasets/openbhb.py#L186"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.download_file" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">download_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/8a68cfb/nidl/datasets/openbhb.py#L186"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.download_file" title="Link to this definition">¶</a></dt>
 <dd><p>Download a single file from the OpenBHB repository on the HF.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nidl.datasets.OpenBHB.get_cat12_template">
-<span class="sig-name descname"><span class="pre">get_cat12_template</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/d389c57/nidl/datasets/openbhb.py#L465"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.get_cat12_template" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_cat12_template</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/8a68cfb/nidl/datasets/openbhb.py#L465"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.get_cat12_template" title="Link to this definition">¶</a></dt>
 <dd><p>Get the CAT12 gray matter tissue probability map as NIfTI image.</p>
 <p>This method retrieves the CAT12 gray matter (GM) tissue probability map
 (TPM) registered to MNI152 space.</p>
@@ -592,7 +607,7 @@ download).</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://nipy.org/nibabel/reference/nibabel.loadsave.html#nibabel.loadsave.load" title="(in NiBabel v5.4.0.dev1+g3b1c7b37)"><code class="xref py py-func docutils literal notranslate"><span class="pre">nibabel.loadsave.load</span></code></a></dt><dd><p>Function used to load the NIfTI image.</p>
+<dt><a class="reference external" href="https://nipy.org/nibabel/reference/nibabel.loadsave.html#nibabel.loadsave.load" title="(in NiBabel v0.1.0.dev1+gabe5e8e0c)"><code class="xref py py-func docutils literal notranslate"><span class="pre">nibabel.loadsave.load</span></code></a></dt><dd><p>Function used to load the NIfTI image.</p>
 </dd>
 </dl>
 </div>
@@ -604,7 +619,7 @@ is not available locally, it will be downloaded from the Hugging Face.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nidl.datasets.OpenBHB.get_fs_labels">
-<span class="sig-name descname"><span class="pre">get_fs_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atlas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'destrieux'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symmetric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/d389c57/nidl/datasets/openbhb.py#L530"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.get_fs_labels" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_fs_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atlas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'destrieux'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symmetric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/8a68cfb/nidl/datasets/openbhb.py#L530"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.get_fs_labels" title="Link to this definition">¶</a></dt>
 <dd><p>Get region names on the given atlas where “fs_destrieux_roi” (for
 “destrieux” atlas) or “fs_desikan_roi” (for “desikan” atlas) features
 have been computed in OpenBHB.</p>
@@ -635,7 +650,7 @@ Hugging Face.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nidl.datasets.OpenBHB.get_fs_roi_feature_names">
-<span class="sig-name descname"><span class="pre">get_fs_roi_feature_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/d389c57/nidl/datasets/openbhb.py#L593"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.get_fs_roi_feature_names" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_fs_roi_feature_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/8a68cfb/nidl/datasets/openbhb.py#L593"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.get_fs_roi_feature_names" title="Link to this definition">¶</a></dt>
 <dd><p>Get the 7 feature names corresponding to “fs_destrieux_roi” and
 “fs_desikan_roi” data.</p>
 <p>The feature names are extracted from the resource file.</p>
@@ -656,7 +671,7 @@ Hugging Face.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nidl.datasets.OpenBHB.get_fs_xhemi_feature_names">
-<span class="sig-name descname"><span class="pre">get_fs_xhemi_feature_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/d389c57/nidl/datasets/openbhb.py#L615"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.get_fs_xhemi_feature_names" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_fs_xhemi_feature_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/8a68cfb/nidl/datasets/openbhb.py#L615"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.get_fs_xhemi_feature_names" title="Link to this definition">¶</a></dt>
 <dd><p>Get the 8 feature names corresponding to “fs_xhemi” data.</p>
 <p>The feature names are extracted from the resource file. If it is not
 present locally, it is automatically downloaded from the Hugging Face.</p>
@@ -674,7 +689,7 @@ present locally, it is automatically downloaded from the Hugging Face.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nidl.datasets.OpenBHB.get_neuromorphometrics_atlas">
-<span class="sig-name descname"><span class="pre">get_neuromorphometrics_atlas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/d389c57/nidl/datasets/openbhb.py#L426"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.get_neuromorphometrics_atlas" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_neuromorphometrics_atlas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/8a68cfb/nidl/datasets/openbhb.py#L426"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.get_neuromorphometrics_atlas" title="Link to this definition">¶</a></dt>
 <dd><p>Get the Neuromorphometrics gray matter atlas and its region names.</p>
 <p>This method loads the Neuromorphometrics gray matter atlas as a NIfTI
 image, along with the associated region names (abbreviations).</p>
@@ -683,7 +698,7 @@ image, along with the associated region names (abbreviations).</p>
 <dd class="field-odd"><dl class="simple">
 <dt>dict</dt><dd><p>A dictionary containing:</p>
 <ul class="simple">
-<li><p><cite>data</cite> : <a class="reference external" href="https://nipy.org/nibabel/reference/nibabel.nifti1.html#nibabel.nifti1.Nifti1Image" title="(in NiBabel v5.4.0.dev1+g3b1c7b37)"><code class="xref py py-class docutils literal notranslate"><span class="pre">nibabel.nifti1.Nifti1Image</span></code></a>, the atlas image.</p></li>
+<li><p><cite>data</cite> : <a class="reference external" href="https://nipy.org/nibabel/reference/nibabel.nifti1.html#nibabel.nifti1.Nifti1Image" title="(in NiBabel v0.1.0.dev1+gabe5e8e0c)"><code class="xref py py-class docutils literal notranslate"><span class="pre">nibabel.nifti1.Nifti1Image</span></code></a>, the atlas image.</p></li>
 <li><p><cite>labels</cite> : list of region names (string) corresponding to
 integer labels in the atlas.</p></li>
 </ul>
@@ -694,7 +709,7 @@ integer labels in the atlas.</p></li>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://nipy.org/nibabel/reference/nibabel.loadsave.html#nibabel.loadsave.load" title="(in NiBabel v5.4.0.dev1+g3b1c7b37)"><code class="xref py py-func docutils literal notranslate"><span class="pre">nibabel.loadsave.load</span></code></a></dt><dd><p>Function used to load the NIfTI image.</p>
+<dt><a class="reference external" href="https://nipy.org/nibabel/reference/nibabel.loadsave.html#nibabel.loadsave.load" title="(in NiBabel v0.1.0.dev1+gabe5e8e0c)"><code class="xref py py-func docutils literal notranslate"><span class="pre">nibabel.loadsave.load</span></code></a></dt><dd><p>Function used to load the NIfTI image.</p>
 </dd>
 </dl>
 </div>
@@ -710,17 +725,17 @@ Hugging Face.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nidl.datasets.OpenBHB.get_or_download_file">
-<span class="sig-name descname"><span class="pre">get_or_download_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/d389c57/nidl/datasets/openbhb.py#L291"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.get_or_download_file" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_or_download_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/8a68cfb/nidl/datasets/openbhb.py#L291"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.get_or_download_file" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nidl.datasets.OpenBHB.get_participants">
-<span class="sig-name descname"><span class="pre">get_participants</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/d389c57/nidl/datasets/openbhb.py#L297"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.get_participants" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_participants</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/8a68cfb/nidl/datasets/openbhb.py#L297"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.get_participants" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nidl.datasets.OpenBHB.get_quasiraw_template">
-<span class="sig-name descname"><span class="pre">get_quasiraw_template</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/d389c57/nidl/datasets/openbhb.py#L497"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.get_quasiraw_template" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_quasiraw_template</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/8a68cfb/nidl/datasets/openbhb.py#L497"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.get_quasiraw_template" title="Link to this definition">¶</a></dt>
 <dd><p>Get the quasi-raw MNI152 brain template as a NIfTI image.</p>
 <p>This method retrieves the quasi-raw T1-weighted brain template in
 MNI152 space.</p>
@@ -735,7 +750,7 @@ MNI152 space.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://nipy.org/nibabel/reference/nibabel.loadsave.html#nibabel.loadsave.load" title="(in NiBabel v5.4.0.dev1+g3b1c7b37)"><code class="xref py py-func docutils literal notranslate"><span class="pre">nibabel.loadsave.load</span></code></a></dt><dd><p>Function used to load the NIfTI image.</p>
+<dt><a class="reference external" href="https://nipy.org/nibabel/reference/nibabel.loadsave.html#nibabel.loadsave.load" title="(in NiBabel v0.1.0.dev1+gabe5e8e0c)"><code class="xref py py-func docutils literal notranslate"><span class="pre">nibabel.loadsave.load</span></code></a></dt><dd><p>Function used to load the NIfTI image.</p>
 </dd>
 </dl>
 </div>
@@ -748,12 +763,12 @@ Hugging Face.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nidl.datasets.OpenBHB.get_resource">
-<span class="sig-name descname"><span class="pre">get_resource</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/d389c57/nidl/datasets/openbhb.py#L301"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.get_resource" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_resource</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/8a68cfb/nidl/datasets/openbhb.py#L301"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.get_resource" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nidl.datasets.OpenBHB.get_vbm_roi_labels">
-<span class="sig-name descname"><span class="pre">get_vbm_roi_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/d389c57/nidl/datasets/openbhb.py#L571"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.get_vbm_roi_labels" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_vbm_roi_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/8a68cfb/nidl/datasets/openbhb.py#L571"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.get_vbm_roi_labels" title="Link to this definition">¶</a></dt>
 <dd><p>Get region names on the Neuromorphometrics atlas where “vbm_roi”
 features are computed in OpenBHB.</p>
 <p>The names are extracted from the resource file. If it is not present
@@ -774,7 +789,7 @@ locally, it is automatically downloaded from the Hugging Face.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="nidl.datasets.OpenBHB.make_dataset">
-<span class="sig-name descname"><span class="pre">make_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/d389c57/nidl/datasets/openbhb.py#L305"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.make_dataset" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">make_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/neurospin-deepinsight/nidl/blob/8a68cfb/nidl/datasets/openbhb.py#L305"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nidl.datasets.OpenBHB.make_dataset" title="Link to this definition">¶</a></dt>
 <dd><p>Generate a list of sample file paths and their corresponding targets
 for a given dataset split.</p>
 <p>This method constructs file paths for each participant listed in
@@ -819,9 +834,9 @@ automatically from the Hugging Face.</p>
 
 <section id="examples-using-nidl-datasets-openbhb">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">nidl.datasets.OpenBHB</span></code><a class="headerlink" href="#examples-using-nidl-datasets-openbhb" title="Link to this heading">¶</a></h2>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This notebook will show you how to investigate the data representation given by an embedding estimator during training  (such as SimCLR, y-Aware Contrastive Learning or Barlow Twins) using the notion of &quot;probing&quot;. A standard machine learning model (e.g. linear or SVM) is trained and evaluated on the data embedding for a given task as the model is being fitted. It allows the user to understand what concepts are learned by the model."><img alt="" src="../../_images/sphx_glr_plot_model_probing_thumb.png" />
-<p><a class="reference internal" href="../../auto_examples/plot_model_probing.html"><span class="doc">Model probing callback of embedding estimators</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Model probing callback of embedding estimators</div>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This notebook will show you how to investigate the data representation given by an embedding estimator (such as SimCLR, y-Aware Contrastive Learning or Barlow  Twins) during training and inference using the notion of &quot;probing&quot;. A standard machine learning model (e.g. linear or SVM) is trained and evaluated on the data embedding for a given task as the model is being fitted (for training  monitoring) or at inference. It allows the user to understand what concepts are learned  by the model."><img alt="" src="../../_images/sphx_glr_plot_model_probing_thumb.png" />
+<p><a class="reference internal" href="../../auto_examples/plot_model_probing.html"><span class="doc">Model probing of embedding estimators</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Model probing of embedding estimators</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="This notebook introduces the OpenBHB dataset [1]_, a large-scale, multi-site brain MRI dataset. It is designed to perform benchmarking of machine learning and deep learning models on neuroimaging data."><img alt="" src="../../_images/sphx_glr_plot_openbhb_thumb.png" />
 <p><a class="reference internal" href="../../auto_examples/plot_openbhb.html"><span class="doc">Presentation of the OpenBHB dataset</span></a></p>
   <div class="sphx-glr-thumbnail-title">Presentation of the OpenBHB dataset</div>

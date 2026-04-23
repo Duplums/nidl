@@ -18,15 +18,16 @@
 .. _sphx_glr_auto_examples_plot_model_probing.py:
 
 
-Model probing callback of embedding estimators
-==============================================
+Model probing of embedding estimators
+=====================================
 
 This notebook will show you how to investigate the **data representation given
-by an embedding estimator during training**  (such as SimCLR, y-Aware
-Contrastive Learning or Barlow Twins) using the notion of "probing".
+by an embedding estimator** (such as SimCLR, y-Aware Contrastive Learning or Barlow 
+Twins) **during training and inference** using the notion of "probing".
 A standard machine learning model (e.g. linear or SVM) is trained and evaluated
-on the data embedding for a given task as the model is being fitted. It allows
-the user to understand what concepts are learned by the model.
+on the data embedding for a given task as the model is being fitted (for training 
+monitoring) or at inference. It allows the user to understand what concepts are learned 
+by the model.
 
 This has been first introduced by Guillaume Alain and Yoshua Bengio in 2017
 [1]_ to understand the internal behavior of a deep neural network along
@@ -35,7 +36,7 @@ the intermediate representation of a neural network? What information is
 contained for a given layer ?
 
 Then, it has been adapted to benchmark self-supervised vision models
-(like SimCLR, Barlow Twins, DINO, DINOv2) on classical datasets (ImageNet,
+(like SimCLR, Barlow Twins, DINO, DINOv2, DINOv3) on classical datasets (ImageNet,
 CIFAR, ...) by implementing linear probing and K-Nearest Neighbors probing
 on model's output representation.
 
@@ -48,7 +49,7 @@ Setup
 This notebook requires some packages besides nidl. Let's first start with
 importing our standard libraries below:
 
-.. GENERATED FROM PYTHON SOURCE LINES 34-63
+.. GENERATED FROM PYTHON SOURCE LINES 35-65
 
 .. code-block:: Python
 
@@ -75,7 +76,8 @@ importing our standard libraries below:
     from torchvision.ops import MLP
     from torchvision.utils import make_grid
 
-    from nidl.callbacks.model_probing import ModelProbing
+    from nidl.callbacks import ModelProbingCallback
+    from nidl.estimators.probes import ModelProbing
     from nidl.datasets import OpenBHB
     from nidl.estimators.ssl import SimCLR, YAwareContrastiveLearning
     from nidl.metrics import pearson_r
@@ -88,11 +90,11 @@ importing our standard libraries below:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-65
+.. GENERATED FROM PYTHON SOURCE LINES 66-67
 
 We define some global parameters that will be used throughout the notebook:
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-70
+.. GENERATED FROM PYTHON SOURCE LINES 67-72
 
 .. code-block:: Python
 
@@ -108,7 +110,7 @@ We define some global parameters that will be used throughout the notebook:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-83
+.. GENERATED FROM PYTHON SOURCE LINES 73-85
 
 Unsupervised Contrastive Learning on MNIST
 ------------------------------------------
@@ -123,12 +125,12 @@ representation using a logistic regression classifier on the digit
 classification task. It will show how the data embedding evolves during
 training to become more linearly separable for each digit class.
 
-.. GENERATED FROM PYTHON SOURCE LINES 85-87
+.. GENERATED FROM PYTHON SOURCE LINES 87-89
 
 We start by loading the MNIST dataset dataset with standard scaling
 transforms. These datasets are used for training and testing the probing.
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-96
+.. GENERATED FROM PYTHON SOURCE LINES 89-98
 
 .. code-block:: Python
 
@@ -149,15 +151,15 @@ transforms. These datasets are used for training and testing the probing.
 
  .. code-block:: none
 
-      0%|          | 0.00/9.91M [00:00<?, ?B/s]     79%|███████▉  | 7.86M/9.91M [00:00<00:00, 78.4MB/s]    100%|██████████| 9.91M/9.91M [00:00<00:00, 81.1MB/s]
-      0%|          | 0.00/28.9k [00:00<?, ?B/s]    100%|██████████| 28.9k/28.9k [00:00<00:00, 19.0MB/s]
-      0%|          | 0.00/1.65M [00:00<?, ?B/s]    100%|██████████| 1.65M/1.65M [00:00<00:00, 43.3MB/s]
-      0%|          | 0.00/4.54k [00:00<?, ?B/s]    100%|██████████| 4.54k/4.54k [00:00<00:00, 16.9MB/s]
+      0%|          | 0.00/9.91M [00:00<?, ?B/s]    100%|██████████| 9.91M/9.91M [00:00<00:00, 140MB/s]
+      0%|          | 0.00/28.9k [00:00<?, ?B/s]    100%|██████████| 28.9k/28.9k [00:00<00:00, 23.7MB/s]
+      0%|          | 0.00/1.65M [00:00<?, ?B/s]    100%|██████████| 1.65M/1.65M [00:00<00:00, 81.6MB/s]
+      0%|          | 0.00/4.54k [00:00<?, ?B/s]    100%|██████████| 4.54k/4.54k [00:00<00:00, 22.0MB/s]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-105
+.. GENERATED FROM PYTHON SOURCE LINES 99-107
 
 Dataset and data augmentations for contrastive learning
 -------------------------------------------------------
@@ -168,7 +170,7 @@ with grayscale images, we will use random resized crop and Gaussian blur. We
 reduce the size of the Gaussian kernel to 3x3 since MNIST images are only
 28x28 pixels.
 
-.. GENERATED FROM PYTHON SOURCE LINES 105-116
+.. GENERATED FROM PYTHON SOURCE LINES 107-118
 
 .. code-block:: Python
 
@@ -190,12 +192,12 @@ reduce the size of the Gaussian kernel to 3x3 since MNIST images are only
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 117-119
+.. GENERATED FROM PYTHON SOURCE LINES 119-121
 
 We create the datasets returning the augmented views for training the SSL
 models.
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-132
+.. GENERATED FROM PYTHON SOURCE LINES 121-134
 
 .. code-block:: Python
 
@@ -219,11 +221,11 @@ models.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 133-134
+.. GENERATED FROM PYTHON SOURCE LINES 135-136
 
 And finally we create the data loaders for training and testing the models.
 
-.. GENERATED FROM PYTHON SOURCE LINES 134-166
+.. GENERATED FROM PYTHON SOURCE LINES 136-168
 
 .. code-block:: Python
 
@@ -267,18 +269,18 @@ And finally we create the data loaders for training and testing the models.
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:424: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 167-169
+.. GENERATED FROM PYTHON SOURCE LINES 169-171
 
 Before starting training the SimCLR model, let's visualize some
 examples of the dataset.
 
-.. GENERATED FROM PYTHON SOURCE LINES 169-203
+.. GENERATED FROM PYTHON SOURCE LINES 171-205
 
 .. code-block:: Python
 
@@ -329,13 +331,15 @@ examples of the dataset.
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 204-211
+.. GENERATED FROM PYTHON SOURCE LINES 206-213
 
 SimCLR training with classification probing callback
 ----------------------------------------------------
@@ -345,12 +349,12 @@ classifier on the learned representation during SimCLR training. The probing
 is performed every 2 epochs on the training and test sets. The classification
 metrics (accuracy and f1-weighted) are logged to TensorBoard by default.
 
-.. GENERATED FROM PYTHON SOURCE LINES 211-221
+.. GENERATED FROM PYTHON SOURCE LINES 213-223
 
 .. code-block:: Python
 
 
-    callback = ModelProbing(
+    callback = ModelProbingCallback(
         train_xy_loader,
         test_xy_loader,
         probe=LogisticRegression(max_iter=200),
@@ -366,14 +370,14 @@ metrics (accuracy and f1-weighted) are logged to TensorBoard by default.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 222-226
+.. GENERATED FROM PYTHON SOURCE LINES 224-228
 
 Since MNIST images are small, we can use a simple LeNet-like architecture
 as encoder for SimCLR, with few parameters. The output dimension of the
 encoder is set to 32, which is approximately 30 times smaller that the input,
 but larger than the number of input classes (10).
 
-.. GENERATED FROM PYTHON SOURCE LINES 226-253
+.. GENERATED FROM PYTHON SOURCE LINES 228-255
 
 .. code-block:: Python
 
@@ -411,13 +415,13 @@ but larger than the number of input classes (10).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 254-257
+.. GENERATED FROM PYTHON SOURCE LINES 256-259
 
 We can now create the SimCLR model with the encoder and the probing callback.
 We limit the training to 10 epochs for the sake of time and because it is
 enough for checking the evolution of the embedding geometry across training.
 
-.. GENERATED FROM PYTHON SOURCE LINES 257-274
+.. GENERATED FROM PYTHON SOURCE LINES 259-276
 
 .. code-block:: Python
 
@@ -446,7 +450,7 @@ enough for checking the evolution of the embedding geometry across training.
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/lightning_fabric/utilities/seed.py:44: No seed found, seed set to 0
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/pytorch_lightning/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
     ┏━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┓
     ┃   ┃ Name            ┃ Type                 ┃ Params ┃ Mode  ┃ FLOPs ┃
     ┡━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━┩
@@ -461,11 +465,11 @@ enough for checking the evolution of the embedding geometry across training.
     Modules in train mode: 14                                                       
     Modules in eval mode: 0                                                         
     Total FLOPs: 0                                                                  
-    Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:00,  5.75it/s]    Extracting features: 11it [00:00, 46.73it/s]    Extracting features: 20it [00:00, 61.05it/s]    Extracting features: 30it [00:00, 73.65it/s]    Extracting features: 40it [00:00, 79.60it/s]    Extracting features: 49it [00:00, 81.97it/s]    Extracting features: 59it [00:00, 84.29it/s]    Extracting features: 68it [00:00, 82.87it/s]    Extracting features: 78it [00:01, 86.46it/s]    Extracting features: 87it [00:01, 85.94it/s]    Extracting features: 98it [00:01, 85.14it/s]    Extracting features: 108it [00:01, 87.61it/s]    Extracting features: 117it [00:01, 86.88it/s]    Extracting features: 127it [00:01, 89.12it/s]    Extracting features: 136it [00:01, 88.29it/s]    Extracting features: 146it [00:01, 90.87it/s]    Extracting features: 156it [00:01, 86.28it/s]    Extracting features: 167it [00:02, 89.95it/s]    Extracting features: 177it [00:02, 86.18it/s]    Extracting features: 186it [00:02, 84.89it/s]    Extracting features: 196it [00:02, 88.93it/s]    Extracting features: 206it [00:02, 90.63it/s]    Extracting features: 216it [00:02, 86.06it/s]    Extracting features: 226it [00:02, 88.12it/s]    Extracting features: 235it [00:02, 86.15it/s]    Extracting features: 244it [00:02, 86.58it/s]    Extracting features: 253it [00:03, 86.75it/s]    Extracting features: 262it [00:03, 85.76it/s]    Extracting features: 271it [00:03, 84.58it/s]    Extracting features: 281it [00:03, 85.57it/s]    Extracting features: 291it [00:03, 84.83it/s]    Extracting features: 302it [00:03, 90.77it/s]    Extracting features: 312it [00:03, 86.77it/s]    Extracting features: 322it [00:03, 87.71it/s]    Extracting features: 332it [00:03, 87.10it/s]    Extracting features: 343it [00:04, 91.13it/s]    Extracting features: 353it [00:04, 87.99it/s]    Extracting features: 363it [00:04, 89.43it/s]    Extracting features: 372it [00:04, 87.22it/s]    Extracting features: 382it [00:04, 85.79it/s]    Extracting features: 392it [00:04, 87.49it/s]    Extracting features: 401it [00:04, 87.41it/s]    Extracting features: 411it [00:04, 89.13it/s]    Extracting features: 420it [00:04, 85.03it/s]    Extracting features: 429it [00:05, 86.22it/s]    Extracting features: 439it [00:05, 87.35it/s]    Extracting features: 448it [00:05, 86.62it/s]                                                 Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:00,  8.11it/s]    Extracting features: 8it [00:00, 40.56it/s]    Extracting features: 16it [00:00, 55.40it/s]    Extracting features: 24it [00:00, 63.70it/s]    Extracting features: 32it [00:00, 68.29it/s]    Extracting features: 41it [00:00, 74.60it/s]    Extracting features: 49it [00:00, 75.00it/s]    Extracting features: 61it [00:00, 83.51it/s]                                                /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    Extracting features: 0it [00:00, ?it/s]    Extracting features: 2it [00:00, 12.25it/s]    Extracting features: 9it [00:00, 39.17it/s]    Extracting features: 19it [00:00, 62.23it/s]    Extracting features: 29it [00:00, 74.08it/s]    Extracting features: 39it [00:00, 81.82it/s]    Extracting features: 48it [00:00, 80.48it/s]    Extracting features: 57it [00:00, 83.25it/s]    Extracting features: 66it [00:00, 84.95it/s]    Extracting features: 76it [00:01, 85.67it/s]    Extracting features: 86it [00:01, 85.42it/s]    Extracting features: 96it [00:01, 87.70it/s]    Extracting features: 106it [00:01, 86.58it/s]    Extracting features: 115it [00:01, 86.38it/s]    Extracting features: 124it [00:01, 86.39it/s]    Extracting features: 133it [00:01, 85.78it/s]    Extracting features: 143it [00:01, 86.13it/s]    Extracting features: 154it [00:01, 91.36it/s]    Extracting features: 164it [00:02, 85.82it/s]    Extracting features: 175it [00:02, 92.06it/s]    Extracting features: 185it [00:02, 87.32it/s]    Extracting features: 194it [00:02, 86.80it/s]    Extracting features: 204it [00:02, 83.16it/s]    Extracting features: 215it [00:02, 89.19it/s]    Extracting features: 225it [00:02, 90.83it/s]    Extracting features: 235it [00:02, 85.83it/s]    Extracting features: 244it [00:02, 86.22it/s]    Extracting features: 254it [00:03, 89.30it/s]    Extracting features: 264it [00:03, 87.25it/s]    Extracting features: 273it [00:03, 86.70it/s]    Extracting features: 283it [00:03, 90.38it/s]    Extracting features: 293it [00:03, 84.76it/s]    Extracting features: 303it [00:03, 86.05it/s]    Extracting features: 312it [00:03, 85.23it/s]    Extracting features: 322it [00:03, 88.22it/s]    Extracting features: 331it [00:03, 87.42it/s]    Extracting features: 340it [00:04, 87.67it/s]    Extracting features: 349it [00:04, 88.20it/s]    Extracting features: 359it [00:04, 88.41it/s]    Extracting features: 368it [00:04, 88.51it/s]    Extracting features: 378it [00:04, 88.09it/s]    Extracting features: 387it [00:04, 88.22it/s]    Extracting features: 397it [00:04, 87.05it/s]    Extracting features: 407it [00:04, 90.64it/s]    Extracting features: 417it [00:04, 87.28it/s]    Extracting features: 426it [00:05, 87.80it/s]    Extracting features: 435it [00:05, 88.38it/s]    Extracting features: 444it [00:05, 86.27it/s]    Extracting features: 459it [00:05, 103.64it/s]                                                  Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:00,  9.47it/s]    Extracting features: 5it [00:00, 26.09it/s]    Extracting features: 15it [00:00, 58.06it/s]    Extracting features: 25it [00:00, 68.76it/s]    Extracting features: 35it [00:00, 78.41it/s]    Extracting features: 44it [00:00, 81.85it/s]    Extracting features: 53it [00:00, 83.47it/s]    Extracting features: 63it [00:00, 87.95it/s]                                                /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:470: ConvergenceWarning: lbfgs failed to converge after 200 iteration(s) (status=1):
+    Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:00,  9.43it/s]    Extracting features: 4it [00:00, 20.77it/s]    Extracting features: 13it [00:00, 48.05it/s]    Extracting features: 23it [00:00, 67.09it/s]    Extracting features: 32it [00:00, 73.93it/s]    Extracting features: 40it [00:00, 75.61it/s]    Extracting features: 49it [00:00, 78.42it/s]    Extracting features: 59it [00:00, 82.85it/s]    Extracting features: 70it [00:00, 89.40it/s]    Extracting features: 79it [00:01, 82.23it/s]    Extracting features: 88it [00:01, 84.10it/s]    Extracting features: 99it [00:01, 88.01it/s]    Extracting features: 108it [00:01, 87.17it/s]    Extracting features: 117it [00:01, 87.51it/s]    Extracting features: 126it [00:01, 86.92it/s]    Extracting features: 135it [00:01, 86.38it/s]    Extracting features: 144it [00:01, 86.83it/s]    Extracting features: 153it [00:01, 85.23it/s]    Extracting features: 163it [00:02, 87.07it/s]    Extracting features: 172it [00:02, 86.44it/s]    Extracting features: 181it [00:02, 85.74it/s]    Extracting features: 191it [00:02, 87.22it/s]    Extracting features: 200it [00:02, 85.67it/s]    Extracting features: 209it [00:02, 85.24it/s]    Extracting features: 219it [00:02, 88.18it/s]    Extracting features: 228it [00:02, 84.43it/s]    Extracting features: 238it [00:02, 86.51it/s]    Extracting features: 248it [00:03, 88.18it/s]    Extracting features: 258it [00:03, 89.14it/s]    Extracting features: 267it [00:03, 89.08it/s]    Extracting features: 276it [00:03, 87.44it/s]    Extracting features: 285it [00:03, 86.87it/s]    Extracting features: 294it [00:03, 86.30it/s]    Extracting features: 304it [00:03, 87.58it/s]    Extracting features: 314it [00:03, 89.45it/s]    Extracting features: 323it [00:03, 85.47it/s]    Extracting features: 333it [00:03, 87.17it/s]    Extracting features: 342it [00:04, 87.95it/s]    Extracting features: 352it [00:04, 88.52it/s]    Extracting features: 361it [00:04, 84.80it/s]    Extracting features: 372it [00:04, 88.89it/s]    Extracting features: 381it [00:04, 87.82it/s]    Extracting features: 390it [00:04, 86.18it/s]    Extracting features: 399it [00:04, 84.46it/s]    Extracting features: 408it [00:04, 85.91it/s]    Extracting features: 418it [00:04, 84.38it/s]    Extracting features: 428it [00:05, 86.33it/s]    Extracting features: 438it [00:05, 88.71it/s]    Extracting features: 447it [00:05, 87.16it/s]    Extracting features: 465it [00:05, 112.05it/s]                                                  Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:00,  5.96it/s]    Extracting features: 9it [00:00, 38.76it/s]    Extracting features: 18it [00:00, 58.14it/s]    Extracting features: 28it [00:00, 72.02it/s]    Extracting features: 36it [00:00, 74.25it/s]    Extracting features: 45it [00:00, 78.74it/s]    Extracting features: 56it [00:00, 84.08it/s]    Extracting features: 72it [00:00, 106.64it/s]                                                 /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:00,  5.11it/s]    Extracting features: 11it [00:00, 42.56it/s]    Extracting features: 22it [00:00, 65.71it/s]    Extracting features: 30it [00:00, 68.15it/s]    Extracting features: 39it [00:00, 74.33it/s]    Extracting features: 49it [00:00, 80.33it/s]    Extracting features: 58it [00:00, 82.06it/s]    Extracting features: 67it [00:00, 80.25it/s]    Extracting features: 77it [00:01, 81.91it/s]    Extracting features: 86it [00:01, 83.60it/s]    Extracting features: 98it [00:01, 93.45it/s]    Extracting features: 108it [00:01, 84.95it/s]    Extracting features: 118it [00:01, 86.95it/s]    Extracting features: 127it [00:01, 86.12it/s]    Extracting features: 136it [00:01, 86.00it/s]    Extracting features: 145it [00:01, 86.29it/s]    Extracting features: 154it [00:01, 84.41it/s]    Extracting features: 163it [00:02, 82.86it/s]    Extracting features: 173it [00:02, 87.64it/s]    Extracting features: 182it [00:02, 82.91it/s]    Extracting features: 192it [00:02, 83.89it/s]    Extracting features: 201it [00:02, 84.07it/s]    Extracting features: 210it [00:02, 84.47it/s]    Extracting features: 219it [00:02, 84.93it/s]    Extracting features: 228it [00:02, 85.31it/s]    Extracting features: 237it [00:02, 85.88it/s]    Extracting features: 246it [00:03, 83.49it/s]    Extracting features: 256it [00:03, 86.53it/s]    Extracting features: 265it [00:03, 84.23it/s]    Extracting features: 274it [00:03, 84.62it/s]    Extracting features: 284it [00:03, 84.37it/s]    Extracting features: 293it [00:03, 83.25it/s]    Extracting features: 302it [00:03, 84.12it/s]    Extracting features: 311it [00:03, 84.17it/s]    Extracting features: 320it [00:03, 84.91it/s]    Extracting features: 330it [00:04, 87.84it/s]    Extracting features: 339it [00:04, 85.59it/s]    Extracting features: 348it [00:04, 85.62it/s]    Extracting features: 357it [00:04, 85.35it/s]    Extracting features: 366it [00:04, 84.36it/s]    Extracting features: 375it [00:04, 85.54it/s]    Extracting features: 384it [00:04, 85.69it/s]    Extracting features: 393it [00:04, 82.49it/s]    Extracting features: 403it [00:04, 85.02it/s]    Extracting features: 412it [00:05, 83.95it/s]    Extracting features: 421it [00:05, 82.50it/s]    Extracting features: 431it [00:05, 84.63it/s]    Extracting features: 440it [00:05, 84.24it/s]    Extracting features: 449it [00:05, 85.40it/s]    Extracting features: 469it [00:05, 116.59it/s]                                                  Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:00,  5.46it/s]    Extracting features: 10it [00:00, 41.22it/s]    Extracting features: 20it [00:00, 63.41it/s]    Extracting features: 29it [00:00, 71.23it/s]    Extracting features: 37it [00:00, 72.16it/s]    Extracting features: 47it [00:00, 77.83it/s]    Extracting features: 56it [00:00, 79.71it/s]    Extracting features: 76it [00:00, 114.77it/s]                                                 /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:470: ConvergenceWarning: lbfgs failed to converge after 200 iteration(s) (status=1):
     STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
 
     Increase the number of iterations to improve the convergence (max_iter=200).
@@ -474,17 +478,35 @@ enough for checking the evolution of the embedding geometry across training.
     Please also refer to the documentation for alternative solver options:
         https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
       n_iter_i = _check_optimize_result(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    Extracting features: 0it [00:00, ?it/s]    Extracting features: 2it [00:00, 12.67it/s]    Extracting features: 9it [00:00, 37.50it/s]    Extracting features: 20it [00:00, 64.20it/s]    Extracting features: 30it [00:00, 76.16it/s]    Extracting features: 39it [00:00, 76.68it/s]    Extracting features: 47it [00:00, 77.54it/s]    Extracting features: 57it [00:00, 83.95it/s]    Extracting features: 66it [00:00, 83.19it/s]    Extracting features: 76it [00:01, 83.44it/s]    Extracting features: 86it [00:01, 86.35it/s]    Extracting features: 96it [00:01, 86.46it/s]    Extracting features: 105it [00:01, 87.45it/s]    Extracting features: 114it [00:01, 88.17it/s]    Extracting features: 124it [00:01, 90.82it/s]    Extracting features: 134it [00:01, 89.88it/s]    Extracting features: 144it [00:01, 87.17it/s]    Extracting features: 153it [00:01, 87.72it/s]    Extracting features: 162it [00:01, 86.50it/s]    Extracting features: 172it [00:02, 88.26it/s]    Extracting features: 181it [00:02, 88.19it/s]    Extracting features: 190it [00:02, 87.48it/s]    Extracting features: 199it [00:02, 85.87it/s]    Extracting features: 209it [00:02, 85.85it/s]    Extracting features: 219it [00:02, 87.95it/s]    Extracting features: 229it [00:02, 90.50it/s]    Extracting features: 239it [00:02, 89.63it/s]    Extracting features: 248it [00:02, 87.28it/s]    Extracting features: 257it [00:03, 87.27it/s]    Extracting features: 266it [00:03, 87.90it/s]    Extracting features: 275it [00:03, 88.41it/s]    Extracting features: 285it [00:03, 89.02it/s]    Extracting features: 295it [00:03, 89.58it/s]    Extracting features: 304it [00:03, 87.50it/s]    Extracting features: 313it [00:03, 85.56it/s]    Extracting features: 322it [00:03, 83.47it/s]    Extracting features: 331it [00:03, 84.52it/s]    Extracting features: 341it [00:04, 87.14it/s]    Extracting features: 351it [00:04, 87.69it/s]    Extracting features: 360it [00:04, 86.57it/s]    Extracting features: 370it [00:04, 88.10it/s]    Extracting features: 380it [00:04, 87.47it/s]    Extracting features: 389it [00:04, 87.45it/s]    Extracting features: 399it [00:04, 87.91it/s]    Extracting features: 409it [00:04, 89.77it/s]    Extracting features: 418it [00:04, 87.75it/s]    Extracting features: 427it [00:05, 87.41it/s]    Extracting features: 437it [00:05, 88.82it/s]    Extracting features: 446it [00:05, 86.81it/s]    Extracting features: 463it [00:05, 109.97it/s]                                                  Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:00,  7.01it/s]    Extracting features: 10it [00:00, 47.70it/s]    Extracting features: 19it [00:00, 64.70it/s]    Extracting features: 29it [00:00, 74.83it/s]    Extracting features: 38it [00:00, 78.62it/s]    Extracting features: 47it [00:00, 80.63it/s]    Extracting features: 56it [00:00, 83.01it/s]    Extracting features: 77it [00:00, 120.91it/s]                                                 /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:00,  6.77it/s]    Extracting features: 10it [00:00, 45.67it/s]    Extracting features: 20it [00:00, 66.33it/s]    Extracting features: 29it [00:00, 72.26it/s]    Extracting features: 38it [00:00, 76.50it/s]    Extracting features: 49it [00:00, 87.05it/s]    Extracting features: 58it [00:00, 85.36it/s]    Extracting features: 67it [00:00, 82.58it/s]    Extracting features: 77it [00:01, 84.64it/s]    Extracting features: 87it [00:01, 85.95it/s]    Extracting features: 96it [00:01, 86.54it/s]    Extracting features: 105it [00:01, 87.49it/s]    Extracting features: 115it [00:01, 89.79it/s]    Extracting features: 125it [00:01, 87.03it/s]    Extracting features: 136it [00:01, 86.88it/s]    Extracting features: 145it [00:01, 86.99it/s]    Extracting features: 154it [00:01, 87.30it/s]    Extracting features: 163it [00:01, 87.33it/s]    Extracting features: 173it [00:02, 87.98it/s]    Extracting features: 182it [00:02, 88.49it/s]    Extracting features: 191it [00:02, 87.75it/s]    Extracting features: 200it [00:02, 86.32it/s]    Extracting features: 209it [00:02, 86.92it/s]    Extracting features: 219it [00:02, 87.77it/s]    Extracting features: 228it [00:02, 88.07it/s]    Extracting features: 237it [00:02, 86.31it/s]    Extracting features: 247it [00:02, 89.05it/s]    Extracting features: 256it [00:03, 84.69it/s]    Extracting features: 266it [00:03, 86.90it/s]    Extracting features: 275it [00:03, 87.50it/s]    Extracting features: 284it [00:03, 85.03it/s]    Extracting features: 294it [00:03, 88.19it/s]    Extracting features: 303it [00:03, 86.41it/s]    Extracting features: 312it [00:03, 86.97it/s]    Extracting features: 321it [00:03, 87.38it/s]    Extracting features: 331it [00:03, 89.11it/s]    Extracting features: 340it [00:04, 87.44it/s]    Extracting features: 350it [00:04, 88.28it/s]    Extracting features: 359it [00:04, 87.57it/s]    Extracting features: 368it [00:04, 86.57it/s]    Extracting features: 378it [00:04, 90.15it/s]    Extracting features: 388it [00:04, 85.74it/s]    Extracting features: 398it [00:04, 87.69it/s]    Extracting features: 407it [00:04, 88.30it/s]    Extracting features: 416it [00:04, 86.61it/s]    Extracting features: 425it [00:04, 87.19it/s]    Extracting features: 434it [00:05, 87.19it/s]    Extracting features: 444it [00:05, 87.26it/s]    Extracting features: 459it [00:05, 103.65it/s]                                                  Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:00,  6.55it/s]    Extracting features: 9it [00:00, 40.59it/s]    Extracting features: 19it [00:00, 63.67it/s]    Extracting features: 27it [00:00, 69.50it/s]    Extracting features: 37it [00:00, 78.62it/s]    Extracting features: 47it [00:00, 84.08it/s]    Extracting features: 56it [00:00, 81.82it/s]    Extracting features: 77it [00:00, 118.46it/s]                                                 Epoch 9/9  ━━━━━━━━━━━━━━━━ 100/100 0:00:10 •        10.95it/s v_num: 0.000     
-                                        0:00:00                    loss/train: 0.689
-                                                                   loss/val: 0.986  
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:00,  9.81it/s]    Extracting features: 4it [00:00, 20.62it/s]    Extracting features: 12it [00:00, 46.30it/s]    Extracting features: 22it [00:00, 64.86it/s]    Extracting features: 32it [00:00, 74.27it/s]    Extracting features: 41it [00:00, 77.88it/s]    Extracting features: 51it [00:00, 83.39it/s]    Extracting features: 60it [00:00, 84.73it/s]    Extracting features: 69it [00:00, 83.71it/s]    Extracting features: 79it [00:01, 85.85it/s]    Extracting features: 88it [00:01, 85.42it/s]    Extracting features: 97it [00:01, 84.56it/s]    Extracting features: 106it [00:01, 83.33it/s]    Extracting features: 116it [00:01, 86.86it/s]    Extracting features: 125it [00:01, 86.75it/s]    Extracting features: 134it [00:01, 85.26it/s]    Extracting features: 144it [00:01, 85.65it/s]    Extracting features: 153it [00:01, 86.64it/s]    Extracting features: 162it [00:02, 87.49it/s]    Extracting features: 171it [00:02, 86.69it/s]    Extracting features: 180it [00:02, 86.24it/s]    Extracting features: 189it [00:02, 85.02it/s]    Extracting features: 198it [00:02, 84.75it/s]    Extracting features: 207it [00:02, 85.53it/s]    Extracting features: 216it [00:02, 83.55it/s]    Extracting features: 226it [00:02, 87.35it/s]    Extracting features: 235it [00:02, 83.61it/s]    Extracting features: 245it [00:03, 85.18it/s]    Extracting features: 254it [00:03, 83.97it/s]    Extracting features: 263it [00:03, 83.44it/s]    Extracting features: 272it [00:03, 85.09it/s]    Extracting features: 281it [00:03, 84.95it/s]    Extracting features: 291it [00:03, 85.65it/s]    Extracting features: 300it [00:03, 86.22it/s]    Extracting features: 309it [00:03, 85.68it/s]    Extracting features: 318it [00:03, 86.16it/s]    Extracting features: 328it [00:03, 86.89it/s]    Extracting features: 337it [00:04, 86.14it/s]    Extracting features: 346it [00:04, 83.75it/s]    Extracting features: 355it [00:04, 84.70it/s]    Extracting features: 365it [00:04, 88.27it/s]    Extracting features: 374it [00:04, 85.35it/s]    Extracting features: 384it [00:04, 87.03it/s]    Extracting features: 394it [00:04, 85.65it/s]    Extracting features: 404it [00:04, 87.81it/s]    Extracting features: 413it [00:04, 85.33it/s]    Extracting features: 422it [00:05, 84.27it/s]    Extracting features: 432it [00:05, 87.16it/s]    Extracting features: 441it [00:05, 87.09it/s]    Extracting features: 450it [00:05, 85.76it/s]                                                 Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:00,  5.48it/s]    Extracting features: 9it [00:00, 37.68it/s]    Extracting features: 19it [00:00, 59.10it/s]    Extracting features: 29it [00:00, 70.60it/s]    Extracting features: 38it [00:00, 75.53it/s]    Extracting features: 46it [00:00, 75.57it/s]    Extracting features: 55it [00:00, 78.43it/s]    Extracting features: 70it [00:00, 99.15it/s]                                                /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:470: ConvergenceWarning: lbfgs failed to converge after 200 iteration(s) (status=1):
+    STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+
+    Increase the number of iterations to improve the convergence (max_iter=200).
+    You might also want to scale the data as shown in:
+        https://scikit-learn.org/stable/modules/preprocessing.html
+    Please also refer to the documentation for alternative solver options:
+        https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+      n_iter_i = _check_optimize_result(
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:00,  5.60it/s]    Extracting features: 11it [00:00, 42.89it/s]    Extracting features: 21it [00:00, 62.95it/s]    Extracting features: 30it [00:00, 71.11it/s]    Extracting features: 39it [00:00, 75.76it/s]    Extracting features: 47it [00:00, 75.23it/s]    Extracting features: 56it [00:00, 78.66it/s]    Extracting features: 66it [00:00, 82.95it/s]    Extracting features: 75it [00:01, 84.78it/s]    Extracting features: 84it [00:01, 85.82it/s]    Extracting features: 93it [00:01, 86.61it/s]    Extracting features: 102it [00:01, 84.34it/s]    Extracting features: 111it [00:01, 85.38it/s]    Extracting features: 120it [00:01, 82.55it/s]    Extracting features: 129it [00:01, 84.38it/s]    Extracting features: 138it [00:01, 84.02it/s]    Extracting features: 149it [00:01, 88.37it/s]    Extracting features: 158it [00:02, 81.89it/s]    Extracting features: 169it [00:02, 87.22it/s]    Extracting features: 178it [00:02, 86.24it/s]    Extracting features: 187it [00:02, 83.59it/s]    Extracting features: 197it [00:02, 87.43it/s]    Extracting features: 206it [00:02, 86.73it/s]    Extracting features: 215it [00:02, 83.56it/s]    Extracting features: 224it [00:02, 84.64it/s]    Extracting features: 233it [00:02, 82.98it/s]    Extracting features: 242it [00:03, 81.45it/s]    Extracting features: 252it [00:03, 83.12it/s]    Extracting features: 262it [00:03, 85.26it/s]    Extracting features: 272it [00:03, 84.48it/s]    Extracting features: 282it [00:03, 85.40it/s]    Extracting features: 292it [00:03, 86.67it/s]    Extracting features: 301it [00:03, 84.43it/s]    Extracting features: 310it [00:03, 84.61it/s]    Extracting features: 320it [00:03, 84.99it/s]    Extracting features: 329it [00:04, 86.07it/s]    Extracting features: 339it [00:04, 88.55it/s]    Extracting features: 348it [00:04, 84.00it/s]    Extracting features: 357it [00:04, 83.67it/s]    Extracting features: 367it [00:04, 84.81it/s]    Extracting features: 376it [00:04, 84.06it/s]    Extracting features: 386it [00:04, 85.34it/s]    Extracting features: 395it [00:04, 84.49it/s]    Extracting features: 404it [00:04, 85.71it/s]    Extracting features: 413it [00:05, 82.36it/s]    Extracting features: 423it [00:05, 86.98it/s]    Extracting features: 432it [00:05, 87.34it/s]    Extracting features: 441it [00:05, 86.61it/s]    Extracting features: 450it [00:05, 86.32it/s]                                                 Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:00,  7.15it/s]    Extracting features: 8it [00:00, 37.94it/s]    Extracting features: 17it [00:00, 57.10it/s]    Extracting features: 27it [00:00, 70.20it/s]    Extracting features: 37it [00:00, 77.80it/s]    Extracting features: 46it [00:00, 80.35it/s]    Extracting features: 55it [00:00, 82.22it/s]    Extracting features: 69it [00:00, 98.28it/s]                                                /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:470: ConvergenceWarning: lbfgs failed to converge after 200 iteration(s) (status=1):
+    STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+
+    Increase the number of iterations to improve the convergence (max_iter=200).
+    You might also want to scale the data as shown in:
+        https://scikit-learn.org/stable/modules/preprocessing.html
+    Please also refer to the documentation for alternative solver options:
+        https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+      n_iter_i = _check_optimize_result(
+    Epoch 9/9  ━━━━━━━━━━━━━━━━ 100/100 0:00:10 •        11.42it/s v_num: 0.000     
+                                        0:00:00                    loss/train: 0.632
+                                                                   loss/val: 1.087  
                                                                    test_accuracy:   
                                                                    0.885            
                                                                    test_f1_weighted:
@@ -512,7 +534,7 @@ enough for checking the evolution of the embedding geometry across training.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 275-282
+.. GENERATED FROM PYTHON SOURCE LINES 277-284
 
 Visualization of the classification metrics during training
 -----------------------------------------------------------
@@ -522,7 +544,7 @@ by the linear probe using TensorBoard. The logged metrics are stored
 in the `lightning_logs` folder by default. They contain the accuracy,
 and f1-weighted scores.
 
-.. GENERATED FROM PYTHON SOURCE LINES 282-302
+.. GENERATED FROM PYTHON SOURCE LINES 284-304
 
 .. code-block:: Python
 
@@ -553,12 +575,12 @@ and f1-weighted scores.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 303-305
+.. GENERATED FROM PYTHON SOURCE LINES 305-307
 
 Once all the metrics are loaded, we plot them as the number of training steps
 increases:
 
-.. GENERATED FROM PYTHON SOURCE LINES 305-317
+.. GENERATED FROM PYTHON SOURCE LINES 307-320
 
 .. code-block:: Python
 
@@ -572,6 +594,7 @@ increases:
     plt.ylabel("Metric score")
     plt.title("Classification metrics during SimCLR training")
     plt.legend()
+    plt.tight_layout()
     plt.show()
 
 
@@ -586,7 +609,7 @@ increases:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 318-323
+.. GENERATED FROM PYTHON SOURCE LINES 321-326
 
 **Observations**: we can see that the classification metrics increase
 steadily during training, showing that the learned representation becomes
@@ -594,7 +617,114 @@ more and more linearly separable for the digit classes. The accuracy
 reaches more than 80% after 10 epochs, which is quite good for such a simple
 model trained *without supervision* and a small number of epochs.
 
-.. GENERATED FROM PYTHON SOURCE LINES 325-337
+.. GENERATED FROM PYTHON SOURCE LINES 328-333
+
+Classification metrics at inference
+-----------------------------------
+
+In addition to monitoring the classification metrics during training, we can
+also evaluate the linear probe at inference after training the SimCLR model.
+
+.. GENERATED FROM PYTHON SOURCE LINES 333-341
+
+.. code-block:: Python
+
+
+    probing = ModelProbing(
+        embedding_estimator=model,  # <-- pass the trained SimCLR model as embedding estimator
+        probe=LogisticRegression(max_iter=200),
+        scoring=["accuracy", "f1_weighted"],
+    )
+    probing.fit(train_xy_loader)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/pytorch_lightning/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:485: Your `predict_dataloader`'s sampler has shuffling enabled, it is strongly recommended that you turn shuffling off for val/test dataloaders.
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:424: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    Predicting ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 469/469 0:00:05 • 0:00:00 91.70it/s 
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:470: ConvergenceWarning: lbfgs failed to converge after 200 iteration(s) (status=1):
+    STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+
+    Increase the number of iterations to improve the convergence (max_iter=200).
+    You might also want to scale the data as shown in:
+        https://scikit-learn.org/stable/modules/preprocessing.html
+    Please also refer to the documentation for alternative solver options:
+        https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+      n_iter_i = _check_optimize_result(
+
+    ModelProbing(
+      (embedding_estimator): SimCLR(
+        (encoder): LeNetEncoder(
+          (conv1): Conv2d(1, 6, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+          (pool1): AvgPool2d(kernel_size=2, stride=2, padding=0)
+          (conv2): Conv2d(6, 16, kernel_size=(5, 5), stride=(1, 1))
+          (pool2): AvgPool2d(kernel_size=2, stride=2, padding=0)
+          (fc1): Linear(in_features=400, out_features=120, bias=True)
+          (fc2): Linear(in_features=120, out_features=84, bias=True)
+          (fc3): Linear(in_features=84, out_features=32, bias=True)
+        )
+        (projection_head): SimCLRProjectionHead(
+          (layers): Sequential(
+            (0): Linear(in_features=32, out_features=64, bias=True)
+            (1): ReLU()
+            (2): Linear(in_features=64, out_features=32, bias=True)
+          )
+        )
+        (loss): InfoNCE(temperature=0.1)
+      )
+    )
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 342-344
+
+We can now evaluate the probe on the test set and print the classification 
+metrics:
+
+.. GENERATED FROM PYTHON SOURCE LINES 344-350
+
+.. code-block:: Python
+
+    scores = probing.score(test_xy_loader)
+    print("Classification metrics at inference:")
+    for metric, score in scores.items():
+        print(f"{metric}: {score:.4f}")
+
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/pytorch_lightning/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:424: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    Predicting ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 79/79 0:00:00 • 0:00:00 106.71it/s 
+    Classification metrics at inference:
+    accuracy: 0.8849
+    f1_weighted: 0.8845
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 351-363
 
 Probing of y-Aware representation on age and sex prediction
 -----------------------------------------------------------
@@ -609,11 +739,11 @@ callback on the OpenBHB dataset to monitor age and sex decoding from brain
 imaging data. *We refer to the example on OpenBHB for more details on this
 neuroimaging dataset.*
 
-.. GENERATED FROM PYTHON SOURCE LINES 339-340
+.. GENERATED FROM PYTHON SOURCE LINES 365-366
 
 We define the relevant global parameters for this example:
 
-.. GENERATED FROM PYTHON SOURCE LINES 340-345
+.. GENERATED FROM PYTHON SOURCE LINES 366-371
 
 .. code-block:: Python
 
@@ -629,7 +759,7 @@ We define the relevant global parameters for this example:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 346-356
+.. GENERATED FROM PYTHON SOURCE LINES 372-382
 
 OpenBHB dataset and data augmentations
 --------------------------------------
@@ -642,7 +772,7 @@ compared to the raw images (284-d vector for each subject).
 We start by loading these data for training and testing the probing callback.
 The target variables are age (regression) and sex (classification).
 
-.. GENERATED FROM PYTHON SOURCE LINES 356-380
+.. GENERATED FROM PYTHON SOURCE LINES 382-406
 
 .. code-block:: Python
 
@@ -678,21 +808,20 @@ The target variables are age (regression) and sex (classification).
 
  .. code-block:: none
 
-    Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-    Fetching ... files: 0it [00:00, ?it/s]    Fetching ... files: 1it [00:00, 10034.22it/s]
-    Fetching ... files: 0it [00:00, ?it/s]    Fetching ... files: 1it [00:00, 14563.56it/s]
+    Fetching ... files: 0it [00:00, ?it/s]    Fetching ... files: 1it [00:00, 6114.15it/s]
+    Fetching ... files: 0it [00:00, ?it/s]    Fetching ... files: 1it [00:00, 14217.98it/s]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 381-385
+.. GENERATED FROM PYTHON SOURCE LINES 407-411
 
 To perform contrastive learning, we will use random masking and Gaussian
 noise as data augmentations. These are well suited for tabular data.
 We will train a **y-Aware Contrastive Learning** model on these data, using
 **age as auxiliary variable**.
 
-.. GENERATED FROM PYTHON SOURCE LINES 385-414
+.. GENERATED FROM PYTHON SOURCE LINES 411-440
 
 .. code-block:: Python
 
@@ -732,11 +861,11 @@ We will train a **y-Aware Contrastive Learning** model on these data, using
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 415-416
+.. GENERATED FROM PYTHON SOURCE LINES 441-442
 
 As before, we create the data loaders for training and testing the models.
 
-.. GENERATED FROM PYTHON SOURCE LINES 416-447
+.. GENERATED FROM PYTHON SOURCE LINES 442-473
 
 .. code-block:: Python
 
@@ -779,13 +908,13 @@ As before, we create the data loaders for training and testing the models.
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:424: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 448-460
+.. GENERATED FROM PYTHON SOURCE LINES 474-486
 
 y-Aware CL training with multitask probing callback
 ---------------------------------------------------
@@ -800,7 +929,7 @@ that wraps the two estimators (ridge and logistic regression) and handles
 the mixed regression/classification tasks. We provide such a meta-estimator
 called **MultiTaskEstimator** below.
 
-.. GENERATED FROM PYTHON SOURCE LINES 460-499
+.. GENERATED FROM PYTHON SOURCE LINES 486-525
 
 .. code-block:: Python
 
@@ -850,11 +979,11 @@ called **MultiTaskEstimator** below.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 500-501
+.. GENERATED FROM PYTHON SOURCE LINES 526-527
 
 Then, we define a scorer specific for each task:
 
-.. GENERATED FROM PYTHON SOURCE LINES 501-513
+.. GENERATED FROM PYTHON SOURCE LINES 527-539
 
 .. code-block:: Python
 
@@ -877,17 +1006,17 @@ Then, we define a scorer specific for each task:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 514-516
+.. GENERATED FROM PYTHON SOURCE LINES 540-542
 
 Finally, we create the multitask probing callback with the relevant
 estimators and scorers for age and sex.
 
-.. GENERATED FROM PYTHON SOURCE LINES 516-530
+.. GENERATED FROM PYTHON SOURCE LINES 542-556
 
 .. code-block:: Python
 
 
-    callback = ModelProbing(
+    callback = ModelProbingCallback(
         train_xy_loader,
         test_xy_loader,
         probe=MultiTaskEstimator([Ridge(), LogisticRegression(max_iter=200)]),
@@ -907,13 +1036,13 @@ estimators and scorers for age and sex.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 531-534
+.. GENERATED FROM PYTHON SOURCE LINES 557-560
 
 Since we work with tabular data, we can use a simple MLP as encoder for
 y-Aware Contrastive Learning. The input dimension is 284 and we compress the
 data to a 32-d latent space.
 
-.. GENERATED FROM PYTHON SOURCE LINES 534-537
+.. GENERATED FROM PYTHON SOURCE LINES 560-563
 
 .. code-block:: Python
 
@@ -927,14 +1056,14 @@ data to a 32-d latent space.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 538-542
+.. GENERATED FROM PYTHON SOURCE LINES 564-568
 
 We can now create the y-Aware Contrastive Learning model with the MLP encoder
 and the multitask probing callback. We limit the training to 10 epochs for
 the sake of time and we use a small bandwidth for the Gaussian kernel in the
 y-Aware model compared to the variance of the age in OpenBHB (sigma=4).
 
-.. GENERATED FROM PYTHON SOURCE LINES 542-559
+.. GENERATED FROM PYTHON SOURCE LINES 568-585
 
 .. code-block:: Python
 
@@ -963,9 +1092,12 @@ y-Aware model compared to the variance of the age in OpenBHB (sigma=4).
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/pytorch_lightning/loops/fit_loop.py:317: The number of training batches (26) is smaller than the logging interval Trainer(log_every_n_steps=50). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/pytorch_lightning/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/pytorch_lightning/loops/fit_loop.py:317: The number of training batches (26) is smaller than the logging interval Trainer(log_every_n_steps=50). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.
     ┏━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┓
     ┃   ┃ Name            ┃ Type                 ┃ Params ┃ Mode  ┃ FLOPs ┃
     ┡━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━┩
@@ -980,99 +1112,71 @@ y-Aware model compared to the variance of the age in OpenBHB (sigma=4).
     Modules in train mode: 13                                                       
     Modules in eval mode: 0                                                         
     Total FLOPs: 0                                                                  
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:04,  4.80s/it]    Extracting features: 2it [00:05,  2.21s/it]    Extracting features: 11it [00:07,  1.88it/s]    Extracting features: 12it [00:08,  2.00it/s]    Extracting features: 21it [00:09,  3.33it/s]    Extracting features: 24it [00:09,  4.11it/s]                                                Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:02,  2.31s/it]                                               /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:04,  4.86s/it]    Extracting features: 5it [00:04,  1.34it/s]    Extracting features: 11it [00:07,  1.71it/s]    Extracting features: 15it [00:08,  2.64it/s]    Extracting features: 21it [00:09,  3.04it/s]    Extracting features: 23it [00:09,  3.52it/s]                                                Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:01,  1.87s/it]                                               /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:03,  3.58s/it]    Extracting features: 2it [00:03,  1.56s/it]    Extracting features: 3it [00:04,  1.31s/it]    Extracting features: 4it [00:04,  1.12it/s]    Extracting features: 11it [00:06,  2.73it/s]    Extracting features: 12it [00:07,  1.98it/s]    Extracting features: 14it [00:08,  2.59it/s]    Extracting features: 21it [00:09,  4.18it/s]    Extracting features: 22it [00:09,  3.94it/s]    Extracting features: 23it [00:09,  3.88it/s]                                                Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:02,  2.27s/it]                                               /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
-      warnings.warn(warn_msg)
-    Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:04,  4.75s/it]    Extracting features: 3it [00:05,  1.33s/it]    Extracting features: 11it [00:08,  1.75it/s]    Extracting features: 13it [00:08,  2.17it/s]    Extracting features: 14it [00:08,  2.41it/s]    Extracting features: 21it [00:10,  3.16it/s]                                                Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:02,  2.32s/it]                                               /opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:470: ConvergenceWarning: lbfgs failed to converge after 200 iteration(s) (status=1):
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:06,  6.41s/it]    Extracting features: 2it [00:07,  3.07s/it]    Extracting features: 7it [00:07,  1.64it/s]    Extracting features: 9it [00:07,  2.29it/s]    Extracting features: 11it [00:10,  1.33it/s]    Extracting features: 13it [00:10,  1.79it/s]    Extracting features: 18it [00:10,  3.59it/s]    Extracting features: 21it [00:11,  3.32it/s]    Extracting features: 23it [00:11,  3.96it/s]                                                Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:02,  2.44s/it]    Extracting features: 2it [00:02,  1.08s/it]    Extracting features: 3it [00:02,  1.41it/s]    Extracting features: 4it [00:02,  2.04it/s]                                               /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:07,  7.03s/it]    Extracting features: 5it [00:07,  1.08s/it]    Extracting features: 8it [00:07,  1.69it/s]    Extracting features: 11it [00:10,  1.24it/s]    Extracting features: 17it [00:10,  2.60it/s]    Extracting features: 21it [00:11,  2.91it/s]                                                Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:02,  2.95s/it]    Extracting features: 5it [00:03,  2.15it/s]                                               /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:04,  4.58s/it]    Extracting features: 3it [00:06,  1.94s/it]    Extracting features: 9it [00:06,  1.96it/s]    Extracting features: 11it [00:07,  2.28it/s]    Extracting features: 13it [00:09,  1.69it/s]    Extracting features: 17it [00:09,  2.61it/s]    Extracting features: 19it [00:10,  3.00it/s]    Extracting features: 23it [00:10,  3.81it/s]                                                Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:02,  2.11s/it]    Extracting features: 2it [00:02,  1.01it/s]    Extracting features: 3it [00:02,  1.31it/s]    Extracting features: 4it [00:02,  1.94it/s]                                               /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:470: ConvergenceWarning: lbfgs failed to converge after 200 iteration(s) (status=1):
     STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
 
     Increase the number of iterations to improve the convergence (max_iter=200).
@@ -1081,15 +1185,52 @@ y-Aware model compared to the variance of the age in OpenBHB (sigma=4).
     Please also refer to the documentation for alternative solver options:
         https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
       n_iter_i = _check_optimize_result(
-    Epoch 9/9  ━━━━━━━━━━━━━━━━━ 26/26 0:00:10 • 0:00:00 3.76it/s v_num: 1.000      
-                                                                  loss/train: 7.943 
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+      self.check_worker_number_rationality()
+    /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+      super().__init__(loader)
+    Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:04,  4.37s/it]    Extracting features: 2it [00:05,  2.59s/it]    Extracting features: 5it [00:06,  1.01s/it]    Extracting features: 7it [00:07,  1.50it/s]    Extracting features: 11it [00:08,  1.97it/s]    Extracting features: 13it [00:09,  2.28it/s]    Extracting features: 15it [00:10,  2.08it/s]    Extracting features: 21it [00:10,  3.63it/s]    Extracting features: 25it [00:11,  4.78it/s]                                                Extracting features: 0it [00:00, ?it/s]    Extracting features: 1it [00:03,  3.07s/it]                                               /opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:470: ConvergenceWarning: lbfgs failed to converge after 200 iteration(s) (status=1):
+    STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+
+    Increase the number of iterations to improve the convergence (max_iter=200).
+    You might also want to scale the data as shown in:
+        https://scikit-learn.org/stable/modules/preprocessing.html
+    Please also refer to the documentation for alternative solver options:
+        https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+      n_iter_i = _check_optimize_result(
+    Epoch 9/9  ━━━━━━━━━━━━━━━━━ 26/26 0:00:12 • 0:00:00 3.39it/s v_num: 3.000      
+                                                                  loss/train: 7.944 
                                                                   loss/val: 11.054  
-                                                                  test_age/r2: 0.639
+                                                                  test_age/r2: 0.621
                                                                   test_age/pearsonr:
-                                                                  0.807             
+                                                                  0.793             
                                                                   test_sex/accuracy:
-                                                                  0.760 test_sex/f1:
-                                                                  0.747             
+                                                                  0.761 test_sex/f1:
+                                                                  0.743             
 
     YAwareContrastiveLearning(
       (encoder): MLP(
@@ -1113,7 +1254,7 @@ y-Aware model compared to the variance of the age in OpenBHB (sigma=4).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 560-566
+.. GENERATED FROM PYTHON SOURCE LINES 586-592
 
 Visualization of the classification and regression metrics during training
 --------------------------------------------------------------------------
@@ -1122,7 +1263,7 @@ After training, we can visualize the classification and regression metrics
 logged by the model probing using TensorBoard. The logged metrics are
 stored in the `lightning_logs` folder by default.
 
-.. GENERATED FROM PYTHON SOURCE LINES 566-580
+.. GENERATED FROM PYTHON SOURCE LINES 592-606
 
 .. code-block:: Python
 
@@ -1147,13 +1288,13 @@ stored in the `lightning_logs` folder by default.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 581-584
+.. GENERATED FROM PYTHON SOURCE LINES 607-610
 
 Once all the metrics are loaded, we plot them as the number of training steps
 increases. We create two subplots, one for each task (age regression and sex
 classification).
 
-.. GENERATED FROM PYTHON SOURCE LINES 584-604
+.. GENERATED FROM PYTHON SOURCE LINES 610-630
 
 .. code-block:: Python
 
@@ -1189,7 +1330,7 @@ classification).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 605-619
+.. GENERATED FROM PYTHON SOURCE LINES 631-645
 
 Conclusions
 -----------
@@ -1209,9 +1350,9 @@ downstream tasks.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (7 minutes 8.489 seconds)
+   **Total running time of the script:** (8 minutes 6.589 seconds)
 
-**Estimated memory usage:**  402 MB
+**Estimated memory usage:**  271 MB
 
 
 .. _sphx_glr_download_auto_examples_plot_model_probing.py:

@@ -3,19 +3,19 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta property="og:title" content="Model probing callback of embedding estimators" />
+<meta property="og:title" content="Model probing of embedding estimators" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://neurospin-deepinsight.github.io/auto_examples/plot_model_probing.html" />
 <meta property="og:site_name" content="Nidl" />
-<meta property="og:description" content="This notebook will show you how to investigate the data representation given by an embedding estimator during training(such as SimCLR, y-Aware Contrastive Learning or Barlow Twins) using the notion..." />
+<meta property="og:description" content="This notebook will show you how to investigate the data representation given by an embedding estimator(such as SimCLR, y-Aware Contrastive Learning or Barlow Twins) during training and inference us..." />
 <meta property="og:image" content="https://neurospin-deepinsight.github.io/nidl/_static/nidl-logo.png" />
 <meta property="og:image:alt" content="Nidl" />
-<meta name="description" content="This notebook will show you how to investigate the data representation given by an embedding estimator during training(such as SimCLR, y-Aware Contrastive Learning or Barlow Twins) using the notion..." />
-<link rel="search" title="Search" href="../search.html"><link rel="next" title="Presentation of the OpenBHB dataset" href="plot_openbhb.html"><link rel="prev" title="Examples" href="index.html">
+<meta name="description" content="This notebook will show you how to investigate the data representation given by an embedding estimator(such as SimCLR, y-Aware Contrastive Learning or Barlow Twins) during training and inference us..." />
+<link rel="search" title="Search" href="../search.html"><link rel="next" title="Presentation of the OpenBHB dataset" href="plot_openbhb.html"><link rel="prev" title="Decoupled Contrastive Learning" href="plot_dcl_vs_simclr.html">
         <link rel="prefetch" href="../_static/nidl-transparent.png" as="image">
 
     <link rel="shortcut icon" href="../_static/favicon.ico"><!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>Model probing callback of embedding estimators - Nidl</title>
+        <title>Model probing of embedding estimators - Nidl</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=2da93098" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -230,10 +230,12 @@
   <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Examples</a><input aria-label="Toggle navigation of Examples" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Model probing callback of embedding estimators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_dcl_vs_simclr.html">Decoupled Contrastive Learning</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Model probing of embedding estimators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_openbhb.html">Presentation of the OpenBHB dataset</a></li>
-<li class="toctree-l2"><a class="reference internal" href="simclr_stl10.html">Self-Supervised Contrastive Learning with SimCLR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_simclr_mnist.html">Self-Supervised Contrastive Learning with SimCLR on MNIST</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_barlowtwins_openbhb.html">Self-Supervised Learning with Barlow Twins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_ijepa_medmnist.html">Self-Supervised Learning with I-JEPA on MedMNIST3D</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_metrics_callback.html">Visualization of metrics during training of PyTorch-Lightning models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_yaware_openbhb.html">Weakly Supervised Contrastive Learning with y-Aware</a></li>
 </ul>
@@ -265,10 +267,14 @@
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.estimators.RegressorMixin.html">nidl.estimators.RegressorMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.estimators.TransformerMixin.html">nidl.estimators.TransformerMixin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.estimators.ssl.SimCLR.html">nidl.estimators.ssl.SimCLR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.estimators.ssl.DCL.html">nidl.estimators.ssl.DCL</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.estimators.ssl.YAwareContrastiveLearning.html">nidl.estimators.ssl.YAwareContrastiveLearning</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.estimators.ssl.BarlowTwins.html">nidl.estimators.ssl.BarlowTwins</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.estimators.ssl.DINO.html">nidl.estimators.ssl.DINO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.estimators.ssl.IJEPA.html">nidl.estimators.ssl.IJEPA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.losses.InfoNCE.html">nidl.losses.InfoNCE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.losses.DCLLoss.html">nidl.losses.DCLLoss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.losses.DCLWLoss.html">nidl.losses.DCLWLoss</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.losses.YAwareInfoNCE.html">nidl.losses.YAwareInfoNCE</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.losses.BarlowTwinsLoss.html">nidl.losses.BarlowTwinsLoss</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.losses.DINOLoss.html">nidl.losses.DINOLoss</a></li>
@@ -277,20 +283,26 @@
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.estimators.ssl.utils.YAwareProjectionHead.html">nidl.estimators.ssl.utils.YAwareProjectionHead</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.estimators.ssl.utils.BarlowTwinsProjectionHead.html">nidl.estimators.ssl.utils.BarlowTwinsProjectionHead</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.estimators.ssl.utils.DINOProjectionHead.html">nidl.estimators.ssl.utils.DINOProjectionHead</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.estimators.probes.ModelProbing.html">nidl.estimators.probes.ModelProbing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.estimators.autoencoders.VAE.html">nidl.estimators.autoencoders.VAE</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.losses.BetaVAELoss.html">nidl.losses.BetaVAELoss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.estimators.dummy.DummyEmbeddingEstimator.html">nidl.estimators.dummy.DummyEmbeddingEstimator</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../modules/architectures.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">nidl.volume.backbones</span></code>: Available backbones</a><input aria-label="Toggle navigation of nidl.volume.backbones: Available backbones" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.utils.Weights.html">nidl.utils.Weights</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.utils.weights.Weights.html">nidl.utils.weights.Weights</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.volume.backbones.AlexNet.html">nidl.volume.backbones.AlexNet</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.volume.backbones.DenseNet.html">nidl.volume.backbones.DenseNet</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.volume.backbones.ResNet.html">nidl.volume.backbones.ResNet</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.volume.backbones.ResNetTruncated.html">nidl.volume.backbones.ResNetTruncated</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.volume.backbones.VisionTransformer3D.html">nidl.volume.backbones.VisionTransformer3D</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.volume.backbones.densenet121.html">nidl.volume.backbones.densenet121</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.volume.backbones.resnet18_trunc.html">nidl.volume.backbones.resnet18_trunc</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.volume.backbones.resnet50.html">nidl.volume.backbones.resnet50</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.volume.backbones.resnet50_trunc.html">nidl.volume.backbones.resnet50_trunc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.volume.backbones.vit_small_patch16_128.html">nidl.volume.backbones.vit_small_patch16_128</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.volume.backbones.vit_base_patch16_128.html">nidl.volume.backbones.vit_base_patch16_128</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.volume.backbones.vit_large_patch16_128.html">nidl.volume.backbones.vit_large_patch16_128</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../modules/augmentation.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">nidl.transforms</span></code>: Available transformations</a><input aria-label="Toggle navigation of nidl.transforms: Available transformations" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -319,8 +331,8 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../modules/callbacks.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">nidl.callbacks</span></code>: Available callbacks</a><input aria-label="Toggle navigation of nidl.callbacks: Available callbacks" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.callbacks.ModelProbing.html">nidl.callbacks.ModelProbing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.callbacks.ModelProbingCV.html">nidl.callbacks.ModelProbingCV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.callbacks.ModelProbingCallback.html">nidl.callbacks.ModelProbingCallback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.callbacks.ModelProbingCVCallback.html">nidl.callbacks.ModelProbingCVCallback</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.callbacks.MetricsCallback.html">nidl.callbacks.MetricsCallback</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.callbacks.BatchTypingCallback.html">nidl.callbacks.BatchTypingCallback</a></li>
 </ul>
@@ -330,6 +342,9 @@
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.metrics.alignment_score.html">nidl.metrics.alignment_score</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.metrics.uniformity_score.html">nidl.metrics.uniformity_score</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.metrics.contrastive_accuracy_score.html">nidl.metrics.contrastive_accuracy_score</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.metrics.procrustes_similarity.html">nidl.metrics.procrustes_similarity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.metrics.procrustes_r2.html">nidl.metrics.procrustes_r2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/generated/nidl.metrics.kruskal_similarity.html">nidl.metrics.kruskal_similarity</a></li>
 </ul>
 </li>
 </ul>
@@ -392,21 +407,22 @@
 <p><a class="reference internal" href="#sphx-glr-download-auto-examples-plot-model-probing-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code.</p>
 </div>
-<section class="sphx-glr-example-title" id="model-probing-callback-of-embedding-estimators">
-<span id="sphx-glr-auto-examples-plot-model-probing-py"></span><h1>Model probing callback of embedding estimators<a class="headerlink" href="#model-probing-callback-of-embedding-estimators" title="Link to this heading">¶</a></h1>
+<section class="sphx-glr-example-title" id="model-probing-of-embedding-estimators">
+<span id="sphx-glr-auto-examples-plot-model-probing-py"></span><h1>Model probing of embedding estimators<a class="headerlink" href="#model-probing-of-embedding-estimators" title="Link to this heading">¶</a></h1>
 <p>This notebook will show you how to investigate the <strong>data representation given
-by an embedding estimator during training</strong>  (such as SimCLR, y-Aware
-Contrastive Learning or Barlow Twins) using the notion of “probing”.
+by an embedding estimator</strong> (such as SimCLR, y-Aware Contrastive Learning or Barlow
+Twins) <strong>during training and inference</strong> using the notion of “probing”.
 A standard machine learning model (e.g. linear or SVM) is trained and evaluated
-on the data embedding for a given task as the model is being fitted. It allows
-the user to understand what concepts are learned by the model.</p>
+on the data embedding for a given task as the model is being fitted (for training
+monitoring) or at inference. It allows the user to understand what concepts are learned
+by the model.</p>
 <p>This has been first introduced by Guillaume Alain and Yoshua Bengio in 2017
 <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> to understand the internal behavior of a deep neural network along
 the different layers. This technique aimed at answering questions like: what is
 the intermediate representation of a neural network? What information is
 contained for a given layer ?</p>
 <p>Then, it has been adapted to benchmark self-supervised vision models
-(like SimCLR, Barlow Twins, DINO, DINOv2) on classical datasets (ImageNet,
+(like SimCLR, Barlow Twins, DINO, DINOv2, DINOv3) on classical datasets (ImageNet,
 CIFAR, …) by implementing linear probing and K-Nearest Neighbors probing
 on model’s output representation.</p>
 <aside class="footnote-list brackets">
@@ -443,7 +459,8 @@ importing our standard libraries below:</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torchvision.ops</span><span class="w"> </span><span class="kn">import</span> <a href="https://docs.pytorch.org/vision/main/generated/torchvision.ops.MLP.html#torchvision.ops.MLP" title="torchvision.ops.MLP" class="sphx-glr-backref-module-torchvision-ops sphx-glr-backref-type-py-class"><span class="n">MLP</span></a>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torchvision.utils</span><span class="w"> </span><span class="kn">import</span> <a href="https://docs.pytorch.org/vision/main/generated/torchvision.utils.make_grid.html#torchvision.utils.make_grid" title="torchvision.utils.make_grid" class="sphx-glr-backref-module-torchvision-utils sphx-glr-backref-type-py-function"><span class="n">make_grid</span></a>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">nidl.callbacks.model_probing</span><span class="w"> </span><span class="kn">import</span> <a href="../modules/generated/nidl.callbacks.ModelProbing.html#nidl.callbacks.ModelProbing" title="nidl.callbacks.ModelProbing" class="sphx-glr-backref-module-nidl-callbacks sphx-glr-backref-type-py-class"><span class="n">ModelProbing</span></a>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nidl.callbacks</span><span class="w"> </span><span class="kn">import</span> <a href="../modules/generated/nidl.callbacks.ModelProbingCallback.html#nidl.callbacks.ModelProbingCallback" title="nidl.callbacks.ModelProbingCallback" class="sphx-glr-backref-module-nidl-callbacks sphx-glr-backref-type-py-class"><span class="n">ModelProbingCallback</span></a>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nidl.estimators.probes</span><span class="w"> </span><span class="kn">import</span> <a href="../modules/generated/nidl.estimators.probes.ModelProbing.html#nidl.estimators.probes.ModelProbing" title="nidl.estimators.probes.ModelProbing" class="sphx-glr-backref-module-nidl-estimators-probes sphx-glr-backref-type-py-class"><span class="n">ModelProbing</span></a>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nidl.datasets</span><span class="w"> </span><span class="kn">import</span> <a href="../modules/generated/nidl.datasets.OpenBHB.html#nidl.datasets.OpenBHB" title="nidl.datasets.OpenBHB" class="sphx-glr-backref-module-nidl-datasets sphx-glr-backref-type-py-class"><span class="n">OpenBHB</span></a>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nidl.estimators.ssl</span><span class="w"> </span><span class="kn">import</span> <a href="../modules/generated/nidl.estimators.ssl.SimCLR.html#nidl.estimators.ssl.SimCLR" title="nidl.estimators.ssl.SimCLR" class="sphx-glr-backref-module-nidl-estimators-ssl sphx-glr-backref-type-py-class"><span class="n">SimCLR</span></a><span class="p">,</span> <a href="../modules/generated/nidl.estimators.ssl.YAwareContrastiveLearning.html#nidl.estimators.ssl.YAwareContrastiveLearning" title="nidl.estimators.ssl.YAwareContrastiveLearning" class="sphx-glr-backref-module-nidl-estimators-ssl sphx-glr-backref-type-py-class"><span class="n">YAwareContrastiveLearning</span></a>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nidl.metrics</span><span class="w"> </span><span class="kn">import</span> <a href="../modules/generated/nidl.metrics.pearson_r.html#nidl.metrics.pearson_r" title="nidl.metrics.pearson_r" class="sphx-glr-backref-module-nidl-metrics sphx-glr-backref-type-py-function"><span class="n">pearson_r</span></a>
@@ -481,17 +498,16 @@ transforms. These datasets are used for training and testing the probing.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  0%|          | 0.00/9.91M [00:00&lt;?, ?B/s]
- 79%|███████▉  | 7.86M/9.91M [00:00&lt;00:00, 78.4MB/s]
-100%|██████████| 9.91M/9.91M [00:00&lt;00:00, 81.1MB/s]
+100%|██████████| 9.91M/9.91M [00:00&lt;00:00, 140MB/s]
 
   0%|          | 0.00/28.9k [00:00&lt;?, ?B/s]
-100%|██████████| 28.9k/28.9k [00:00&lt;00:00, 19.0MB/s]
+100%|██████████| 28.9k/28.9k [00:00&lt;00:00, 23.7MB/s]
 
   0%|          | 0.00/1.65M [00:00&lt;?, ?B/s]
-100%|██████████| 1.65M/1.65M [00:00&lt;00:00, 43.3MB/s]
+100%|██████████| 1.65M/1.65M [00:00&lt;00:00, 81.6MB/s]
 
   0%|          | 0.00/4.54k [00:00&lt;?, ?B/s]
-100%|██████████| 4.54k/4.54k [00:00&lt;00:00, 16.9MB/s]
+100%|██████████| 4.54k/4.54k [00:00&lt;00:00, 22.0MB/s]
 </pre></div>
 </div>
 </section>
@@ -559,8 +575,8 @@ models.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:424: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
 </pre></div>
 </div>
 <p>Before starting training the SimCLR model, let’s visualize some
@@ -597,8 +613,10 @@ examples of the dataset.</p>
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_plot_model_probing_001.png" srcset="../_images/sphx_glr_plot_model_probing_001.png" alt="Original (label=7), Augmented View 1, Augmented View 2, Original (label=2), Augmented View 1, Augmented View 2" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
+<img src="../_images/sphx_glr_plot_model_probing_001.png" srcset="../_images/sphx_glr_plot_model_probing_001.png" alt="Original (label=7), Augmented View 1, Augmented View 2, Original (label=2), Augmented View 1, Augmented View 2" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
 </pre></div>
 </div>
 </section>
@@ -608,7 +626,7 @@ examples of the dataset.</p>
 classifier on the learned representation during SimCLR training. The probing
 is performed every 2 epochs on the training and test sets. The classification
 metrics (accuracy and f1-weighted) are logged to TensorBoard by default.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="../modules/generated/nidl.callbacks.ModelProbing.html#nidl.callbacks.ModelProbing" title="nidl.callbacks.ModelProbing" class="sphx-glr-backref-module-nidl-callbacks sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">callback</span></a> <span class="o">=</span> <a href="../modules/generated/nidl.callbacks.ModelProbing.html#nidl.callbacks.ModelProbing" title="nidl.callbacks.ModelProbing" class="sphx-glr-backref-module-nidl-callbacks sphx-glr-backref-type-py-class"><span class="n">ModelProbing</span></a><span class="p">(</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="../modules/generated/nidl.callbacks.ModelProbingCallback.html#nidl.callbacks.ModelProbingCallback" title="nidl.callbacks.ModelProbingCallback" class="sphx-glr-backref-module-nidl-callbacks sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">callback</span></a> <span class="o">=</span> <a href="../modules/generated/nidl.callbacks.ModelProbingCallback.html#nidl.callbacks.ModelProbingCallback" title="nidl.callbacks.ModelProbingCallback" class="sphx-glr-backref-module-nidl-callbacks sphx-glr-backref-type-py-class"><span class="n">ModelProbingCallback</span></a><span class="p">(</span>
     <a href="https://docs.pytorch.org/docs/main/data.html#torch.utils.data.DataLoader" title="torch.utils.data.DataLoader" class="sphx-glr-backref-module-torch-utils-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">train_xy_loader</span></a><span class="p">,</span>
     <a href="https://docs.pytorch.org/docs/main/data.html#torch.utils.data.DataLoader" title="torch.utils.data.DataLoader" class="sphx-glr-backref-module-torch-utils-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">test_xy_loader</span></a><span class="p">,</span>
     <span class="n">probe</span><span class="o">=</span><a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="sklearn.linear_model.LogisticRegression" class="sphx-glr-backref-module-sklearn-linear_model sphx-glr-backref-type-py-class"><span class="n">LogisticRegression</span></a><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">200</span><span class="p">),</span>
@@ -661,12 +679,12 @@ enough for checking the evolution of the embedding geometry across training.</p>
     <span class="n">learning_rate</span><span class="o">=</span><span class="mf">3e-4</span><span class="p">,</span>
     <span class="n">weight_decay</span><span class="o">=</span><span class="mf">5e-5</span><span class="p">,</span>
     <span class="n">enable_checkpointing</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">callbacks</span><span class="o">=</span><a href="../modules/generated/nidl.callbacks.ModelProbing.html#nidl.callbacks.ModelProbing" title="nidl.callbacks.ModelProbing" class="sphx-glr-backref-module-nidl-callbacks sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">callback</span></a><span class="p">,</span>  <span class="c1"># &lt;-- key part for probing</span>
+    <span class="n">callbacks</span><span class="o">=</span><a href="../modules/generated/nidl.callbacks.ModelProbingCallback.html#nidl.callbacks.ModelProbingCallback" title="nidl.callbacks.ModelProbingCallback" class="sphx-glr-backref-module-nidl-callbacks sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">callback</span></a><span class="p">,</span>  <span class="c1"># &lt;-- key part for probing</span>
 <span class="p">)</span>
 <a href="../modules/generated/nidl.estimators.BaseEstimator.html#nidl.estimators.BaseEstimator.fit" title="nidl.estimators.BaseEstimator.fit" class="sphx-glr-backref-module-nidl-estimators sphx-glr-backref-type-py-method"><span class="n">model</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><a href="https://docs.pytorch.org/docs/main/data.html#torch.utils.data.DataLoader" title="torch.utils.data.DataLoader" class="sphx-glr-backref-module-torch-utils-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">train_ssl_loader</span></a><span class="p">,</span> <a href="https://docs.pytorch.org/docs/main/data.html#torch.utils.data.DataLoader" title="torch.utils.data.DataLoader" class="sphx-glr-backref-module-torch-utils-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">test_ssl_loader</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/lightning_fabric/utilities/seed.py:44: No seed found, seed set to 0
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/pytorch_lightning/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
 ┏━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┓
 ┃   ┃ Name            ┃ Type                 ┃ Params ┃ Mode  ┃ FLOPs ┃
 ┡━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━┩
@@ -683,132 +701,137 @@ Modules in eval mode: 0
 Total FLOPs: 0
 
 Extracting features: 0it [00:00, ?it/s]
-Extracting features: 1it [00:00,  5.75it/s]
-Extracting features: 11it [00:00, 46.73it/s]
-Extracting features: 20it [00:00, 61.05it/s]
-Extracting features: 30it [00:00, 73.65it/s]
-Extracting features: 40it [00:00, 79.60it/s]
-Extracting features: 49it [00:00, 81.97it/s]
-Extracting features: 59it [00:00, 84.29it/s]
-Extracting features: 68it [00:00, 82.87it/s]
-Extracting features: 78it [00:01, 86.46it/s]
-Extracting features: 87it [00:01, 85.94it/s]
-Extracting features: 98it [00:01, 85.14it/s]
-Extracting features: 108it [00:01, 87.61it/s]
-Extracting features: 117it [00:01, 86.88it/s]
-Extracting features: 127it [00:01, 89.12it/s]
-Extracting features: 136it [00:01, 88.29it/s]
-Extracting features: 146it [00:01, 90.87it/s]
-Extracting features: 156it [00:01, 86.28it/s]
-Extracting features: 167it [00:02, 89.95it/s]
-Extracting features: 177it [00:02, 86.18it/s]
-Extracting features: 186it [00:02, 84.89it/s]
-Extracting features: 196it [00:02, 88.93it/s]
-Extracting features: 206it [00:02, 90.63it/s]
-Extracting features: 216it [00:02, 86.06it/s]
-Extracting features: 226it [00:02, 88.12it/s]
-Extracting features: 235it [00:02, 86.15it/s]
-Extracting features: 244it [00:02, 86.58it/s]
-Extracting features: 253it [00:03, 86.75it/s]
-Extracting features: 262it [00:03, 85.76it/s]
-Extracting features: 271it [00:03, 84.58it/s]
-Extracting features: 281it [00:03, 85.57it/s]
-Extracting features: 291it [00:03, 84.83it/s]
-Extracting features: 302it [00:03, 90.77it/s]
-Extracting features: 312it [00:03, 86.77it/s]
-Extracting features: 322it [00:03, 87.71it/s]
-Extracting features: 332it [00:03, 87.10it/s]
-Extracting features: 343it [00:04, 91.13it/s]
-Extracting features: 353it [00:04, 87.99it/s]
-Extracting features: 363it [00:04, 89.43it/s]
-Extracting features: 372it [00:04, 87.22it/s]
-Extracting features: 382it [00:04, 85.79it/s]
-Extracting features: 392it [00:04, 87.49it/s]
-Extracting features: 401it [00:04, 87.41it/s]
-Extracting features: 411it [00:04, 89.13it/s]
-Extracting features: 420it [00:04, 85.03it/s]
-Extracting features: 429it [00:05, 86.22it/s]
-Extracting features: 439it [00:05, 87.35it/s]
-Extracting features: 448it [00:05, 86.62it/s]
+Extracting features: 1it [00:00,  9.43it/s]
+Extracting features: 4it [00:00, 20.77it/s]
+Extracting features: 13it [00:00, 48.05it/s]
+Extracting features: 23it [00:00, 67.09it/s]
+Extracting features: 32it [00:00, 73.93it/s]
+Extracting features: 40it [00:00, 75.61it/s]
+Extracting features: 49it [00:00, 78.42it/s]
+Extracting features: 59it [00:00, 82.85it/s]
+Extracting features: 70it [00:00, 89.40it/s]
+Extracting features: 79it [00:01, 82.23it/s]
+Extracting features: 88it [00:01, 84.10it/s]
+Extracting features: 99it [00:01, 88.01it/s]
+Extracting features: 108it [00:01, 87.17it/s]
+Extracting features: 117it [00:01, 87.51it/s]
+Extracting features: 126it [00:01, 86.92it/s]
+Extracting features: 135it [00:01, 86.38it/s]
+Extracting features: 144it [00:01, 86.83it/s]
+Extracting features: 153it [00:01, 85.23it/s]
+Extracting features: 163it [00:02, 87.07it/s]
+Extracting features: 172it [00:02, 86.44it/s]
+Extracting features: 181it [00:02, 85.74it/s]
+Extracting features: 191it [00:02, 87.22it/s]
+Extracting features: 200it [00:02, 85.67it/s]
+Extracting features: 209it [00:02, 85.24it/s]
+Extracting features: 219it [00:02, 88.18it/s]
+Extracting features: 228it [00:02, 84.43it/s]
+Extracting features: 238it [00:02, 86.51it/s]
+Extracting features: 248it [00:03, 88.18it/s]
+Extracting features: 258it [00:03, 89.14it/s]
+Extracting features: 267it [00:03, 89.08it/s]
+Extracting features: 276it [00:03, 87.44it/s]
+Extracting features: 285it [00:03, 86.87it/s]
+Extracting features: 294it [00:03, 86.30it/s]
+Extracting features: 304it [00:03, 87.58it/s]
+Extracting features: 314it [00:03, 89.45it/s]
+Extracting features: 323it [00:03, 85.47it/s]
+Extracting features: 333it [00:03, 87.17it/s]
+Extracting features: 342it [00:04, 87.95it/s]
+Extracting features: 352it [00:04, 88.52it/s]
+Extracting features: 361it [00:04, 84.80it/s]
+Extracting features: 372it [00:04, 88.89it/s]
+Extracting features: 381it [00:04, 87.82it/s]
+Extracting features: 390it [00:04, 86.18it/s]
+Extracting features: 399it [00:04, 84.46it/s]
+Extracting features: 408it [00:04, 85.91it/s]
+Extracting features: 418it [00:04, 84.38it/s]
+Extracting features: 428it [00:05, 86.33it/s]
+Extracting features: 438it [00:05, 88.71it/s]
+Extracting features: 447it [00:05, 87.16it/s]
+Extracting features: 465it [00:05, 112.05it/s]
 
 
 Extracting features: 0it [00:00, ?it/s]
-Extracting features: 1it [00:00,  8.11it/s]
-Extracting features: 8it [00:00, 40.56it/s]
-Extracting features: 16it [00:00, 55.40it/s]
-Extracting features: 24it [00:00, 63.70it/s]
-Extracting features: 32it [00:00, 68.29it/s]
-Extracting features: 41it [00:00, 74.60it/s]
-Extracting features: 49it [00:00, 75.00it/s]
-Extracting features: 61it [00:00, 83.51it/s]
+Extracting features: 1it [00:00,  5.96it/s]
+Extracting features: 9it [00:00, 38.76it/s]
+Extracting features: 18it [00:00, 58.14it/s]
+Extracting features: 28it [00:00, 72.02it/s]
+Extracting features: 36it [00:00, 74.25it/s]
+Extracting features: 45it [00:00, 78.74it/s]
+Extracting features: 56it [00:00, 84.08it/s]
+Extracting features: 72it [00:00, 106.64it/s]
 
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-
-Extracting features: 0it [00:00, ?it/s]
-Extracting features: 2it [00:00, 12.25it/s]
-Extracting features: 9it [00:00, 39.17it/s]
-Extracting features: 19it [00:00, 62.23it/s]
-Extracting features: 29it [00:00, 74.08it/s]
-Extracting features: 39it [00:00, 81.82it/s]
-Extracting features: 48it [00:00, 80.48it/s]
-Extracting features: 57it [00:00, 83.25it/s]
-Extracting features: 66it [00:00, 84.95it/s]
-Extracting features: 76it [00:01, 85.67it/s]
-Extracting features: 86it [00:01, 85.42it/s]
-Extracting features: 96it [00:01, 87.70it/s]
-Extracting features: 106it [00:01, 86.58it/s]
-Extracting features: 115it [00:01, 86.38it/s]
-Extracting features: 124it [00:01, 86.39it/s]
-Extracting features: 133it [00:01, 85.78it/s]
-Extracting features: 143it [00:01, 86.13it/s]
-Extracting features: 154it [00:01, 91.36it/s]
-Extracting features: 164it [00:02, 85.82it/s]
-Extracting features: 175it [00:02, 92.06it/s]
-Extracting features: 185it [00:02, 87.32it/s]
-Extracting features: 194it [00:02, 86.80it/s]
-Extracting features: 204it [00:02, 83.16it/s]
-Extracting features: 215it [00:02, 89.19it/s]
-Extracting features: 225it [00:02, 90.83it/s]
-Extracting features: 235it [00:02, 85.83it/s]
-Extracting features: 244it [00:02, 86.22it/s]
-Extracting features: 254it [00:03, 89.30it/s]
-Extracting features: 264it [00:03, 87.25it/s]
-Extracting features: 273it [00:03, 86.70it/s]
-Extracting features: 283it [00:03, 90.38it/s]
-Extracting features: 293it [00:03, 84.76it/s]
-Extracting features: 303it [00:03, 86.05it/s]
-Extracting features: 312it [00:03, 85.23it/s]
-Extracting features: 322it [00:03, 88.22it/s]
-Extracting features: 331it [00:03, 87.42it/s]
-Extracting features: 340it [00:04, 87.67it/s]
-Extracting features: 349it [00:04, 88.20it/s]
-Extracting features: 359it [00:04, 88.41it/s]
-Extracting features: 368it [00:04, 88.51it/s]
-Extracting features: 378it [00:04, 88.09it/s]
-Extracting features: 387it [00:04, 88.22it/s]
-Extracting features: 397it [00:04, 87.05it/s]
-Extracting features: 407it [00:04, 90.64it/s]
-Extracting features: 417it [00:04, 87.28it/s]
-Extracting features: 426it [00:05, 87.80it/s]
-Extracting features: 435it [00:05, 88.38it/s]
-Extracting features: 444it [00:05, 86.27it/s]
-Extracting features: 459it [00:05, 103.64it/s]
-
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
 
 Extracting features: 0it [00:00, ?it/s]
-Extracting features: 1it [00:00,  9.47it/s]
-Extracting features: 5it [00:00, 26.09it/s]
-Extracting features: 15it [00:00, 58.06it/s]
-Extracting features: 25it [00:00, 68.76it/s]
-Extracting features: 35it [00:00, 78.41it/s]
-Extracting features: 44it [00:00, 81.85it/s]
-Extracting features: 53it [00:00, 83.47it/s]
-Extracting features: 63it [00:00, 87.95it/s]
+Extracting features: 1it [00:00,  5.11it/s]
+Extracting features: 11it [00:00, 42.56it/s]
+Extracting features: 22it [00:00, 65.71it/s]
+Extracting features: 30it [00:00, 68.15it/s]
+Extracting features: 39it [00:00, 74.33it/s]
+Extracting features: 49it [00:00, 80.33it/s]
+Extracting features: 58it [00:00, 82.06it/s]
+Extracting features: 67it [00:00, 80.25it/s]
+Extracting features: 77it [00:01, 81.91it/s]
+Extracting features: 86it [00:01, 83.60it/s]
+Extracting features: 98it [00:01, 93.45it/s]
+Extracting features: 108it [00:01, 84.95it/s]
+Extracting features: 118it [00:01, 86.95it/s]
+Extracting features: 127it [00:01, 86.12it/s]
+Extracting features: 136it [00:01, 86.00it/s]
+Extracting features: 145it [00:01, 86.29it/s]
+Extracting features: 154it [00:01, 84.41it/s]
+Extracting features: 163it [00:02, 82.86it/s]
+Extracting features: 173it [00:02, 87.64it/s]
+Extracting features: 182it [00:02, 82.91it/s]
+Extracting features: 192it [00:02, 83.89it/s]
+Extracting features: 201it [00:02, 84.07it/s]
+Extracting features: 210it [00:02, 84.47it/s]
+Extracting features: 219it [00:02, 84.93it/s]
+Extracting features: 228it [00:02, 85.31it/s]
+Extracting features: 237it [00:02, 85.88it/s]
+Extracting features: 246it [00:03, 83.49it/s]
+Extracting features: 256it [00:03, 86.53it/s]
+Extracting features: 265it [00:03, 84.23it/s]
+Extracting features: 274it [00:03, 84.62it/s]
+Extracting features: 284it [00:03, 84.37it/s]
+Extracting features: 293it [00:03, 83.25it/s]
+Extracting features: 302it [00:03, 84.12it/s]
+Extracting features: 311it [00:03, 84.17it/s]
+Extracting features: 320it [00:03, 84.91it/s]
+Extracting features: 330it [00:04, 87.84it/s]
+Extracting features: 339it [00:04, 85.59it/s]
+Extracting features: 348it [00:04, 85.62it/s]
+Extracting features: 357it [00:04, 85.35it/s]
+Extracting features: 366it [00:04, 84.36it/s]
+Extracting features: 375it [00:04, 85.54it/s]
+Extracting features: 384it [00:04, 85.69it/s]
+Extracting features: 393it [00:04, 82.49it/s]
+Extracting features: 403it [00:04, 85.02it/s]
+Extracting features: 412it [00:05, 83.95it/s]
+Extracting features: 421it [00:05, 82.50it/s]
+Extracting features: 431it [00:05, 84.63it/s]
+Extracting features: 440it [00:05, 84.24it/s]
+Extracting features: 449it [00:05, 85.40it/s]
+Extracting features: 469it [00:05, 116.59it/s]
 
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:470: ConvergenceWarning: lbfgs failed to converge after 200 iteration(s) (status=1):
+
+Extracting features: 0it [00:00, ?it/s]
+Extracting features: 1it [00:00,  5.46it/s]
+Extracting features: 10it [00:00, 41.22it/s]
+Extracting features: 20it [00:00, 63.41it/s]
+Extracting features: 29it [00:00, 71.23it/s]
+Extracting features: 37it [00:00, 72.16it/s]
+Extracting features: 47it [00:00, 77.83it/s]
+Extracting features: 56it [00:00, 79.71it/s]
+Extracting features: 76it [00:00, 114.77it/s]
+
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:470: ConvergenceWarning: lbfgs failed to converge after 200 iteration(s) (status=1):
 STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
 
 Increase the number of iterations to improve the convergence (max_iter=200).
@@ -817,143 +840,162 @@ You might also want to scale the data as shown in:
 Please also refer to the documentation for alternative solver options:
     https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
   n_iter_i = _check_optimize_result(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
 
 Extracting features: 0it [00:00, ?it/s]
-Extracting features: 2it [00:00, 12.67it/s]
-Extracting features: 9it [00:00, 37.50it/s]
-Extracting features: 20it [00:00, 64.20it/s]
-Extracting features: 30it [00:00, 76.16it/s]
-Extracting features: 39it [00:00, 76.68it/s]
-Extracting features: 47it [00:00, 77.54it/s]
-Extracting features: 57it [00:00, 83.95it/s]
-Extracting features: 66it [00:00, 83.19it/s]
-Extracting features: 76it [00:01, 83.44it/s]
-Extracting features: 86it [00:01, 86.35it/s]
-Extracting features: 96it [00:01, 86.46it/s]
-Extracting features: 105it [00:01, 87.45it/s]
-Extracting features: 114it [00:01, 88.17it/s]
-Extracting features: 124it [00:01, 90.82it/s]
-Extracting features: 134it [00:01, 89.88it/s]
-Extracting features: 144it [00:01, 87.17it/s]
-Extracting features: 153it [00:01, 87.72it/s]
-Extracting features: 162it [00:01, 86.50it/s]
-Extracting features: 172it [00:02, 88.26it/s]
-Extracting features: 181it [00:02, 88.19it/s]
-Extracting features: 190it [00:02, 87.48it/s]
-Extracting features: 199it [00:02, 85.87it/s]
-Extracting features: 209it [00:02, 85.85it/s]
-Extracting features: 219it [00:02, 87.95it/s]
-Extracting features: 229it [00:02, 90.50it/s]
-Extracting features: 239it [00:02, 89.63it/s]
-Extracting features: 248it [00:02, 87.28it/s]
-Extracting features: 257it [00:03, 87.27it/s]
-Extracting features: 266it [00:03, 87.90it/s]
-Extracting features: 275it [00:03, 88.41it/s]
-Extracting features: 285it [00:03, 89.02it/s]
-Extracting features: 295it [00:03, 89.58it/s]
-Extracting features: 304it [00:03, 87.50it/s]
-Extracting features: 313it [00:03, 85.56it/s]
-Extracting features: 322it [00:03, 83.47it/s]
-Extracting features: 331it [00:03, 84.52it/s]
-Extracting features: 341it [00:04, 87.14it/s]
-Extracting features: 351it [00:04, 87.69it/s]
-Extracting features: 360it [00:04, 86.57it/s]
-Extracting features: 370it [00:04, 88.10it/s]
-Extracting features: 380it [00:04, 87.47it/s]
-Extracting features: 389it [00:04, 87.45it/s]
-Extracting features: 399it [00:04, 87.91it/s]
-Extracting features: 409it [00:04, 89.77it/s]
-Extracting features: 418it [00:04, 87.75it/s]
-Extracting features: 427it [00:05, 87.41it/s]
-Extracting features: 437it [00:05, 88.82it/s]
-Extracting features: 446it [00:05, 86.81it/s]
-Extracting features: 463it [00:05, 109.97it/s]
-
-
-Extracting features: 0it [00:00, ?it/s]
-Extracting features: 1it [00:00,  7.01it/s]
-Extracting features: 10it [00:00, 47.70it/s]
-Extracting features: 19it [00:00, 64.70it/s]
-Extracting features: 29it [00:00, 74.83it/s]
-Extracting features: 38it [00:00, 78.62it/s]
-Extracting features: 47it [00:00, 80.63it/s]
-Extracting features: 56it [00:00, 83.01it/s]
-Extracting features: 77it [00:00, 120.91it/s]
-
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-
-Extracting features: 0it [00:00, ?it/s]
-Extracting features: 1it [00:00,  6.77it/s]
-Extracting features: 10it [00:00, 45.67it/s]
-Extracting features: 20it [00:00, 66.33it/s]
-Extracting features: 29it [00:00, 72.26it/s]
-Extracting features: 38it [00:00, 76.50it/s]
-Extracting features: 49it [00:00, 87.05it/s]
-Extracting features: 58it [00:00, 85.36it/s]
-Extracting features: 67it [00:00, 82.58it/s]
-Extracting features: 77it [00:01, 84.64it/s]
-Extracting features: 87it [00:01, 85.95it/s]
-Extracting features: 96it [00:01, 86.54it/s]
-Extracting features: 105it [00:01, 87.49it/s]
-Extracting features: 115it [00:01, 89.79it/s]
-Extracting features: 125it [00:01, 87.03it/s]
-Extracting features: 136it [00:01, 86.88it/s]
-Extracting features: 145it [00:01, 86.99it/s]
-Extracting features: 154it [00:01, 87.30it/s]
-Extracting features: 163it [00:01, 87.33it/s]
-Extracting features: 173it [00:02, 87.98it/s]
-Extracting features: 182it [00:02, 88.49it/s]
-Extracting features: 191it [00:02, 87.75it/s]
-Extracting features: 200it [00:02, 86.32it/s]
-Extracting features: 209it [00:02, 86.92it/s]
-Extracting features: 219it [00:02, 87.77it/s]
-Extracting features: 228it [00:02, 88.07it/s]
-Extracting features: 237it [00:02, 86.31it/s]
-Extracting features: 247it [00:02, 89.05it/s]
-Extracting features: 256it [00:03, 84.69it/s]
-Extracting features: 266it [00:03, 86.90it/s]
-Extracting features: 275it [00:03, 87.50it/s]
-Extracting features: 284it [00:03, 85.03it/s]
-Extracting features: 294it [00:03, 88.19it/s]
-Extracting features: 303it [00:03, 86.41it/s]
-Extracting features: 312it [00:03, 86.97it/s]
-Extracting features: 321it [00:03, 87.38it/s]
-Extracting features: 331it [00:03, 89.11it/s]
-Extracting features: 340it [00:04, 87.44it/s]
-Extracting features: 350it [00:04, 88.28it/s]
-Extracting features: 359it [00:04, 87.57it/s]
-Extracting features: 368it [00:04, 86.57it/s]
-Extracting features: 378it [00:04, 90.15it/s]
-Extracting features: 388it [00:04, 85.74it/s]
-Extracting features: 398it [00:04, 87.69it/s]
-Extracting features: 407it [00:04, 88.30it/s]
-Extracting features: 416it [00:04, 86.61it/s]
-Extracting features: 425it [00:04, 87.19it/s]
-Extracting features: 434it [00:05, 87.19it/s]
-Extracting features: 444it [00:05, 87.26it/s]
-Extracting features: 459it [00:05, 103.65it/s]
+Extracting features: 1it [00:00,  9.81it/s]
+Extracting features: 4it [00:00, 20.62it/s]
+Extracting features: 12it [00:00, 46.30it/s]
+Extracting features: 22it [00:00, 64.86it/s]
+Extracting features: 32it [00:00, 74.27it/s]
+Extracting features: 41it [00:00, 77.88it/s]
+Extracting features: 51it [00:00, 83.39it/s]
+Extracting features: 60it [00:00, 84.73it/s]
+Extracting features: 69it [00:00, 83.71it/s]
+Extracting features: 79it [00:01, 85.85it/s]
+Extracting features: 88it [00:01, 85.42it/s]
+Extracting features: 97it [00:01, 84.56it/s]
+Extracting features: 106it [00:01, 83.33it/s]
+Extracting features: 116it [00:01, 86.86it/s]
+Extracting features: 125it [00:01, 86.75it/s]
+Extracting features: 134it [00:01, 85.26it/s]
+Extracting features: 144it [00:01, 85.65it/s]
+Extracting features: 153it [00:01, 86.64it/s]
+Extracting features: 162it [00:02, 87.49it/s]
+Extracting features: 171it [00:02, 86.69it/s]
+Extracting features: 180it [00:02, 86.24it/s]
+Extracting features: 189it [00:02, 85.02it/s]
+Extracting features: 198it [00:02, 84.75it/s]
+Extracting features: 207it [00:02, 85.53it/s]
+Extracting features: 216it [00:02, 83.55it/s]
+Extracting features: 226it [00:02, 87.35it/s]
+Extracting features: 235it [00:02, 83.61it/s]
+Extracting features: 245it [00:03, 85.18it/s]
+Extracting features: 254it [00:03, 83.97it/s]
+Extracting features: 263it [00:03, 83.44it/s]
+Extracting features: 272it [00:03, 85.09it/s]
+Extracting features: 281it [00:03, 84.95it/s]
+Extracting features: 291it [00:03, 85.65it/s]
+Extracting features: 300it [00:03, 86.22it/s]
+Extracting features: 309it [00:03, 85.68it/s]
+Extracting features: 318it [00:03, 86.16it/s]
+Extracting features: 328it [00:03, 86.89it/s]
+Extracting features: 337it [00:04, 86.14it/s]
+Extracting features: 346it [00:04, 83.75it/s]
+Extracting features: 355it [00:04, 84.70it/s]
+Extracting features: 365it [00:04, 88.27it/s]
+Extracting features: 374it [00:04, 85.35it/s]
+Extracting features: 384it [00:04, 87.03it/s]
+Extracting features: 394it [00:04, 85.65it/s]
+Extracting features: 404it [00:04, 87.81it/s]
+Extracting features: 413it [00:04, 85.33it/s]
+Extracting features: 422it [00:05, 84.27it/s]
+Extracting features: 432it [00:05, 87.16it/s]
+Extracting features: 441it [00:05, 87.09it/s]
+Extracting features: 450it [00:05, 85.76it/s]
 
 
 Extracting features: 0it [00:00, ?it/s]
-Extracting features: 1it [00:00,  6.55it/s]
-Extracting features: 9it [00:00, 40.59it/s]
-Extracting features: 19it [00:00, 63.67it/s]
-Extracting features: 27it [00:00, 69.50it/s]
-Extracting features: 37it [00:00, 78.62it/s]
-Extracting features: 47it [00:00, 84.08it/s]
-Extracting features: 56it [00:00, 81.82it/s]
-Extracting features: 77it [00:00, 118.46it/s]
+Extracting features: 1it [00:00,  5.48it/s]
+Extracting features: 9it [00:00, 37.68it/s]
+Extracting features: 19it [00:00, 59.10it/s]
+Extracting features: 29it [00:00, 70.60it/s]
+Extracting features: 38it [00:00, 75.53it/s]
+Extracting features: 46it [00:00, 75.57it/s]
+Extracting features: 55it [00:00, 78.43it/s]
+Extracting features: 70it [00:00, 99.15it/s]
 
-Epoch 9/9  ━━━━━━━━━━━━━━━━ 100/100 0:00:10 •        10.95it/s v_num: 0.000
-                                    0:00:00                    loss/train: 0.689
-                                                               loss/val: 0.986
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:470: ConvergenceWarning: lbfgs failed to converge after 200 iteration(s) (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+
+Increase the number of iterations to improve the convergence (max_iter=200).
+You might also want to scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+
+Extracting features: 0it [00:00, ?it/s]
+Extracting features: 1it [00:00,  5.60it/s]
+Extracting features: 11it [00:00, 42.89it/s]
+Extracting features: 21it [00:00, 62.95it/s]
+Extracting features: 30it [00:00, 71.11it/s]
+Extracting features: 39it [00:00, 75.76it/s]
+Extracting features: 47it [00:00, 75.23it/s]
+Extracting features: 56it [00:00, 78.66it/s]
+Extracting features: 66it [00:00, 82.95it/s]
+Extracting features: 75it [00:01, 84.78it/s]
+Extracting features: 84it [00:01, 85.82it/s]
+Extracting features: 93it [00:01, 86.61it/s]
+Extracting features: 102it [00:01, 84.34it/s]
+Extracting features: 111it [00:01, 85.38it/s]
+Extracting features: 120it [00:01, 82.55it/s]
+Extracting features: 129it [00:01, 84.38it/s]
+Extracting features: 138it [00:01, 84.02it/s]
+Extracting features: 149it [00:01, 88.37it/s]
+Extracting features: 158it [00:02, 81.89it/s]
+Extracting features: 169it [00:02, 87.22it/s]
+Extracting features: 178it [00:02, 86.24it/s]
+Extracting features: 187it [00:02, 83.59it/s]
+Extracting features: 197it [00:02, 87.43it/s]
+Extracting features: 206it [00:02, 86.73it/s]
+Extracting features: 215it [00:02, 83.56it/s]
+Extracting features: 224it [00:02, 84.64it/s]
+Extracting features: 233it [00:02, 82.98it/s]
+Extracting features: 242it [00:03, 81.45it/s]
+Extracting features: 252it [00:03, 83.12it/s]
+Extracting features: 262it [00:03, 85.26it/s]
+Extracting features: 272it [00:03, 84.48it/s]
+Extracting features: 282it [00:03, 85.40it/s]
+Extracting features: 292it [00:03, 86.67it/s]
+Extracting features: 301it [00:03, 84.43it/s]
+Extracting features: 310it [00:03, 84.61it/s]
+Extracting features: 320it [00:03, 84.99it/s]
+Extracting features: 329it [00:04, 86.07it/s]
+Extracting features: 339it [00:04, 88.55it/s]
+Extracting features: 348it [00:04, 84.00it/s]
+Extracting features: 357it [00:04, 83.67it/s]
+Extracting features: 367it [00:04, 84.81it/s]
+Extracting features: 376it [00:04, 84.06it/s]
+Extracting features: 386it [00:04, 85.34it/s]
+Extracting features: 395it [00:04, 84.49it/s]
+Extracting features: 404it [00:04, 85.71it/s]
+Extracting features: 413it [00:05, 82.36it/s]
+Extracting features: 423it [00:05, 86.98it/s]
+Extracting features: 432it [00:05, 87.34it/s]
+Extracting features: 441it [00:05, 86.61it/s]
+Extracting features: 450it [00:05, 86.32it/s]
+
+
+Extracting features: 0it [00:00, ?it/s]
+Extracting features: 1it [00:00,  7.15it/s]
+Extracting features: 8it [00:00, 37.94it/s]
+Extracting features: 17it [00:00, 57.10it/s]
+Extracting features: 27it [00:00, 70.20it/s]
+Extracting features: 37it [00:00, 77.80it/s]
+Extracting features: 46it [00:00, 80.35it/s]
+Extracting features: 55it [00:00, 82.22it/s]
+Extracting features: 69it [00:00, 98.28it/s]
+
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:470: ConvergenceWarning: lbfgs failed to converge after 200 iteration(s) (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+
+Increase the number of iterations to improve the convergence (max_iter=200).
+You might also want to scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+Epoch 9/9  ━━━━━━━━━━━━━━━━ 100/100 0:00:10 •        11.42it/s v_num: 0.000
+                                    0:00:00                    loss/train: 0.632
+                                                               loss/val: 1.087
                                                                test_accuracy:
                                                                0.885
                                                                test_f1_weighted:
@@ -1017,6 +1059,7 @@ increases:</p>
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="matplotlib.pyplot.ylabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s2">&quot;Metric score&quot;</span><span class="p">)</span>
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="matplotlib.pyplot.title" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s2">&quot;Classification metrics during SimCLR training&quot;</span><span class="p">)</span>
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.legend.html#matplotlib.pyplot.legend" title="matplotlib.pyplot.legend" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="matplotlib.pyplot.tight_layout" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
@@ -1025,6 +1068,80 @@ steadily during training, showing that the learned representation becomes
 more and more linearly separable for the digit classes. The accuracy
 reaches more than 80% after 10 epochs, which is quite good for such a simple
 model trained <em>without supervision</em> and a small number of epochs.</p>
+</section>
+<section id="classification-metrics-at-inference">
+<h2>Classification metrics at inference<a class="headerlink" href="#classification-metrics-at-inference" title="Link to this heading">¶</a></h2>
+<p>In addition to monitoring the classification metrics during training, we can
+also evaluate the linear probe at inference after training the SimCLR model.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="../modules/generated/nidl.estimators.probes.ModelProbing.html#nidl.estimators.probes.ModelProbing" title="nidl.estimators.probes.ModelProbing" class="sphx-glr-backref-module-nidl-estimators-probes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">probing</span></a> <span class="o">=</span> <a href="../modules/generated/nidl.estimators.probes.ModelProbing.html#nidl.estimators.probes.ModelProbing" title="nidl.estimators.probes.ModelProbing" class="sphx-glr-backref-module-nidl-estimators-probes sphx-glr-backref-type-py-class"><span class="n">ModelProbing</span></a><span class="p">(</span>
+    <span class="n">embedding_estimator</span><span class="o">=</span><a href="../modules/generated/nidl.estimators.ssl.YAwareContrastiveLearning.html#nidl.estimators.ssl.YAwareContrastiveLearning" title="nidl.estimators.ssl.YAwareContrastiveLearning" class="sphx-glr-backref-module-nidl-estimators-ssl sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">model</span></a><span class="p">,</span>  <span class="c1"># &lt;-- pass the trained SimCLR model as embedding estimator</span>
+    <span class="n">probe</span><span class="o">=</span><a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="sklearn.linear_model.LogisticRegression" class="sphx-glr-backref-module-sklearn-linear_model sphx-glr-backref-type-py-class"><span class="n">LogisticRegression</span></a><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">200</span><span class="p">),</span>
+    <span class="n">scoring</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;accuracy&quot;</span><span class="p">,</span> <span class="s2">&quot;f1_weighted&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<a href="../modules/generated/nidl.estimators.probes.ModelProbing.html#nidl.estimators.probes.ModelProbing.fit" title="nidl.estimators.probes.ModelProbing.fit" class="sphx-glr-backref-module-nidl-estimators-probes sphx-glr-backref-type-py-method"><span class="n">probing</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><a href="https://docs.pytorch.org/docs/main/data.html#torch.utils.data.DataLoader" title="torch.utils.data.DataLoader" class="sphx-glr-backref-module-torch-utils-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">train_xy_loader</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/pytorch_lightning/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:485: Your `predict_dataloader`&#39;s sampler has shuffling enabled, it is strongly recommended that you turn shuffling off for val/test dataloaders.
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:424: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+Predicting ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 469/469 0:00:05 • 0:00:00 91.70it/s
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:470: ConvergenceWarning: lbfgs failed to converge after 200 iteration(s) (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+
+Increase the number of iterations to improve the convergence (max_iter=200).
+You might also want to scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+
+ModelProbing(
+  (embedding_estimator): SimCLR(
+    (encoder): LeNetEncoder(
+      (conv1): Conv2d(1, 6, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+      (pool1): AvgPool2d(kernel_size=2, stride=2, padding=0)
+      (conv2): Conv2d(6, 16, kernel_size=(5, 5), stride=(1, 1))
+      (pool2): AvgPool2d(kernel_size=2, stride=2, padding=0)
+      (fc1): Linear(in_features=400, out_features=120, bias=True)
+      (fc2): Linear(in_features=120, out_features=84, bias=True)
+      (fc3): Linear(in_features=84, out_features=32, bias=True)
+    )
+    (projection_head): SimCLRProjectionHead(
+      (layers): Sequential(
+        (0): Linear(in_features=32, out_features=64, bias=True)
+        (1): ReLU()
+        (2): Linear(in_features=64, out_features=32, bias=True)
+      )
+    )
+    (loss): InfoNCE(temperature=0.1)
+  )
+)
+</pre></div>
+</div>
+<p>We can now evaluate the probe on the test set and print the classification
+metrics:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">scores</span></a> <span class="o">=</span> <a href="../modules/generated/nidl.estimators.probes.ModelProbing.html#nidl.estimators.probes.ModelProbing.score" title="nidl.estimators.probes.ModelProbing.score" class="sphx-glr-backref-module-nidl-estimators-probes sphx-glr-backref-type-py-method"><span class="n">probing</span><span class="o">.</span><span class="n">score</span></a><span class="p">(</span><a href="https://docs.pytorch.org/docs/main/data.html#torch.utils.data.DataLoader" title="torch.utils.data.DataLoader" class="sphx-glr-backref-module-torch-utils-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">test_xy_loader</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Classification metrics at inference:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">metric</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">score</span></a> <span class="ow">in</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">scores</span></a><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">metric</span></a><span class="si">}</span><span class="s2">: </span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">score</span></a><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/pytorch_lightning/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:424: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+Predicting ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 79/79 0:00:00 • 0:00:00 106.71it/s
+Classification metrics at inference:
+accuracy: 0.8849
+f1_weighted: 0.8845
+</pre></div>
+</div>
 </section>
 <section id="probing-of-y-aware-representation-on-age-and-sex-prediction">
 <h2>Probing of y-Aware representation on age and sex prediction<a class="headerlink" href="#probing-of-y-aware-representation-on-age-and-sex-prediction" title="Link to this heading">¶</a></h2>
@@ -1077,13 +1194,11 @@ The target variables are age (regression) and sex (classification).</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fetching ... files: 0it [00:00, ?it/s]
+Fetching ... files: 1it [00:00, 6114.15it/s]
 
 Fetching ... files: 0it [00:00, ?it/s]
-Fetching ... files: 1it [00:00, 10034.22it/s]
-
-Fetching ... files: 0it [00:00, ?it/s]
-Fetching ... files: 1it [00:00, 14563.56it/s]
+Fetching ... files: 1it [00:00, 14217.98it/s]
 </pre></div>
 </div>
 <p>To perform contrastive learning, we will use random masking and Gaussian
@@ -1151,8 +1266,8 @@ We will train a <strong>y-Aware Contrastive Learning</strong> model on these dat
 <span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:424: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
 </pre></div>
 </div>
 </section>
@@ -1194,10 +1309,10 @@ called <strong>MultiTaskEstimator</strong> below.</p>
     <span class="k">def</span><span class="w"> </span><span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Average score across all tasks.&quot;&quot;&quot;</span>
         <span class="n">y</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.asarray.html#numpy.asarray" title="numpy.asarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">asarray</span></a><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-        <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+        <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">scores</span></a> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span></a><span class="p">,</span> <span class="n">est</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimators_</span><span class="p">):</span>
-            <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">est</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">[:,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span></a><span class="p">]))</span>
-        <span class="k">return</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html#numpy.mean" title="numpy.mean" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+            <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">scores</span><span class="o">.</span><span class="n">append</span></a><span class="p">(</span><span class="n">est</span><span class="o">.</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">score</span></a><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">[:,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">i</span></a><span class="p">]))</span>
+        <span class="k">return</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html#numpy.mean" title="numpy.mean" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">scores</span></a><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimators</span><span class="p">)</span>
@@ -1218,7 +1333,7 @@ called <strong>MultiTaskEstimator</strong> below.</p>
 </div>
 <p>Finally, we create the multitask probing callback with the relevant
 estimators and scorers for age and sex.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="../modules/generated/nidl.callbacks.ModelProbing.html#nidl.callbacks.ModelProbing" title="nidl.callbacks.ModelProbing" class="sphx-glr-backref-module-nidl-callbacks sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">callback</span></a> <span class="o">=</span> <a href="../modules/generated/nidl.callbacks.ModelProbing.html#nidl.callbacks.ModelProbing" title="nidl.callbacks.ModelProbing" class="sphx-glr-backref-module-nidl-callbacks sphx-glr-backref-type-py-class"><span class="n">ModelProbing</span></a><span class="p">(</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="../modules/generated/nidl.callbacks.ModelProbingCallback.html#nidl.callbacks.ModelProbingCallback" title="nidl.callbacks.ModelProbingCallback" class="sphx-glr-backref-module-nidl-callbacks sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">callback</span></a> <span class="o">=</span> <a href="../modules/generated/nidl.callbacks.ModelProbingCallback.html#nidl.callbacks.ModelProbingCallback" title="nidl.callbacks.ModelProbingCallback" class="sphx-glr-backref-module-nidl-callbacks sphx-glr-backref-type-py-class"><span class="n">ModelProbingCallback</span></a><span class="p">(</span>
     <a href="https://docs.pytorch.org/docs/main/data.html#torch.utils.data.DataLoader" title="torch.utils.data.DataLoader" class="sphx-glr-backref-module-torch-utils-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">train_xy_loader</span></a><span class="p">,</span>
     <a href="https://docs.pytorch.org/docs/main/data.html#torch.utils.data.DataLoader" title="torch.utils.data.DataLoader" class="sphx-glr-backref-module-torch-utils-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">test_xy_loader</span></a><span class="p">,</span>
     <span class="n">probe</span><span class="o">=</span><a href="https://scikit-learn.org/stable/modules/generated/sklearn.base.BaseEstimator.html#sklearn.base.BaseEstimator" title="sklearn.base.BaseEstimator" class="sphx-glr-backref-module-sklearn-base sphx-glr-backref-type-py-class"><span class="n">MultiTaskEstimator</span></a><span class="p">([</span><a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="sklearn.linear_model.Ridge" class="sphx-glr-backref-module-sklearn-linear_model sphx-glr-backref-type-py-class"><span class="n">Ridge</span></a><span class="p">(),</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="sklearn.linear_model.LogisticRegression" class="sphx-glr-backref-module-sklearn-linear_model sphx-glr-backref-type-py-class"><span class="n">LogisticRegression</span></a><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">200</span><span class="p">)]),</span>
@@ -1253,15 +1368,18 @@ y-Aware model compared to the variance of the age in OpenBHB (sigma=4).</p>
     <span class="n">temperature</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
     <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
     <span class="n">enable_checkpointing</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">callbacks</span><span class="o">=</span><a href="../modules/generated/nidl.callbacks.ModelProbing.html#nidl.callbacks.ModelProbing" title="nidl.callbacks.ModelProbing" class="sphx-glr-backref-module-nidl-callbacks sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">callback</span></a><span class="p">,</span>  <span class="c1"># &lt;-- add callback to monitor the training</span>
+    <span class="n">callbacks</span><span class="o">=</span><a href="../modules/generated/nidl.callbacks.ModelProbingCallback.html#nidl.callbacks.ModelProbingCallback" title="nidl.callbacks.ModelProbingCallback" class="sphx-glr-backref-module-nidl-callbacks sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">callback</span></a><span class="p">,</span>  <span class="c1"># &lt;-- add callback to monitor the training</span>
 <span class="p">)</span>
 
 <a href="../modules/generated/nidl.estimators.BaseEstimator.html#nidl.estimators.BaseEstimator.fit" title="nidl.estimators.BaseEstimator.fit" class="sphx-glr-backref-module-nidl-estimators sphx-glr-backref-type-py-method"><span class="n">model</span><span class="o">.</span><span class="n">fit</span></a><span class="p">(</span><a href="https://docs.pytorch.org/docs/main/data.html#torch.utils.data.DataLoader" title="torch.utils.data.DataLoader" class="sphx-glr-backref-module-torch-utils-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">train_ssl_loader</span></a><span class="p">,</span> <a href="https://docs.pytorch.org/docs/main/data.html#torch.utils.data.DataLoader" title="torch.utils.data.DataLoader" class="sphx-glr-backref-module-torch-utils-data sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">test_ssl_loader</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/pytorch_lightning/loops/fit_loop.py:317: The number of training batches (26) is smaller than the logging interval Trainer(log_every_n_steps=50). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/pytorch_lightning/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/pytorch_lightning/loops/fit_loop.py:317: The number of training batches (26) is smaller than the logging interval Trainer(log_every_n_steps=50). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.
 ┏━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┓
 ┃   ┃ Name            ┃ Type                 ┃ Params ┃ Mode  ┃ FLOPs ┃
 ┡━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━┩
@@ -1276,155 +1394,122 @@ Total estimated model params size (MB): 0
 Modules in train mode: 13
 Modules in eval mode: 0
 Total FLOPs: 0
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
 
 Extracting features: 0it [00:00, ?it/s]
-Extracting features: 1it [00:04,  4.80s/it]
-Extracting features: 2it [00:05,  2.21s/it]
-Extracting features: 11it [00:07,  1.88it/s]
-Extracting features: 12it [00:08,  2.00it/s]
-Extracting features: 21it [00:09,  3.33it/s]
-Extracting features: 24it [00:09,  4.11it/s]
-
-
-Extracting features: 0it [00:00, ?it/s]
-Extracting features: 1it [00:02,  2.31s/it]
-
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-
-Extracting features: 0it [00:00, ?it/s]
-Extracting features: 1it [00:04,  4.86s/it]
-Extracting features: 5it [00:04,  1.34it/s]
-Extracting features: 11it [00:07,  1.71it/s]
-Extracting features: 15it [00:08,  2.64it/s]
-Extracting features: 21it [00:09,  3.04it/s]
-Extracting features: 23it [00:09,  3.52it/s]
+Extracting features: 1it [00:06,  6.41s/it]
+Extracting features: 2it [00:07,  3.07s/it]
+Extracting features: 7it [00:07,  1.64it/s]
+Extracting features: 9it [00:07,  2.29it/s]
+Extracting features: 11it [00:10,  1.33it/s]
+Extracting features: 13it [00:10,  1.79it/s]
+Extracting features: 18it [00:10,  3.59it/s]
+Extracting features: 21it [00:11,  3.32it/s]
+Extracting features: 23it [00:11,  3.96it/s]
 
 
 Extracting features: 0it [00:00, ?it/s]
-Extracting features: 1it [00:01,  1.87s/it]
+Extracting features: 1it [00:02,  2.44s/it]
+Extracting features: 2it [00:02,  1.08s/it]
+Extracting features: 3it [00:02,  1.41it/s]
+Extracting features: 4it [00:02,  2.04it/s]
 
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-
-Extracting features: 0it [00:00, ?it/s]
-Extracting features: 1it [00:03,  3.58s/it]
-Extracting features: 2it [00:03,  1.56s/it]
-Extracting features: 3it [00:04,  1.31s/it]
-Extracting features: 4it [00:04,  1.12it/s]
-Extracting features: 11it [00:06,  2.73it/s]
-Extracting features: 12it [00:07,  1.98it/s]
-Extracting features: 14it [00:08,  2.59it/s]
-Extracting features: 21it [00:09,  4.18it/s]
-Extracting features: 22it [00:09,  3.94it/s]
-Extracting features: 23it [00:09,  3.88it/s]
-
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
 
 Extracting features: 0it [00:00, ?it/s]
-Extracting features: 1it [00:02,  2.27s/it]
-
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:626: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:665: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
-  warnings.warn(warn_msg)
-
-Extracting features: 0it [00:00, ?it/s]
-Extracting features: 1it [00:04,  4.75s/it]
-Extracting features: 3it [00:05,  1.33s/it]
-Extracting features: 11it [00:08,  1.75it/s]
-Extracting features: 13it [00:08,  2.17it/s]
-Extracting features: 14it [00:08,  2.41it/s]
-Extracting features: 21it [00:10,  3.16it/s]
+Extracting features: 1it [00:07,  7.03s/it]
+Extracting features: 5it [00:07,  1.08s/it]
+Extracting features: 8it [00:07,  1.69it/s]
+Extracting features: 11it [00:10,  1.24it/s]
+Extracting features: 17it [00:10,  2.60it/s]
+Extracting features: 21it [00:11,  2.91it/s]
 
 
 Extracting features: 0it [00:00, ?it/s]
-Extracting features: 1it [00:02,  2.32s/it]
+Extracting features: 1it [00:02,  2.95s/it]
+Extracting features: 5it [00:03,  2.15it/s]
 
-/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:470: ConvergenceWarning: lbfgs failed to converge after 200 iteration(s) (status=1):
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+
+Extracting features: 0it [00:00, ?it/s]
+Extracting features: 1it [00:04,  4.58s/it]
+Extracting features: 3it [00:06,  1.94s/it]
+Extracting features: 9it [00:06,  1.96it/s]
+Extracting features: 11it [00:07,  2.28it/s]
+Extracting features: 13it [00:09,  1.69it/s]
+Extracting features: 17it [00:09,  2.61it/s]
+Extracting features: 19it [00:10,  3.00it/s]
+Extracting features: 23it [00:10,  3.81it/s]
+
+
+Extracting features: 0it [00:00, ?it/s]
+Extracting features: 1it [00:02,  2.11s/it]
+Extracting features: 2it [00:02,  1.01it/s]
+Extracting features: 3it [00:02,  1.31it/s]
+Extracting features: 4it [00:02,  1.94it/s]
+
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:470: ConvergenceWarning: lbfgs failed to converge after 200 iteration(s) (status=1):
 STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
 
 Increase the number of iterations to improve the convergence (max_iter=200).
@@ -1433,15 +1518,68 @@ You might also want to scale the data as shown in:
 Please also refer to the documentation for alternative solver options:
     https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
   n_iter_i = _check_optimize_result(
-Epoch 9/9  ━━━━━━━━━━━━━━━━━ 26/26 0:00:10 • 0:00:00 3.76it/s v_num: 1.000
-                                                              loss/train: 7.943
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:432: UserWarning: This DataLoader will create 10 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  self.check_worker_number_rationality()
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/torch/utils/data/dataloader.py:1118: UserWarning: &#39;pin_memory&#39; argument is set as true but no accelerator is found, then device pinned memory won&#39;t be used.
+  super().__init__(loader)
+
+Extracting features: 0it [00:00, ?it/s]
+Extracting features: 1it [00:04,  4.37s/it]
+Extracting features: 2it [00:05,  2.59s/it]
+Extracting features: 5it [00:06,  1.01s/it]
+Extracting features: 7it [00:07,  1.50it/s]
+Extracting features: 11it [00:08,  1.97it/s]
+Extracting features: 13it [00:09,  2.28it/s]
+Extracting features: 15it [00:10,  2.08it/s]
+Extracting features: 21it [00:10,  3.63it/s]
+Extracting features: 25it [00:11,  4.78it/s]
+
+
+Extracting features: 0it [00:00, ?it/s]
+Extracting features: 1it [00:03,  3.07s/it]
+
+/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:470: ConvergenceWarning: lbfgs failed to converge after 200 iteration(s) (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+
+Increase the number of iterations to improve the convergence (max_iter=200).
+You might also want to scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+Epoch 9/9  ━━━━━━━━━━━━━━━━━ 26/26 0:00:12 • 0:00:00 3.39it/s v_num: 3.000
+                                                              loss/train: 7.944
                                                               loss/val: 11.054
-                                                              test_age/r2: 0.639
+                                                              test_age/r2: 0.621
                                                               test_age/pearsonr:
-                                                              0.807
+                                                              0.793
                                                               test_sex/accuracy:
-                                                              0.760 test_sex/f1:
-                                                              0.747
+                                                              0.761 test_sex/f1:
+                                                              0.743
 
 YAwareContrastiveLearning(
   (encoder): MLP(
@@ -1521,8 +1659,8 @@ at regular intervals during training and log the relevant metrics to
 TensorBoard. This provides insights on what concepts are being learned by
 the model and how the representation evolves to become more suitable for
 downstream tasks.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (7 minutes 8.489 seconds)</p>
-<p><strong>Estimated memory usage:</strong>  402 MB</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (8 minutes 6.589 seconds)</p>
+<p><strong>Estimated memory usage:</strong>  271 MB</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-model-probing-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/e4c6575a58207362fb35822d44f91bc7/plot_model_probing.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_model_probing.ipynb</span></code></a></p>
@@ -1552,14 +1690,14 @@ downstream tasks.</p>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="index.html">
+          <a class="prev-page" href="plot_dcl_vs_simclr.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Examples</div>
+                <div class="title">Decoupled Contrastive Learning</div>
                 
               </div>
             </a>
@@ -1597,12 +1735,13 @@ downstream tasks.</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Model probing callback of embedding estimators</a><ul>
+<li><a class="reference internal" href="#">Model probing of embedding estimators</a><ul>
 <li><a class="reference internal" href="#setup">Setup</a></li>
 <li><a class="reference internal" href="#unsupervised-contrastive-learning-on-mnist">Unsupervised Contrastive Learning on MNIST</a></li>
 <li><a class="reference internal" href="#dataset-and-data-augmentations-for-contrastive-learning">Dataset and data augmentations for contrastive learning</a></li>
 <li><a class="reference internal" href="#simclr-training-with-classification-probing-callback">SimCLR training with classification probing callback</a></li>
 <li><a class="reference internal" href="#visualization-of-the-classification-metrics-during-training">Visualization of the classification metrics during training</a></li>
+<li><a class="reference internal" href="#classification-metrics-at-inference">Classification metrics at inference</a></li>
 <li><a class="reference internal" href="#probing-of-y-aware-representation-on-age-and-sex-prediction">Probing of y-Aware representation on age and sex prediction</a></li>
 <li><a class="reference internal" href="#openbhb-dataset-and-data-augmentations">OpenBHB dataset and data augmentations</a></li>
 <li><a class="reference internal" href="#y-aware-cl-training-with-multitask-probing-callback">y-Aware CL training with multitask probing callback</a></li>
