@@ -1,0 +1,70 @@
+log_dir: benchmark_logs/simclr_resnet18_openbhb
+
+ssl:
+  _target_: nidl.estimators.ssl.SimCLR
+  encoder:
+    _target_: nidl.volume.backbones.resnet18
+    n_embedding: 512
+  proj_input_dim: 512
+  proj_hidden_dim: 512
+  proj_output_dim: 128
+  temperature: 0.1
+  learning_rate: 3e-4
+  optimizer: "adamW"
+  weight_decay: 5e-4
+  lr_scheduler: "warmup_cosine"
+  lr_scheduler_kwargs:
+    warmup_epochs: 10
+    warmup_start_lr: 1e-6
+    min_lr: 0.0
+    interval: "step"
+  check_val_every_n_epoch: 1
+  use_distributed_sampler: True
+  max_epochs: 100
+  default_root_dir: ${pretrain.log_dir}
+
+datamodule:
+  _target_: benchmarks.datamodules.openbhb.OpenBHBDataModule
+  root: ./data/openBHB
+  modality: quasiraw
+  batch_size: 32
+  num_workers: 15
+  pin_memory: true
+  train_transform: 
+    _target_: benchmarks.utils.augmentations.simclr_augmentations
+    crop_min: 0.08
+    crop_max: 1.0
+    erase_min: 0.02
+    erase_max: 0.15
+    crop_size: 128
+  val_transform:
+    _target_: benchmarks.utils.augmentations.simclr_augmentations
+    crop_min: 0.08
+    crop_max: 1.0
+    erase_min: 0.02
+    erase_max: 0.15
+    crop_size: 128
+    
+callbacks:
+  - _target_: pytorch_lightning.callbacks.ModelCheckpoint
+    dirpath: ${pretrain.log_dir}
+    save_last: true
+    every_n_train_steps: 100
+
+  - _target_: nidl.callbacks.ModelProbingCallback
+    datamodule:
+      _target_: benchmarks.datamodules.openbhb.OpenBHBDataModule
+      root: ${pretrain.datamodule.root}
+      modality: quasiraw
+      batch_size: 32
+      num_workers: 15
+      pin_memory: true
+      train_transform: 
+        _target_: benchmarks.utils.transforms.inference_transform
+        crop_size: 128
+      val_transform:
+        _target_: benchmarks.utils.transforms.inference_transform
+        crop_size: 128
+    probe: 
+      _target_: sklearn.linear_model.Ridge
+    every_n_train_epochs: 10

@@ -51,17 +51,26 @@ class ModelProbingCallback(pl.Callback):
 
     Parameters
     ----------
-    train_dataloader: torch.utils.data.DataLoader
-        Training dataloader yielding batches in the form `(X, y)`
-        for further embedding and training of the probe.
-
-    test_dataloader: torch.utils.data.DataLoader
-        Test dataloader yielding batches in the form `(X, y)`
-        for further embedding and test of the probe.
-
     probe: sklearn.base.BaseEstimator
         The probe model to be trained on the embedding. It must
         implement `fit` and `predict` methods on numpy array.
+
+    train_dataloader: torch.utils.data.DataLoader, default=None
+        Training dataloader yielding batches in the form `(X, y)`
+        for further embedding and training of the probe. 
+        Alternatively, a `datamodule` can be provided with a
+        `train_dataloader` hook.
+
+    test_dataloader: torch.utils.data.DataLoader, default=None
+        Test dataloader yielding batches in the form `(X, y)`
+        for further embedding and test of the probe.
+        Alternatively, a `datamodule` can be provided with a
+        `test_dataloader` hook.
+
+    datamodule: pl.LightningDataModule, default=None
+        Optional datamodule to be used instead of the dataloaders. If 
+        provided, the `train_dataloader` and `test_dataloader` hooks
+        will be used.
 
     scoring: str, callable, list, tuple, or dict, default=None
         Strategy to evaluate the performance of the `probe` on the test
@@ -121,9 +130,10 @@ class ModelProbingCallback(pl.Callback):
 
     def __init__(
         self,
-        train_dataloader: DataLoader,
-        test_dataloader: DataLoader,
         probe: sk_BaseEstimator,
+        train_dataloader: DataLoader = None,
+        test_dataloader: DataLoader = None,
+        datamodule: pl.LightningDataModule = None,
         scoring: Union[str, callable, list, tuple, dict, None] = None,
         every_n_train_epochs: Union[int, None] = 1,
         every_n_val_epochs: Union[int, None] = None,
@@ -133,9 +143,10 @@ class ModelProbingCallback(pl.Callback):
         prefix_score: str = "",
     ):
         super().__init__()
+        self.probe = probe
         self.train_dataloader = train_dataloader
         self.test_dataloader = test_dataloader
-        self.probe = probe
+        self.datamodule = datamodule
         self.scoring = scoring
         self.every_n_train_epochs = every_n_train_epochs
         self.every_n_val_epochs = every_n_val_epochs
@@ -171,6 +182,35 @@ class ModelProbingCallback(pl.Callback):
                 "Scores should be a number or a dictionary, got "
                 f"{type(scores)}"
             )
+    
+    def _check_dataloaders(self):
+        """Ensure probing dataloaders are available."""
+
+        if self.train_dataloader is None:
+            raise ValueError(
+                "ModelProbingCallback requires either `train_dataloader` or "
+                "a `datamodule` with a `train_dataloader` hook."
+            )
+
+        if self.test_dataloader is None:
+            raise ValueError(
+                "ModelProbingCallback requires either `test_dataloader` or "
+                "a `datamodule` with a `test_dataloader` hook."
+            )
+        
+    def setup(self, trainer, pl_module, stage=None):
+        if self.datamodule is not None:
+            if hasattr(self.datamodule, "setup"):
+                self.datamodule.setup(stage="fit")
+                self.datamodule.setup(stage="test")
+
+            if self.train_dataloader is None:
+                self.train_dataloader = self.datamodule.train_dataloader()
+
+            if self.test_dataloader is None:
+                self.test_dataloader = self.datamodule.test_dataloader()
+
+        self._check_dataloaders()
 
     @staticmethod
     def adapt_dataloader_for_ddp(dataloader, trainer):
