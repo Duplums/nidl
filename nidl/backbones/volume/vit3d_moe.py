@@ -7,6 +7,7 @@ from typing import Optional
 
 import torch
 import torch.nn.functional as F  # noqa: N812
+from torch import distributed as dist
 from torch import nn
 
 # ==========================================================================
@@ -312,10 +313,13 @@ def moe_bias_update(
     moe_layers = [b.mlp for b in model.blocks if isinstance(b.mlp, MoE)]
     if not moe_layers:
         return 1.0, 1.0
+    distributed = dist.is_available() and dist.is_initialized()
     total_min, total_max = 0.0, 0.0
     with torch.no_grad():
         for moe in moe_layers:
             counts = moe.counts.float()
+            if distributed:
+                dist.all_reduce(counts, op=dist.ReduceOp.SUM)
             avg = counts.mean()
             if avg > 0:
                 rel = counts / avg

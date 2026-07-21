@@ -1,59 +1,3 @@
-"""
-NeuroJEPA -- a `nidl`-native estimator, structured exactly like
-`nidl.estimators.ssl.ijepa.IJEPA` (same base classes, same `fit`/`transform`
-contract, same method names), but reproducing the three mechanisms the
-Neuro-JEPA paper (arXiv:2606.14957, https://github.com/NYUMedML/Neuro-JEPA)
-adds on top of plain I-JEPA/V-JEPA2 for 3D brain MRI:
-
-  1. multi-scale masking      (src/neurojepa/masks/masking.py)
-  2. sparse MoE backbone      (src/neurojepa/models/utils/moe.py)
-  3. foreground-aware loss    (src/neurojepa/loss/jepa_loss.py)
-
---------------------------------------------------------------------------
-Encoder / estimator independence (mirrors nidl's IJEPA design exactly)
---------------------------------------------------------------------------
-Just like nidl's `IJEPA` does NOT define its own ViT -- it takes any
-timm-like `encoder: nn.Module`, wraps it in `IJEPAVisionTransformer` (which
-only *checks* the module exposes the right attributes/methods), and builds
-independent context/target copies of it via `build_encoder(..., deepcopy=...)`
--- `NeuroJEPA` here takes any `encoder: nn.Module` satisfying a small 3D/MoE
-interface (see `NeuroJEPAEncoderWrapper._is_encoder_like` below), wraps it in
-`NeuroJEPAEncoderWrapper`, and builds its own context/target copies the same
-way. `VisionTransformer3D` (in `vision_transformer_3d.py`) is only the
-*reference* encoder satisfying that interface -- exactly analogous to how
-nidl's docstring examples pass in a timm ViT without `IJEPA` needing to know
-timm exists. You can swap in a different 3D backbone as long as it exposes:
-
-    .embed_dim                          int
-    .patch_size                         (int, int, int)
-    .grid_shape                         (nH, nW, nD) int tuple
-    .blocks                             nn.ModuleList (only needed if
-                                         use_moe=True, for the MoE bias
-                                         update -- see `moe_bias_update`)
-    .forward(x, masks=None)             -> (tokens, moe_scores)
-                                            tokens: (B[*len(masks)], K, E)
-
-Usage (mirrors nidl's own IJEPA usage exactly):
-
-    from vision_transformer_3d import VisionTransformer3D, MoEParams
-    from neuro_jepa import NeuroJEPA
-
-    backbone = VisionTransformer3D(
-        img_size=(96, 108, 96), patch_size=(12, 12, 12), in_chans=1,
-        embed_dim=768, depth=12, num_heads=12,
-        use_moe=True, moe_params=MoEParams(),
-    )
-    model = NeuroJEPA(
-        encoder=backbone, predictor_embed_dim=384, predictor_depth=12,
-        use_moe=True, max_epochs=200,
-    )
-    model.fit(train_dataloader, val_dataloader)
-    features = model.transform(test_dataloader)   # (N, embed_dim)
-
-Requires: torch, pytorch_lightning, and `nidl` itself (for `BaseEstimator`,
-`TransformerMixin`, and the small SSL utility modules reused verbatim below).
-"""
-
 from __future__ import annotations
 
 import math
@@ -529,10 +473,19 @@ class MultiScaleMaskCollator:
             _MaskGenerator(grid_shape, cfg) for cfg in scale_configs
         ]
         self._step_counter = -1
+        self._rank_seed_offset = 0
+
+    def set_rank(self, rank: int, large_multiplier: int = 10_000_000) -> None:
+        """Call once per DDP process (see `NeuroJEPA.on_fit_start`) so
+        different ranks draw different mask geometries at the same global
+        step, instead of every rank replaying the identical mask (each
+        rank's `_step_counter` otherwise starts at -1 and increments in
+        lockstep with every other rank)."""
+        self._rank_seed_offset = rank * large_multiplier
 
     def step(self) -> int:
         self._step_counter += 1
-        return self._step_counter
+        return self._step_counter + self._rank_seed_offset
 
     def __call__(self, volumes: torch.Tensor):
         """
@@ -903,6 +856,23 @@ class NeuroJEPA(TransformerMixin, BaseEstimator):
             cur_step=self.trainer.global_step,
             max_steps=self.trainer.estimated_stepping_batches,
         )
+
+    def on_fit_start(self):
+        """Decorrelate mask geometry across DDP ranks.
+
+        `self.trainer.global_rank` only exists once a Trainer/strategy is
+        attached (i.e. not yet at `__init__` time, when the estimator is
+        merely constructed) -- `on_fit_start` is the first hook guaranteed
+        to run after that setup and before the first training step, so it's
+        the right place to set it. Without this, every rank's `self.masker`
+        starts its own step counter at 0 and increments in lockstep with
+        every other rank, with nothing else rank-dependent in the seed --
+        so all ranks would draw the identical mask geometry for the sample
+        at a given local batch index every step, even though the actual
+        volume there differs per rank. Single-GPU / single-process runs are
+        unaffected (`global_rank == 0`, offset is a no-op).
+        """
+        self.masker.set_rank(self.trainer.global_rank)
 
     def validation_step(self, batch: Any, batch_idx: int):
         """Performs one validation step and computes the validation loss.
