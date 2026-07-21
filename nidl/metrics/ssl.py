@@ -164,11 +164,17 @@ def uniformity_score(z, normalize: bool = True, t: float = 2.0, eps=1e-12):
         return np.log(np.exp(-t * dist_sq).mean())
 
     if isinstance(z, torch.Tensor):
+        compute_dtype = (
+            torch.float32
+            if z.dtype in (torch.bfloat16, torch.float16)
+            else z.dtype
+        )
+        zc = z.to(compute_dtype)
         if normalize:
-            z = torch.nn.functional.normalize(z.float(), dim=1, eps=eps)
+            zc = torch.nn.functional.normalize(zc, dim=1, eps=eps)
 
         # Compute pairwise distances via pdist
-        pdist = torch.nn.functional.pdist(z, p=2)  # shape: [n*(n-1)/2]
+        pdist = torch.nn.functional.pdist(zc, p=2)  # shape: [n*(n-1)/2]
         score = torch.exp(-t * pdist.pow(2)).mean().log()
         return score
 
