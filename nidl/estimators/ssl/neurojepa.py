@@ -27,15 +27,6 @@ from nidl.estimators.ssl.utils.momentum import (
 from nidl.estimators.ssl.utils.optimizer import configure_ssl_optimizers
 from nidl.utils.data_parsing import parse_x_or_xy_batch
 
-# ==========================================================================
-# 1. Encoder wrapper -- the ONLY point of contact between NeuroJEPA and
-#    whatever backbone module the user hands it. Mirrors nidl's
-#    `IJEPAVisionTransformer`, but checking a 3D/MoE-shaped interface
-#    instead of timm's 2D/3D-generic one (timm has no notion of 3D patch
-#    grids or MoE blocks, so reusing timm's exact attribute checklist would
-#    not make sense here).
-# ==========================================================================
-
 
 class NeuroJEPAEncoderWrapper(nn.Module):
     """Thin interface-checking wrapper around a user-supplied 3D encoder.
@@ -91,21 +82,16 @@ class NeuroJEPAEncoderWrapper(nn.Module):
         return self.vit(x, masks=masks)
 
 
-# ==========================================================================
-# 2. Predictor -- JEPA-specific, stays inside the estimator file (exactly
-#    like nidl keeps `VisionTransformerPredictor` inside ijepa.py rather
-#    than exporting it alongside the independent backbone).
-#    Ported from: src/neurojepa/models/predictor.py
-# ==========================================================================
-
-
 class VisionTransformerPredictor3D(nn.Module):
     """Takes context-encoder tokens + (context indices, target indices) and
     predicts the target-encoder's latents at the target positions. Same
     role as nidl's `VisionTransformerPredictor`, built internally by
     `NeuroJEPA` from the encoder's derived `grid_shape`/`embed_dim` (the
     predictor is not independently pluggable, matching nidl's own design:
-    only the *backbone* encoder is user-supplied)."""
+    only the *backbone* encoder is user-supplied).
+
+    Ported from: src/neurojepa/models/predictor.py
+    """
 
     def __init__(
         self,
@@ -250,12 +236,6 @@ class VisionTransformerPredictor3D(nn.Module):
         return self.predictor_proj(x)
 
 
-# ==========================================================================
-# 3. Masking: multi-scale + foreground-aware (DIFFERENCE #1)
-#    Ported from: src/neurojepa/masks/masking.py
-# ==========================================================================
-
-
 def compute_foreground_patches(
     volumes: torch.Tensor,
     patch_size,
@@ -264,8 +244,10 @@ def compute_foreground_patches(
 ) -> torch.Tensor:
     """Per-patch boolean foreground map from voxel intensities: a patch
     counts as foreground if at least `min_foreground_fraction` of its voxels
-    exceed a per-sample, data-driven intensity threshold. Ported from
-    `masks/masking.py::compute_foreground_patches`."""
+    exceed a per-sample, data-driven intensity threshold.
+
+    Ported from `src/neurojepa/masks/masking.py::compute_foreground_patches`.
+    """
     pH, pW, pD = patch_size
     B = volumes.shape[0]
     vol = volumes.amax(dim=1)  # (B, H, W, D), collapse channel dim
@@ -318,7 +300,10 @@ class _MaskGenerator:
     into a single masked region, then adjusting until it hits exactly
     `total_mask_ratio` of all patches. One "scale" in the multi-scale scheme;
     `MultiScaleMaskCollator` runs several of these (one per `MaskScaleConfig`)
-    per training step."""
+    per training step.
+
+    Ported from: src/neurojepa/masks/masking.py::_MaskGenerator
+    """
 
     def __init__(self, grid_shape: tuple[int, int, int], cfg: MaskScaleConfig):
         self.height, self.width, self.depth = grid_shape
@@ -407,8 +392,7 @@ class _MaskGenerator:
         `mask.sum() == target_enc`, biased (when a foreground map is available)
         to erode background first / restore foreground first. Simplified vs.
         the official boundary-erosion loop (which grows/shrinks along the mask
-        boundary for spatial coherence) -- swap in that version if exact mask
-        shapes matter for your use case."""
+        boundary for spatial coherence)."""
         mask_flat = mask.flatten()
         n_keep = mask_flat.sum().item()
 
@@ -446,13 +430,10 @@ class _MaskGenerator:
 
 class MultiScaleMaskCollator:
     """Runs one `_MaskGenerator` per `MaskScaleConfig`, plus (optionally) the
-    foreground computation. Ported from `masks/masking.py::MaskCollator`.
+    foreground computation.
 
-    Unlike nidl's `Masker` (called as ``self.masker(batch_size)``, pure
-    random-number generation with no data dependency), this collator is
-    called as ``self.masker(x)`` -- it needs the actual volume batch to
-    compute the per-patch foreground map used for both mask-shape biasing
-    and the foreground-aware loss weights."""
+    Ported from: src/neurojepa/masks/masking.py::MaskCollator
+    """
 
     def __init__(
         self,
@@ -478,9 +459,7 @@ class MultiScaleMaskCollator:
     def set_rank(self, rank: int, large_multiplier: int = 10_000_000) -> None:
         """Call once per DDP process (see `NeuroJEPA.on_fit_start`) so
         different ranks draw different mask geometries at the same global
-        step, instead of every rank replaying the identical mask (each
-        rank's `_step_counter` otherwise starts at -1 and increments in
-        lockstep with every other rank)."""
+        step."""
         self._rank_seed_offset = rank * large_multiplier
 
     def step(self) -> int:
@@ -520,12 +499,6 @@ class MultiScaleMaskCollator:
         return masks_enc, masks_pred, fg_flat
 
 
-# ==========================================================================
-# 4. Foreground-aware JEPA loss (DIFFERENCE #3)
-#    Ported from: src/neurojepa/loss/jepa_loss.py
-# ==========================================================================
-
-
 def foreground_aware_jepa_loss(
     z: list[torch.Tensor],
     h: list[torch.Tensor],
@@ -545,6 +518,8 @@ def foreground_aware_jepa_loss(
         weighting (falls back to a uniform mean L1, i.e. nidl's plain loss).
     bg_weight : weight assigned to a pure-background patch (fg=0); a pure
         foreground patch (fg=1) always gets weight 1.0.
+
+    Ported from: src/neurojepa/loss/jepa_loss.py
     """
     use_weighting = fg_map is not None and bg_weight < 1.0
     pred_fg = None
@@ -573,14 +548,17 @@ def foreground_aware_jepa_loss(
 class NeuroJEPA(TransformerMixin, BaseEstimator):
     """Implementation of Neuro-JEPA [1]_.
 
-    Like `IJEPA`, this solver predicts the representations of missing parts
+    This solver predicts the representations of missing parts
     of the input (here: 3D brain MRI patches) from a visible context, using
-    a context encoder, an EMA target encoder, and a predictor. Unlike
-    `IJEPA`, it additionally uses: multi-scale block masking (several
-    differently-shaped-but-equal-ratio maskings per volume instead of one),
-    a sparse Mixture-of-Experts backbone (via the `encoder` you pass in),
-    and a foreground-aware loss that down-weights background (non-brain)
-    voxel-patches.
+    a context encoder, an EMA target encoder, and a predictor.
+
+    Compared to I-JEPA (3d), it uses:
+
+    - multi-scale block masking (several differently-shaped-but-equal-ratio
+      maskings per volume instead of one),
+    - a sparse Mixture-of-Experts backbone (via the `encoder` you pass in),
+    - a foreground-aware loss that down-weights background (non-brain)
+      voxel-patches.
 
     Parameters
     ----------

@@ -515,11 +515,7 @@ class DropPath(nn.Module):
 
 class Block(nn.Module):
     """One Transformer block: (RoPE-)Attention + residual, then either a
-    dense MLP or a sparse MoE + residual, matching
-    `models/utils/modules.py::Block`. Used both by `VisionTransformer3D`
-    (encoder) and by the predictor in `neuro_jepa.py` (predictor blocks
-    always use `use_moe=False` -- only the encoder is sparsified in the
-    official config)."""
+    dense MLP or a sparse MoE + residual."""
 
     def __init__(
         self,
@@ -609,21 +605,7 @@ class Block(nn.Module):
 
 class VisionTransformer3D(nn.Module):
     """3D ViT backbone with an optional sparse MoE mixed in at configurable
-    layers. This module knows NOTHING about JEPA, EMA target encoders, or
-    masking strategy -- it just optionally accepts a list of index tensors
-    to keep a subset of patch tokens (the same generic capability as timm's
-    `patch_drop`, just JEPA-shaped). That's what makes it independently
-    reusable: `NeuroJEPA` (in `neuro_jepa.py`) builds two independent copies
-    of whatever instance you hand it (a trainable "context" one and an EMA
-    "target" one) -- see `nidl.estimators.ssl.utils.encoder.build_encoder`
-    and `NeuroJEPAEncoderWrapper`.
-
-    Interface exposed for that wrapper to validate:
-        .embed_dim   : int
-        .patch_size  : (int, int, int)
-        .grid_shape  : (nH, nW, nD) int tuple
-        .blocks      : nn.ModuleList of `Block`
-        .forward(x, masks=None) -> (tokens, moe_scores)
+    layers.
     """
 
     def __init__(
