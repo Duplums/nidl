@@ -82,49 +82,6 @@ def repeat_interleave_batch(
 
 
 # ==========================================================================
-# 3D sin-cos positional embedding
-#   Ported from: src/neurojepa/models/utils/pos_embs.py
-#   Only used when use_rope=False; Neuro-JEPA's own pretraining config sets
-#   use_rope=True, in which case position is injected purely inside
-#   attention (see RoPEAttention below) and this table is never built.
-# ==========================================================================
-
-
-def get_1d_sincos_pos_embed_from_grid(embed_dim: int, pos) -> torch.Tensor:
-    assert embed_dim % 2 == 0
-    omega = torch.arange(embed_dim // 2, dtype=torch.float64)
-    omega /= embed_dim / 2.0
-    omega = 1.0 / 10000**omega
-    pos = pos.reshape(-1)
-    out = torch.einsum("m,d->md", pos, omega)
-    return torch.cat([torch.sin(out), torch.cos(out)], dim=1).float()
-
-
-def get_3d_sincos_pos_embed(
-    embed_dim: int, grid_size: int, grid_depth: int, uniform_power: bool = True
-) -> torch.Tensor:
-    """Returns (grid_depth * grid_size * grid_size, embed_dim)."""
-    grid_h = torch.arange(grid_size, dtype=torch.float64)
-    grid_w = torch.arange(grid_size, dtype=torch.float64)
-    grid_d = torch.arange(grid_depth, dtype=torch.float64)
-    grid_h, grid_d, grid_w = torch.meshgrid(
-        grid_h, grid_d, grid_w, indexing="ij"
-    )
-
-    if uniform_power:
-        h_dim = w_dim = d_dim = int(math.ceil(embed_dim / 6) * 2)
-    else:
-        h_dim = w_dim = embed_dim // 4
-        d_dim = embed_dim // 2
-
-    emb_h = get_1d_sincos_pos_embed_from_grid(h_dim, grid_h)
-    emb_w = get_1d_sincos_pos_embed_from_grid(w_dim, grid_w)
-    emb_d = get_1d_sincos_pos_embed_from_grid(d_dim, grid_d)
-    pos_embed = torch.cat([emb_d, emb_h, emb_w], dim=1)[:, :embed_dim]
-    return pos_embed
-
-
-# ==========================================================================
 # Patch embedding
 #   Ported from: src/neurojepa/models/utils/patch_embed.py
 # ==========================================================================
@@ -382,39 +339,10 @@ def rotate_queries_or_keys(x: torch.Tensor, pos: torch.Tensor) -> torch.Tensor:
     return x * emb_cos + y * emb_sin
 
 
-class Attention(nn.Module):
-    """Plain (non-RoPE) multi-head self-attention, used when use_rope=False."""
-
-    def __init__(
-        self, dim, num_heads=8, qkv_bias=True, attn_drop=0.0, proj_drop=0.0
-    ):
-        super().__init__()
-        self.num_heads = num_heads
-        self.qkv = nn.Linear(dim, dim * 3, bias=qkv_bias)
-        self.proj = nn.Linear(dim, dim)
-        self.proj_drop = nn.Dropout(proj_drop)
-        self.attn_drop_p = attn_drop
-
-    def forward(self, x, mask=None, attn_mask=None):
-        B, N, C = x.shape
-        qkv = (
-            self.qkv(x)
-            .reshape(B, N, 3, self.num_heads, C // self.num_heads)
-            .permute(2, 0, 3, 1, 4)
-        )
-        q, k, v = qkv[0], qkv[1], qkv[2]
-        x = F.scaled_dot_product_attention(
-            q, k, v, dropout_p=self.attn_drop_p if self.training else 0.0
-        )
-        x = x.transpose(1, 2).reshape(B, N, C)
-        return self.proj_drop(self.proj(x))
-
-
 class RoPEAttention(nn.Module):
     """3D rotary-position self-attention: query/key channels are split into
     a depth-group / height-group / width-group and each group is rotated by
-    the token's position along that axis. This is what Neuro-JEPA's
-    pretraining config actually uses (`use_rope: true`); it lets the encoder
+    the token's position along that axis. It lets the encoder
     work on 3D volumes without any additive absolute positional embedding.
     """
 
@@ -529,29 +457,18 @@ class Block(nn.Module):
         use_moe=False,
         moe_params: Optional[MoEParams] = None,
         grid_size=16,
-        use_rope=True,
         norm_layer=nn.LayerNorm,
     ):
         super().__init__()
         self.norm1 = norm_layer(dim)
-        self.use_rope = use_rope
-        if use_rope:
-            self.attn = RoPEAttention(
-                dim,
-                num_heads=num_heads,
-                qkv_bias=qkv_bias,
-                attn_drop=attn_drop,
-                proj_drop=drop,
-                grid_size=grid_size,
-            )
-        else:
-            self.attn = Attention(
-                dim,
-                num_heads=num_heads,
-                qkv_bias=qkv_bias,
-                attn_drop=attn_drop,
-                proj_drop=drop,
-            )
+        self.attn = RoPEAttention(
+            dim,
+            num_heads=num_heads,
+            qkv_bias=qkv_bias,
+            attn_drop=attn_drop,
+            proj_drop=drop,
+            grid_size=grid_size,
+        )
         self.drop_path = (
             nn.Identity()
             if math.isclose(drop_path, 0.0)
@@ -577,16 +494,13 @@ class Block(nn.Module):
     def forward(
         self, x, mask=None, D_patches=None, H_patches=None, W_patches=None
     ):
-        if self.use_rope:
-            y = self.attn(
-                self.norm1(x),
-                mask=mask,
-                D_patches=D_patches,
-                H_patches=H_patches,
-                W_patches=W_patches,
-            )
-        else:
-            y = self.attn(self.norm1(x), mask=mask)
+        y = self.attn(
+            self.norm1(x),
+            mask=mask,
+            D_patches=D_patches,
+            H_patches=H_patches,
+            W_patches=W_patches,
+        )
         x = x + self.drop_path(y)
         moe_scores = None
         if isinstance(self.mlp, MoE):
@@ -618,7 +532,6 @@ class VisionTransformer3D(nn.Module):
         num_heads=12,
         mlp_ratio=4.0,
         drop_path_rate=0.0,
-        use_rope=True,
         use_moe=False,
         moe_params: Optional[MoEParams] = None,
         init_std=0.02,
@@ -653,7 +566,6 @@ class VisionTransformer3D(nn.Module):
                     use_moe=(use_moe and i in self.moe_layer_indices),
                     moe_params=moe_params,
                     grid_size=self._grid_shape[0],
-                    use_rope=use_rope,
                 )
                 for i in range(depth)
             ]

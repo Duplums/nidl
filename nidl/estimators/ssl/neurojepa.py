@@ -13,7 +13,6 @@ from torch.optim import Optimizer
 from nidl.backbones.volume.vit3d_moe import (
     Block,
     apply_masks,
-    get_3d_sincos_pos_embed,
     moe_bias_update,
     repeat_interleave_batch,
     trunc_normal_,
@@ -84,11 +83,7 @@ class NeuroJEPAEncoderWrapper(nn.Module):
 
 class VisionTransformerPredictor3D(nn.Module):
     """Takes context-encoder tokens + (context indices, target indices) and
-    predicts the target-encoder's latents at the target positions. Same
-    role as nidl's `VisionTransformerPredictor`, built internally by
-    `NeuroJEPA` from the encoder's derived `grid_shape`/`embed_dim` (the
-    predictor is not independently pluggable, matching nidl's own design:
-    only the *backbone* encoder is user-supplied).
+    predicts the target-encoder's latents at the target positions.
 
     Ported from: src/neurojepa/models/predictor.py
     """
@@ -101,7 +96,6 @@ class VisionTransformerPredictor3D(nn.Module):
         depth: int = 6,
         num_heads: int = 12,
         mlp_ratio: float = 4.0,
-        use_rope: bool = True,
         num_mask_tokens: int = 1,
         init_std: float = 0.02,
     ):
@@ -122,17 +116,11 @@ class VisionTransformerPredictor3D(nn.Module):
             ]
         )
 
-        self.use_rope = use_rope
         self.predictor_pos_embed = None
-        if not use_rope:
-            self.predictor_pos_embed = nn.Parameter(
-                torch.zeros(1, self.num_patches, predictor_embed_dim),
-                requires_grad=False,
-            )
-            pe = get_3d_sincos_pos_embed(
-                predictor_embed_dim, self.grid_size, self.grid_depth
-            )
-            self.predictor_pos_embed.data.copy_(pe.unsqueeze(0))
+        self.predictor_pos_embed = nn.Parameter(
+            torch.zeros(1, self.num_patches, predictor_embed_dim),
+            requires_grad=False,
+        )
 
         self.predictor_blocks = nn.ModuleList(
             [
@@ -141,7 +129,6 @@ class VisionTransformerPredictor3D(nn.Module):
                     num_heads=num_heads,
                     mlp_ratio=mlp_ratio,
                     grid_size=self.grid_size,
-                    use_rope=use_rope,
                     use_moe=False,
                 )
                 for _ in range(depth)
@@ -191,10 +178,6 @@ class VisionTransformerPredictor3D(nn.Module):
         B = len(x) // len(masks_x)
         x = self.predictor_embed(x)
 
-        if not self.use_rope:
-            x_pos = self.predictor_pos_embed.repeat(B, 1, 1)
-            x = x + apply_masks(x_pos, masks_x)
-
         _, N_ctxt, _ = x.shape
 
         mask_index = mask_index % self.num_mask_tokens
@@ -206,22 +189,14 @@ class VisionTransformerPredictor3D(nn.Module):
             pred_tok, B, repeat=len(masks_x)
         )  # row order matches x.repeat below
 
-        if not self.use_rope:
-            pos = self.predictor_pos_embed.repeat(B, 1, 1)
-            pos = apply_masks(pos, masks_y)
-            pos = repeat_interleave_batch(pos, B, repeat=len(masks_x))
-            pred_tok = pred_tok + pos
-
         x = x.repeat(len(masks_y), 1, 1)
         x = torch.cat([x, pred_tok], dim=1)
 
-        pos_idx = None
-        if self.use_rope:
-            mx = torch.cat(masks_x, dim=0).repeat(len(masks_y), 1)
-            my = repeat_interleave_batch(
-                torch.cat(masks_y, dim=0), B, repeat=len(masks_x)
-            )
-            pos_idx = torch.cat([mx, my], dim=1)
+        mx = torch.cat(masks_x, dim=0).repeat(len(masks_y), 1)
+        my = repeat_interleave_batch(
+            torch.cat(masks_y, dim=0), B, repeat=len(masks_x)
+        )
+        pos_idx = torch.cat([mx, my], dim=1)
 
         for blk in self.predictor_blocks:
             x, _ = blk(
@@ -608,11 +583,6 @@ class NeuroJEPA(TransformerMixin, BaseEstimator):
         Predictor size, analogous to nidl's `predictor_embed_dim` /
         `predictor_depth_pred`.
 
-    use_rope : bool, default=True
-        Whether encoder/predictor attention uses 3D rotary position
-        embeddings (Neuro-JEPA's actual pretraining default) instead of an
-        additive sin-cos positional embedding table.
-
     ema_start, ema_end : float
         Passed straight to nidl's own `MomentumUpdater`.
 
@@ -657,7 +627,6 @@ class NeuroJEPA(TransformerMixin, BaseEstimator):
         predictor_embed_dim: int = 384,
         predictor_depth: int = 6,
         predictor_num_heads: int = 12,
-        use_rope: bool = True,
         optimizer: Union[str, Optimizer] = "adamW",
         learning_rate: float = 6e-4,
         weight_decay: float = 0.04,
@@ -697,7 +666,6 @@ class NeuroJEPA(TransformerMixin, BaseEstimator):
             predictor_embed_dim=predictor_embed_dim,
             depth=predictor_depth,
             num_heads=predictor_num_heads,
-            use_rope=use_rope,
         )
 
         self.masker = MultiScaleMaskCollator(
