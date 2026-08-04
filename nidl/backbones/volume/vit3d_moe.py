@@ -10,11 +10,6 @@ import torch.nn.functional as F  # noqa: N812
 from torch import distributed as dist
 from torch import nn
 
-# ==========================================================================
-# Low-level utilities
-#   Ported from: src/neurojepa/utils/tensors.py, src/neurojepa/masks/utils.py
-# ==========================================================================
-
 
 def trunc_normal_(
     tensor: torch.Tensor,
@@ -81,12 +76,6 @@ def repeat_interleave_batch(
     )
 
 
-# ==========================================================================
-# Patch embedding
-#   Ported from: src/neurojepa/models/utils/patch_embed.py
-# ==========================================================================
-
-
 class PatchEmbed3D(nn.Module):
     """Tokenizes a (B, C, H, W, D) volume into non-overlapping 3D patches
     ("tubelets") with a single strided Conv3d -- this is what makes I-JEPA
@@ -109,11 +98,10 @@ class PatchEmbed3D(nn.Module):
 
 # ==========================================================================
 # Mixture-of-Experts
-#   Ported from: src/neurojepa/models/utils/moe.py
 #   Aux-loss-free, bias-corrected top-k router (DeepSeek-V3 style) with a
 #   handful of *shared* experts (always active, dense) plus N *routed*
 #   experts (only top-k active per token). Lets different experts
-#   specialize by anatomical region / tissue type (paper Fig. 5) instead of
+#   specialize by anatomical region / tissue type instead of
 #   every token going through one shared dense MLP.
 # ==========================================================================
 
@@ -258,9 +246,7 @@ def moe_bias_update(
     model: nn.Module, update_rate: float, bias_clip: float = 0.3
 ) -> tuple[float, float]:
     """Aux-loss-free load-balancing update, ported from
-    `models/utils/moe.py::moe_bias_update`, simplified to single-device
-    (the official version additionally all-reduces expert counts across
-    DDP ranks before this step; add that back if training distributed).
+    `models/utils/moe.py::moe_bias_update`.
 
     `model` must expose `.blocks` (a ModuleList of `Block` instances, some
     of which may hold a `MoE` in `.mlp`). Call this once per optimizer step,
@@ -298,9 +284,6 @@ def moe_bias_update(
 
 @dataclass
 class MoEParams:
-    """Mirrors `model.moe_params` in
-    `configs/pretrain/pretrain_neurojepa_base.yaml`."""
-
     dim: int = 768
     n_shared_experts: int = 2
     n_routed_experts: int = 16
@@ -313,14 +296,6 @@ class MoEParams:
     # Layer indices (0-indexed) that use MoE; the rest use a plain dense MLP.
     # Matches the official base config: every other block from 1 to 11.
     moe_layer_indices: tuple[int, ...] = (1, 3, 5, 7, 9, 11)
-
-
-# ==========================================================================
-# Attention + Transformer block
-#   Ported from: src/neurojepa/models/utils/modules.py
-#   (dropped: ACRoPEAttention / action tokens / causal masking -- V-JEPA2
-#   video-only extras, unused by Neuro-JEPA's own pretrain config)
-# ==========================================================================
 
 
 def rotate_queries_or_keys(x: torch.Tensor, pos: torch.Tensor) -> torch.Tensor:
@@ -509,12 +484,6 @@ class Block(nn.Module):
             y = self.mlp(self.norm2(x))
         x = x + self.drop_path(y)
         return x, moe_scores
-
-
-# ==========================================================================
-# Vision Transformer encoder -- the independent, reusable backbone
-#   Ported from: src/neurojepa/models/vision_transformer.py
-# ==========================================================================
 
 
 class VisionTransformer3D(nn.Module):
