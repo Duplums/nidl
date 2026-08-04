@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import abc
 from collections.abc import Mapping, Sequence
+from pathlib import Path
 from typing import Any, Callable, Optional, Union
 
 import pytorch_lightning as pl
@@ -210,6 +211,9 @@ class BaseEstimator(pl.LightningModule):
         self,
         train_dataloader: data.DataLoader,
         val_dataloader: Optional[data.DataLoader] = None,
+        datamodule: Optional[pl.LightningDataModule] = None,
+        ckpt_path: Union[str, Path, None] = None,
+        weights_only: Optional[bool] = None,
     ):
         """The `fit` method.
 
@@ -226,6 +230,19 @@ class BaseEstimator(pl.LightningModule):
             training samples.
         val_dataloader: torch DataLoader, default None
             validation samples.
+        datamodule: pl.LightningDataModule, default None
+            an instance of `LightningDataModule`, alternative to passing
+            `train_dataloader`/`val_dataloader`.
+        ckpt_path: str, Path, default None
+            path to a checkpoint to resume training from. If ``"best"``
+            or ``"last"``, loads the corresponding checkpoint tracked by
+            the trainer's checkpoint callback (only when calling `fit`
+            again on an already trained trainer instance).
+        weights_only: bool, default None
+            if True, restricts `torch.load` (used to load the checkpoint)
+            to loading only tensors, primitive types and dictionaries,
+            without executing arbitrary code. Passed to
+            `torch.load(weights_only=...)`.
 
         Returns
         -------
@@ -236,7 +253,14 @@ class BaseEstimator(pl.LightningModule):
         if trainer.logger is not None:
             trainer.logger._default_hp_metric = None
         pl.seed_everything(self.hparams.random_state)
-        trainer.fit(self, train_dataloader, val_dataloader)
+        trainer.fit(
+            self,
+            train_dataloader,
+            val_dataloader,
+            datamodule=datamodule,
+            ckpt_path=ckpt_path,
+            weights_only=weights_only,
+        )
         self.fitted_ = True
         return self
 
