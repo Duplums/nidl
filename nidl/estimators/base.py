@@ -209,7 +209,7 @@ class BaseEstimator(pl.LightningModule):
 
     def fit(
         self,
-        train_dataloader: data.DataLoader,
+        train_dataloader: Optional[data.DataLoader] = None,
         val_dataloader: Optional[data.DataLoader] = None,
         datamodule: Optional[pl.LightningDataModule] = None,
         ckpt_path: Union[str, Path, None] = None,
@@ -226,20 +226,19 @@ class BaseEstimator(pl.LightningModule):
 
         Parameters
         ----------
-        train_dataloader: torch DataLoader
-            training samples.
-        val_dataloader: torch DataLoader, default None
-            validation samples.
-        datamodule: pl.LightningDataModule, default None
-            an instance of `LightningDataModule`, alternative to passing
+        train_dataloader: torch DataLoader, default=None
+            The training data loader. If ``datamodule`` is passed, the
+            ``train_dataloader``hook is used instead, ignoring this loader.
+        val_dataloader: torch DataLoader, default=None
+            The validation data loader. If ``datamodule`` is passed, the
+            ``val_dataloader``hook is used instead, ignoring this loader.
+        datamodule: pl.LightningDataModule, default=None
+            An instance of `LightningDataModule`, alternative to passing
             `train_dataloader`/`val_dataloader`.
-        ckpt_path: str, Path, default None
-            path to a checkpoint to resume training from. If ``"best"``
-            or ``"last"``, loads the corresponding checkpoint tracked by
-            the trainer's checkpoint callback (only when calling `fit`
-            again on an already trained trainer instance).
-        weights_only: bool, default None
-            if True, restricts `torch.load` (used to load the checkpoint)
+        ckpt_path: str, Path, default=None
+            Path to a checkpoint from which training is resumed.
+        weights_only: bool, default=None
+            If True, restricts `torch.load` (used to load the checkpoint)
             to loading only tensors, primitive types and dictionaries,
             without executing arbitrary code. Passed to
             `torch.load(weights_only=...)`.
