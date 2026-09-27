@@ -46,7 +46,7 @@ class OpenMind(Dataset):
     modalities from over 30 different scanners, representing a highly variable
     pre-training dataset.
 
-    The current version includes 43001 T1w, 23012 T2w and 4614 FLAIR images,
+    The current version includes 42941 T1w, 23935 T2w and 4614 FLAIR images,
     preprocessed with the quasi-raw `brainprep
     <https://github.com/brainprepdesk/brainprep>`_ workflow (skull-stripping,
     N4 bias field correction, 1mm isotropic resampling and linear registration
