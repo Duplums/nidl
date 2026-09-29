@@ -144,6 +144,14 @@ class OpenMind(Dataset):
         A function/transform that takes in an image (or a dict of images) and
         returns a transformed version.
 
+    drop_cache : bool, default=False
+        If True, ask the kernel to drop the page cache of each image right
+        after reading it (``posix_fadvise(POSIX_FADV_DONTNEED)``). An epoch
+        streams through the whole dataset once, so caching it brings nothing
+        but memory pressure: on shared filesystems such as Lustre, a page
+        cache filling the job memory limit makes its reclaim, and hence the
+        dataloader workers, very slow.
+
     Examples
     --------
     One T1w image per item:
@@ -207,6 +215,7 @@ class OpenMind(Dataset):
         shards: str = "*/*.tar",
         index_path: Optional[str] = None,
         transforms: Optional[Callable] = None,
+        drop_cache: bool = False,
     ):
         self.root = os.path.abspath(os.path.expanduser(root))
         self.modalities = self._parse_modality(modality)
@@ -222,6 +231,7 @@ class OpenMind(Dataset):
         self.apply_mask = apply_mask
         self.return_meta = return_meta
         self.transforms = transforms
+        self.drop_cache = drop_cache and hasattr(os, "posix_fadvise")
         # A dict per item only makes sense when regrouping several modalities
         self._as_dict = group_by is not None and not isinstance(modality, str)
 
@@ -371,7 +381,12 @@ class OpenMind(Dataset):
                 self.shards[shard], "rb"
             )
         handle.seek(offset)
-        return handle.read(size)
+        data = handle.read(size)
+        if self.drop_cache:
+            os.posix_fadvise(
+                handle.fileno(), offset, size, os.POSIX_FADV_DONTNEED
+            )
+        return data
 
     def _load_image(self, entry: dict) -> np.ndarray:
         image = self._decode(self._read(entry["shard"], *entry["image"]))
