@@ -8,6 +8,7 @@
 
 from __future__ import annotations
 
+import csv
 import glob
 import gzip
 import hashlib
@@ -53,11 +54,8 @@ class OpenMind(Dataset):
     to MNI space).
 
     The shards are written by ``bids_to_webdataset``: one sample per
-    (subject, session, modality, instance), where an instance is a distinct
-    combination of the BIDS entities ``run``, ``acq``, ``rec``, ``dir`` and
-    ``echo``. Shards where several modalities are bundled in a single sample
-    (older layout) are read as well. Deciding which images go together is
-    done here, at load time, with `group_by`, `require_all` and `instance`,
+    (subject, session, modality, run) tuple. Deciding which images go together
+    is done here, at load time, with `group_by`, `require_all` and `instance`,
     so it can be changed without rewriting the shards.
 
     Parameters
@@ -105,9 +103,22 @@ class OpenMind(Dataset):
     subjects : sequence of str or (str, str), default=None
         Keep only these subjects, given either as "sub-01" (matches this
         label in every dataset) or as ("ds000030", "sub-10159"). Subject
-        labels are only unique within a dataset. Use it to define
-        train/validation splits at the subject level, which avoids leakage
-        between sessions or modalities of the same subject.
+        labels are only unique within a dataset. Combined with `split`
+        (both filters apply).
+
+    split : {None, "train", "val"}, default=None
+        Which subject-level split to load. None loads everything. The split
+        is read from `split_file`, which lists the subjects of the "val"
+        split; every other subject belongs to "train". A subject, with all
+        its sessions, modalities and instances, is entirely in one split, so
+        there is no leakage between splits, including with `group_by`.
+
+    split_file : str or None, default=None
+        CSV file listing the "val" subjects, with (at least) the columns
+        ``dataset_id`` and ``participant_id``. Other columns (e.g. session,
+        run) are ignored: the split is decided per (dataset, subject).
+        Default is ``<root>/val_split.csv``. Only used if `split` is not
+        None.
 
     apply_mask : bool, default=False
         If True, multiply each image by its brain mask. Images without mask
@@ -119,7 +130,7 @@ class OpenMind(Dataset):
         entities, source paths) plus its ``key``. For grouped dict items,
         `meta` is a dict {modality: meta}.
 
-    shards : str, default="*.tar"
+    shards : str, default="*/*.tar"
         Glob pattern (relative to `root`) selecting the shards. A warning is
         raised if the same image appears in several of them.
 
@@ -153,6 +164,12 @@ class OpenMind(Dataset):
     >>> print(sample["t1"].shape, sample["t2"].shape)
     (1, 182, 218, 182) (1, 182, 218, 182)
 
+    Subject-level train/validation splits (from ``<root>/val_split.csv``):
+
+    >>> train = OpenMind(root="data/openmind_wds", modality="t1",
+    ...                  split="train")
+    >>> val = OpenMind(root="data/openmind_wds", modality="t1", split="val")
+
     One image per subject, drawn among all modalities:
 
     >>> dataset = OpenMind(
@@ -183,9 +200,11 @@ class OpenMind(Dataset):
         require_all: bool = True,
         instance: str = "first",
         subjects: Optional[Sequence[str]] = None,
+        split: Optional[str] = None,
+        split_file: Optional[str] = None,
         apply_mask: bool = False,
         return_meta: bool = False,
-        shards: str = "*.tar",
+        shards: str = "*/*.tar",
         index_path: Optional[str] = None,
         transforms: Optional[Callable] = None,
     ):
@@ -199,6 +218,7 @@ class OpenMind(Dataset):
                 f"{instance!r}"
             )
         self.instance = instance
+        self.split = self._parse_split(split)
         self.apply_mask = apply_mask
         self.return_meta = return_meta
         self.transforms = transforms
@@ -216,12 +236,22 @@ class OpenMind(Dataset):
         self.entries = self._load_index(index_path)
 
         keep = set(subjects) if subjects is not None else None
+        val_subjects = None
+        if self.split is not None:
+            val_subjects = self._load_val_subjects(
+                split_file or os.path.join(self.root, "val_split.csv")
+            )
         self._warn_duplicates()
         self._selected = [
             i
             for i, e in enumerate(self.entries)
             if e["meta"]["modality"] in self.modalities
             and (keep is None or self._is_kept(e["meta"], keep))
+            and (
+                val_subjects is None
+                or self._in_val(e["meta"], val_subjects)
+                == (self.split == "val")
+            )
         ]
         self.items = self._make_items()
         self._handles: dict[int, Any] = {}
@@ -334,9 +364,6 @@ class OpenMind(Dataset):
                 )
         return items
 
-    # ------------------------------------------------------------------ #
-    # Reading
-    # ------------------------------------------------------------------ #
     def _read(self, shard: int, offset: int, size: int) -> bytes:
         handle = self._handles.get(shard)
         if handle is None:
@@ -489,6 +516,29 @@ class OpenMind(Dataset):
             )
 
     @staticmethod
+    def _load_val_subjects(path: str) -> set:
+        """Read the (dataset, subject) pairs of the "val" split from a CSV."""
+        if not os.path.isfile(path):
+            raise FileNotFoundError(
+                f"Split file not found: {path}. Pass `split_file` to use "
+                f"another location."
+            )
+        with open(path, newline="") as f:
+            reader = csv.DictReader(f)
+            columns = {"dataset_id", "participant_id"}
+            missing = columns - set(reader.fieldnames or ())
+            if missing:
+                raise ValueError(
+                    f"{path} must have the columns {sorted(columns)}, "
+                    f"missing {sorted(missing)}"
+                )
+            return {(r["dataset_id"], r["participant_id"]) for r in reader}
+
+    @staticmethod
+    def _in_val(meta: dict, val_subjects: set) -> bool:
+        return (meta["dataset"], meta["subject"]) in val_subjects
+
+    @staticmethod
     def _is_kept(meta: dict, keep: set) -> bool:
         return (
             meta["subject"] in keep
@@ -508,6 +558,14 @@ class OpenMind(Dataset):
                 f"{MODALITIES}"
             )
         return modalities
+
+    @staticmethod
+    def _parse_split(split) -> Optional[str]:
+        if split not in (None, "train", "val"):
+            raise ValueError(
+                f"split must be None, 'train' or 'val', got {split!r}"
+            )
+        return split
 
     @staticmethod
     def _parse_group_by(group_by) -> Optional[Callable[[dict], Any]]:
