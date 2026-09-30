@@ -264,7 +264,7 @@ class OpenMind(Dataset):
             )
         ]
         self.items = self._make_items()
-        self._handles: dict[int, Any] = {}
+        self._handles: dict[int, int] = {}  # shard index -> file descriptor
 
     def __len__(self) -> int:
         return len(self.items)
@@ -327,8 +327,8 @@ class OpenMind(Dataset):
         return state
 
     def __del__(self):
-        for handle in getattr(self, "_handles", {}).values():
-            handle.close()
+        for fd in getattr(self, "_handles", {}).values():
+            os.close(fd)
 
     def _make_items(self) -> list[dict[str, tuple[int, ...]]]:
         """Regroup entries into items: {modality: candidate entry indices}."""
@@ -375,18 +375,26 @@ class OpenMind(Dataset):
         return items
 
     def _read(self, shard: int, offset: int, size: int) -> bytes:
-        handle = self._handles.get(shard)
-        if handle is None:
-            handle = self._handles[shard] = open(  # ruff: ignore[open-file-with-context-handler]
-                self.shards[shard], "rb"
-            )
-        handle.seek(offset)
-        data = handle.read(size)
+        # Unbuffered positional reads on raw file descriptors: a buffered
+        # file object keeps a read buffer of the filesystem block size (4 MB
+        # on Lustre) per open shard, i.e. GBs per DataLoader worker once
+        # hundreds of shards have been visited.
+        fd = self._handles.get(shard)
+        if fd is None:
+            fd = self._handles[shard] = os.open(self.shards[shard], os.O_RDONLY)
+        chunks, n_read = [], 0
+        while n_read < size:
+            chunk = os.pread(fd, size - n_read, offset + n_read)
+            if not chunk:
+                raise EOFError(
+                    f"Unexpected end of {self.shards[shard]} at byte "
+                    f"{offset + n_read}"
+                )
+            chunks.append(chunk)
+            n_read += len(chunk)
         if self.drop_cache:
-            os.posix_fadvise(
-                handle.fileno(), offset, size, os.POSIX_FADV_DONTNEED
-            )
-        return data
+            os.posix_fadvise(fd, offset, size, os.POSIX_FADV_DONTNEED)
+        return chunks[0] if len(chunks) == 1 else b"".join(chunks)
 
     def _load_image(self, entry: dict) -> np.ndarray:
         image = self._decode(self._read(entry["shard"], *entry["image"]))
