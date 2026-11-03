@@ -243,7 +243,7 @@ if not load_pretrained:
 if load_pretrained:
     # Load model from checkpoint
     weights = Weights(
-        'hf-hub:neurospin/nidl_example_simclr_mnist',
+        'hf-hub:nidl-neurospin/nidl_example_simclr_mnist',
         data_dir=model_dir,
         filepath='nidl_example_simclr_mnist.ckpt'
     )

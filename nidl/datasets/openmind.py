@@ -80,9 +80,10 @@ class OpenMind(Dataset):
     ----------
     root : str
         Root directory of the dataset, mirroring the `Hugging Face repository
-        <https://huggingface.co/datasets/neurospin/openmind>`_: one folder per
-        preprocessing (e.g. ``<root>/quasiraw-v2.1.1/``) containing one folder
-        of ``.tar`` shards per OpenNeuro dataset, and ``val_split.csv``.
+        <https://huggingface.co/datasets/nidl-neurospin/openmind>`_: one folder
+        per preprocessing (e.g. ``<root>/quasiraw-v2.1.1/``) containing one
+        folder of ``.tar`` shards per OpenNeuro dataset, and
+        ``val_split.csv``.
         Missing files are fetched from the Hugging Face.
 
     preprocessing : {"quasiraw", "cat12vbm"}, default="quasiraw"
@@ -224,8 +225,8 @@ class OpenMind(Dataset):
     Notes
     -----
     The data are downloaded exclusively from the `OpenMind repository
-    <https://huggingface.co/datasets/neurospin/openmind>`_ on the Hugging Face
-    either on-the-fly (lazy download) or during initialization (immediate
+    <https://huggingface.co/datasets/nidl-neurospin/openmind>`_ on the Hugging
+    Face either on-the-fly (lazy download) or during initialization (immediate
     download) if they are not already there.
 
     Images are read by byte offsets, listed in an index file
@@ -241,7 +242,7 @@ class OpenMind(Dataset):
            learning, arXiv 2025
     """
 
-    REPO_ID = "neurospin/openmind"
+    REPO_ID = "nidl-neurospin/openmind"
     REVISION = "ed0af62645c4e8230f82e28a74b0dfa7bd6bfacb"  # commit ID
 
     def __init__(

@@ -358,12 +358,12 @@ def train_models(batch_size, simclr, dcl):
 # Load trained models' weights from HuggingFace
 def load_weights(batch_size):
     weights_simclr = Weights(
-        name="hf-hub:neurospin/nidl_example_dcl_vs_simclr",
+        name="hf-hub:nidl-neurospin/nidl_example_dcl_vs_simclr",
         data_dir=model_dir,
         filepath=f"example_simclr_bs_{batch_size}.ckpt",
     )
     weights_dcl = Weights(
-        name="hf-hub:neurospin/nidl_example_dcl_vs_simclr",
+        name="hf-hub:nidl-neurospin/nidl_example_dcl_vs_simclr",
         data_dir=model_dir,
         filepath=f"example_dcl_bs_{batch_size}.ckpt",
     )

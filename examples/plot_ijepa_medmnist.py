@@ -91,7 +91,7 @@ img_size = 64
 # Whether to load a pretrained checkpoint from HF or train locally
 load_pretrained = True
 # Fill these two values once a checkpoint is published on HF
-hf_repo_id = "neurospin/nidl_example_ijepa_medmnist"
+hf_repo_id = "nidl-neurospin/nidl_example_ijepa_medmnist"
 hf_checkpoint = "nidl_example_ijepa_medmnist.pt"
 
 # %%
